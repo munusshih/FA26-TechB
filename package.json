@@ -11,10 +11,11 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@agentic-profile/eliza": "^0.1.0",
     "@tailwindcss/vite": "^4.1.11",
     "@vercel/analytics": "^1.6.1",
     "astro": "^5.11.1",
+    "eliza-core": "^1.2.0-beta.0",
+    "eliza-util": "^1.1.0-alpha.1",
     "gsap": "^3.13.0",
     "tailwindcss": "^4.1.11"
   },
