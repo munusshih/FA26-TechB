@@ -1,0 +1,307 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import SkipToMain from "@/components/SkipToMain.astro";
+import "../../styles/global.css";
+
+import {
+  projectsWithMeta,
+  getProjectTitle,
+  getProjectAuthor,
+  buildParagraphs,
+  fileEntriesForProject,
+  buildLinkList,
+  P5_FIELD,
+  P5_FALLBACK_FIELD,
+  DESCRIPTION_FIELD,
+  DESCRIPTION_FALLBACK_FIELD,
+} from "@/lib/projects.js";
+
+export function getStaticPaths() {
+  return projectsWithMeta.map((project) => ({
+    params: { slug: project.slug },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+
+const title = getProjectTitle(project);
+const author = getProjectAuthor(project);
+const description =
+  project[DESCRIPTION_FIELD] ?? project[DESCRIPTION_FALLBACK_FIELD] ?? "";
+const descriptionParagraphs = buildParagraphs(description);
+const mediaEntries = fileEntriesForProject(project);
+const links = buildLinkList(project);
+const rawP5Url = project[P5_FIELD] || project[P5_FALLBACK_FIELD];
+const p5Url = typeof rawP5Url === "string" ? rawP5Url.trim() : "";
+
+const rawCredits =
+  project[
+    "Credit (List out collaborators, tutorials, libraries, references, AI agents used)"
+  ];
+const credits =
+  typeof rawCredits === "string"
+    ? rawCredits
+        .split(/\r?\n/)
+        .map((line) => line.trim())
+        .filter(Boolean)
+    : [];
+
+const countLetters = (value) => (typeof value === "string" ? value.length : 0);
+
+const titleLetterCount = countLetters(title);
+
+const primaryMediaEntry =
+  mediaEntries.find((entry) => entry.type === "image") ??
+  mediaEntries.find((entry) => entry.type === "video") ??
+  mediaEntries[0] ??
+  null;
+
+const additionalMediaEntries = primaryMediaEntry
+  ? mediaEntries.filter((entry) => entry.key !== primaryMediaEntry.key)
+  : mediaEntries;
+
+const descriptionWordCount = descriptionParagraphs
+  .join(" ")
+  .split(/\s+/)
+  .filter(Boolean).length;
+
+const currentProjectIndex = projectsWithMeta.findIndex(
+  (candidate) => candidate.slug === project.slug,
+);
+const nextProject =
+  currentProjectIndex >= 0 && projectsWithMeta.length > 1
+    ? projectsWithMeta[(currentProjectIndex + 1) % projectsWithMeta.length]
+    : null;
+const nextProjectTitle = nextProject ? getProjectTitle(nextProject) : null;
+const nextProjectAuthor = nextProject ? getProjectAuthor(nextProject) : null;
+---
+
+<Layout>
+  <SkipToMain />
+  <Header>
+    <div
+      slot="title"
+      class="heading-1-wrapper"
+      style={`--letter-count: ${titleLetterCount}`}
+    >
+      <h1 class="heading-1 w-auto !max-w-[10ch]" data-header-scale>
+        {title}
+      </h1>
+    </div>
+    <div slot="nav"></div>
+    <div slot="mobile-meta" class="flex flex-row gap-4">
+      <h2 data-header-scale>
+        <a href="/work">All Projects</a>
+      </h2>
+      <h2 data-header-scale>by {author}</h2>
+    </div>
+    <div slot="desktop-meta">
+      <h2 data-header-scale>
+        <a href="/work">All Projects </a>
+      </h2>
+      <h2 data-header-scale>by {author}</h2>
+    </div>
+  </Header>
+  <main
+    class="cutoff mx-auto pb-24"
+    style={`--letter-count: ${titleLetterCount}; margin-top: max(2rem, calc(var(--header-height, 10rem) + 2rem))`}
+  >
+    {
+      primaryMediaEntry && (
+        <section class="mx-auto space-y-4">
+          <figure class="space-y-3">
+            {primaryMediaEntry.type === "video" ? (
+              <video
+                src={primaryMediaEntry.value}
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="metadata"
+                class="w-full"
+              />
+            ) : primaryMediaEntry.type === "image" ||
+              primaryMediaEntry.type === "local" ? (
+              <img
+                src={primaryMediaEntry.value}
+                alt={primaryMediaEntry.description || primaryMediaEntry.label}
+                class="w-full"
+              />
+            ) : (
+              <a
+                href={primaryMediaEntry.value}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex"
+              >
+                {primaryMediaEntry.label}
+              </a>
+            )}
+            {(primaryMediaEntry.description || primaryMediaEntry.label) && (
+              <figcaption
+                class={`paragraph card w-full gap-8 !border bg-white ${
+                  countLetters(
+                    primaryMediaEntry.description || primaryMediaEntry.label,
+                  ) > 200
+                    ? "lg:!max-w-none lg:columns-2"
+                    : ""
+                }`}
+              >
+                {primaryMediaEntry.description || primaryMediaEntry.label}
+              </figcaption>
+            )}
+          </figure>
+        </section>
+      )
+    }
+
+    <aside class="!mx-0 !my-20 gap-8 py-8 lg:grid lg:grid-cols-3">
+      {
+        descriptionParagraphs.length > 0 && (
+          <section class="col-span-2 space-y-4">
+            <h2>Project Description</h2>
+            <p
+              class={` ${descriptionWordCount > 200 ? "lg:!max-w-none lg:columns-2" : ""}`}
+            >
+              {descriptionParagraphs.join(" ")}
+            </p>
+          </section>
+        )
+      }
+
+      <div class="col-span-1 mt-4 !flex !flex-col !py-0 lg:mt-0">
+        {
+          credits.length > 0 && (
+            <section class="space-y-3">
+              <h2>Credits</h2>
+              <ul>
+                {credits.map((line, index) => (
+                  <li key={index} class="text-neutral-700">
+                    {line}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )
+        }
+
+        {
+          (links.length > 0 || p5Url) && (
+            <section class="space-y-3">
+              <h2>Links</h2>
+              <ul>
+                {p5Url && (
+                  <li>
+                    <a
+                      href={p5Url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="break-all underline"
+                    >
+                      p5 Editor
+                    </a>
+                  </li>
+                )}
+                {links.map((link) => (
+                  <li key={link.url}>
+                    <a
+                      href={link.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="break-all underline"
+                    >
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )
+        }
+      </div>
+    </aside>
+
+    {
+      additionalMediaEntries.length > 0 && (
+        <section class="mx-auto space-y-6">
+          <div class="grid gap-6">
+            {additionalMediaEntries.map(
+              ({
+                key: assetKey,
+                label,
+                value,
+                description: fileDescription,
+                type,
+              }) => (
+                <figure class="space-y-3" key={assetKey}>
+                  {type === "video" ? (
+                    <video
+                      src={value}
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      preload="metadata"
+                      class="w-full rounded border border-neutral-200"
+                    />
+                  ) : type === "image" || type === "local" ? (
+                    <img
+                      src={value}
+                      alt={fileDescription || label}
+                      class="w-full rounded border border-neutral-200"
+                    />
+                  ) : (
+                    <a
+                      href={value}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="inline-flex items-center gap-2 text-neutral-800 underline"
+                    >
+                      {label}
+                    </a>
+                  )}
+                  {(fileDescription || label) && (
+                    <figcaption
+                      class={`paragraph card gap-8 !border bg-white ${
+                        countLetters(fileDescription || label) > 400
+                          ? "lg:!max-w-none lg:columns-2"
+                          : ""
+                      }`}
+                    >
+                      {fileDescription || label}
+                    </figcaption>
+                  )}
+                </figure>
+              ),
+            )}
+          </div>
+        </section>
+      )
+    }
+
+    {
+      nextProject && nextProjectTitle && (
+        <a
+          href={`/work/${nextProject.slug}`}
+          class="!no-underline hover:opacity-40"
+          aria-label={`Go to next project: ${nextProjectTitle}`}
+        >
+          <section class="mx-auto mt-8 flex flex-col items-end gap-4 py-4 text-right">
+            <h2 class="!no-underline">Next Project</h2>
+            {nextProjectAuthor && (
+              <p class="!no-underline">
+                {nextProjectTitle} by {nextProjectAuthor}
+              </p>
+            )}
+          </section>
+        </a>
+      )
+    }
+  </main>
+</Layout>
+<Footer />
+<script src="../../scripts/glitter-cursor.js"></script>
+<script srct="../../scripts/external-links.js"></script>

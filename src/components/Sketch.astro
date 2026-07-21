@@ -1,0 +1,114 @@
+---
+import {
+  projectsWithMeta,
+  getProjectAuthor,
+  getProjectTitle,
+  getPrimaryMediaEntry,
+} from "@/lib/projects.js";
+
+const allProjects = projectsWithMeta
+  .map((project) => {
+    const primaryMedia = getPrimaryMediaEntry(project);
+    if (!primaryMedia || !primaryMedia.value) return null;
+    return {
+      url: primaryMedia.value,
+      name: getProjectAuthor(project),
+      title: getProjectTitle(project),
+      slug: project.slug,
+    };
+  })
+  .filter(Boolean);
+
+const shuffledProjects = allProjects.sort(() => Math.random() - 0.5);
+
+const imageUrls = shuffledProjects.map((p) => p.url);
+const imageNames = shuffledProjects.map((p) => p.name);
+const projectTitles = shuffledProjects.map((p) => p.title);
+const projectSlugs = shuffledProjects.map((p) => p.slug);
+---
+
+<div class="sketch-wrapper ridge-border cutoff">
+  <img id="image-element" class="image fade" src="" alt="" />
+</div>
+<div id="student-name" class="student-name fade cutoff">
+  <a id="project-link" href="#"></a>
+</div>
+
+<script define:vars={{ imageUrls, imageNames, projectTitles, projectSlugs }}>
+  /* eslint-disable no-undef */
+  const images = imageUrls;
+  const names = imageNames;
+  const titles = projectTitles;
+  const slugs = projectSlugs;
+  /* eslint-enable no-undef */
+
+  function shuffleArray(array) {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  }
+
+  let allIndices = Array.from({ length: images.length }, (_, i) => i);
+  let shuffledIndices = shuffleArray(allIndices);
+  let currentIndex = 0;
+
+  function changeContent() {
+    const imgElement = document.getElementById("image-element");
+    const nameElement = document.getElementById("student-name");
+    const linkElement = document.getElementById("project-link");
+
+    if (!imgElement || !nameElement || !linkElement) return;
+
+    imgElement.classList.add("fade-out");
+    nameElement.classList.add("fade-out");
+
+    setTimeout(() => {
+      const imageIndex = shuffledIndices[currentIndex];
+
+      // Create a new image to test if it loads
+      const testImg = new Image();
+      testImg.onload = () => {
+        // Image loaded successfully
+        imgElement.src = images[imageIndex];
+        imgElement.alt = names[imageIndex];
+
+        linkElement.href = `/work/${slugs[imageIndex]}/`;
+        linkElement.textContent = `${titles[imageIndex]}, ${names[imageIndex]}`;
+
+        currentIndex++;
+        if (currentIndex >= shuffledIndices.length) {
+          shuffledIndices = shuffleArray(allIndices);
+          currentIndex = 0;
+        }
+
+        imgElement.classList.remove("fade-out");
+        nameElement.classList.remove("fade-out");
+      };
+
+      testImg.onerror = () => {
+        // Image failed to load, skip to next one
+        currentIndex++;
+        if (currentIndex >= shuffledIndices.length) {
+          shuffledIndices = shuffleArray(allIndices);
+          currentIndex = 0;
+        }
+
+        // Immediately try next image
+        imgElement.classList.remove("fade-out");
+        nameElement.classList.remove("fade-out");
+        changeContent();
+      };
+
+      testImg.src = images[imageIndex];
+    }, 1000);
+  }
+
+  // Load first image immediately
+  window.addEventListener("DOMContentLoaded", changeContent);
+
+  // Change every 4 seconds
+  setInterval(changeContent, 8000);
+</script>

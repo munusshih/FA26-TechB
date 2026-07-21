@@ -1,0 +1,7 @@
+---
+const { class: extraClass = "" } = Astro.props;
+---
+
+<div class={`card ${extraClass}`} data-toggle-card data-expanded="false">
+  <slot />
+</div>
