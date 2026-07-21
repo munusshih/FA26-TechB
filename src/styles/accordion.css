@@ -1,84 +1,88 @@
 .accordion {
-  margin-bottom: 1rem;
-  padding: 0.5rem 0;
+  margin-bottom: 0;
+  border-top: 1px solid #fff;
+  padding: 0;
 }
 
 .accordion-button {
   all: unset;
-  position: relative;
+  display: grid;
+  grid-template-columns: 2.8rem 1fr 2.8rem;
   align-items: center;
   cursor: pointer;
+  box-sizing: border-box;
+  padding: clamp(1.2rem, 2vw, 2rem) 0;
   width: 100%;
-  font-weight: bold;
-  font-size: clamp(0.8rem, 1.5vw, 2rem);
-  @apply box-border flex;
 }
 
 .accordion-button::before {
-  display: inline-block;
-  transform: rotate(0deg);
-  transform-origin: center;
-  transition: transform 0.3s ease;
-  margin-right: 0.75em;
-  border-top: 0.7em solid transparent;
-  border-bottom: 0.7em solid transparent;
-  border-left: 1.2em solid #333;
-  width: 0;
-  height: 0;
-  content: "";
-}
-
-.accordion-button[aria-expanded="true"]::before {
-  transform: rotate(90deg);
-}
-
-.accordion-button:hover {
-  transform: translate(0, -2%);
-  transition: transform 0.3s ease;
-}
-
-.accordion-button[aria-expanded="true"]:hover::before {
-  transform: rotate(80deg);
-}
-
-.accordion-button[aria-expanded="false"]:hover::before {
-  transform: rotate(10deg);
+  display: grid;
+  place-items: center;
+  transition:
+    transform 180ms ease,
+    background 180ms ease,
+    color 180ms ease;
+  border: 1px solid #fff;
+  border-radius: 50%;
+  width: 2.15rem;
+  height: 2.15rem;
+  content: "+";
+  font-size: 1.4rem;
+  line-height: 1;
 }
 
 .accordion-button::after {
-  display: inline-block;
-  position: absolute;
-  top: 0;
-  left: 0;
-  transform-origin: left;
-  transition: width 0.3s ease 0.3s;
-  margin: 1rem 0;
-  width: 0px;
-  height: 100%;
+  width: 2.15rem;
   content: "";
 }
 
-.accordion-button[aria-expanded="false"]::after {
-  border-bottom: var(--border-dotted);
-  width: 100%;
+.accordion-button h2 {
+  grid-column: 2;
+  font-weight: 400;
+  font-size: clamp(2.25rem, 5.5vw, 6rem);
+  line-height: 0.95;
+  font-family: "Source Serif 4", serif;
+  letter-spacing: -0.045em;
+  text-align: center;
+}
+
+.accordion-button h2::before {
+  content: none;
+}
+
+.accordion-button:hover::before,
+.accordion-button:focus-visible::before {
+  background: #fff;
+  color: #000;
+}
+
+.accordion-button[aria-expanded="true"]::before {
+  transform: rotate(45deg);
 }
 
 .accordion-content {
   transition:
-    max-height 0.3s ease-out,
-    padding-top 0.3s ease-out;
-  padding-top: 0;
+    max-height 300ms ease,
+    padding 300ms ease;
   max-height: 0;
   overflow: hidden;
 }
 
 .accordion-content[aria-expanded="true"] {
-  @apply md:mb-20;
-  padding-top: 1rem;
+  padding: 0 0 clamp(4rem, 8vw, 8rem);
 }
 
-@media screen and (max-width: 767px) {
-  .accordion:last-of-type .accordion-content[aria-expanded="true"] .card {
-    border-bottom: 1px solid #000;
+@media (max-width: 767px) {
+  .accordion-button {
+    grid-template-columns: 2.3rem 1fr 2.3rem;
+  }
+
+  .accordion-button::before {
+    width: 1.85rem;
+    height: 1.85rem;
+  }
+
+  .accordion-button h2 {
+    font-size: clamp(2rem, 11vw, 4rem);
   }
 }

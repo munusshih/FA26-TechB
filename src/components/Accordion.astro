@@ -1,4 +1,6 @@
 ---
+import GanImage from "@/components/GanImage.astro";
+
 const {
   title = "Accordion Title",
   open = true,
@@ -22,6 +24,7 @@ const classes = `accordion ${noCutoff ? "" : "cutoff"}`.trim();
     class="accordion-content relative"
     aria-expanded={isOpen ? "true" : "false"}
   >
+    <GanImage />
     <slot />
   </div>
 </section>

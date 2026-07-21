@@ -1,0 +1,169 @@
+<figure class="gan-image" data-gan-image aria-hidden="true">
+  <canvas width="192" height="64"></canvas>
+</figure>
+
+<script>
+  const ML5_URL = "https://unpkg.com/ml5@0.12.2/dist/ml5.min.js";
+  const MODEL_URL =
+    "https://ml5js.github.io/ml5-examples/javascript/DCGAN/DCGAN_Random/model/face/manifest.json";
+
+  const loadMl5 = () => {
+    if (window.ml5?.DCGAN) return Promise.resolve(window.ml5);
+    if (window.__techBMl5Promise) return window.__techBMl5Promise;
+
+    window.__techBMl5Promise = new Promise((resolve, reject) => {
+      const script = document.createElement("script");
+      script.src = ML5_URL;
+      script.async = true;
+      script.onload = () => resolve(window.ml5);
+      script.onerror = () => reject(new Error("Unable to load ml5.js"));
+      document.head.appendChild(script);
+    });
+    return window.__techBMl5Promise;
+  };
+
+  const createManager = () => {
+    const targets = [];
+    const visibleTargets = new Set();
+    let modelPromise;
+    let busy = false;
+    let cursor = 0;
+
+    const loadModel = () => {
+      if (!modelPromise) {
+        modelPromise = loadMl5().then((ml5) => ml5.DCGAN(MODEL_URL));
+      }
+      return modelPromise;
+    };
+
+    const generate = async () => {
+      if (busy || visibleTargets.size === 0) return;
+      const pendingTargets = [...visibleTargets].filter(
+        (target) => target.dataset.ready !== "true",
+      );
+      if (pendingTargets.length === 0) return;
+      busy = true;
+
+      try {
+        const model = await loadModel();
+        const target = pendingTargets[cursor % pendingTargets.length];
+        cursor += 1;
+        const result = await new Promise((resolve, reject) => {
+          model.generate((error, output) =>
+            error ? reject(error) : resolve(output),
+          );
+        });
+
+        const canvas = target.querySelector("canvas");
+        const context = canvas?.getContext("2d");
+        if (!canvas || !context || !result?.raw) return;
+
+        const source = document.createElement("canvas");
+        source.width = 64;
+        source.height = 64;
+        source
+          .getContext("2d")
+          ?.putImageData(new ImageData(result.raw, 64, 64), 0, 0);
+
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        context.drawImage(source, 0, 0);
+        context.save();
+        context.translate(128, 0);
+        context.scale(-1, 1);
+        context.drawImage(source, 0, 0);
+        context.restore();
+        context.drawImage(source, 16, 0, 48, 64, 128, 0, 64, 64);
+        target.dataset.ready = "true";
+      } catch (error) {
+        console.warn("The browser GAN could not generate an image.", error);
+      } finally {
+        busy = false;
+        if (
+          [...visibleTargets].some((target) => target.dataset.ready !== "true")
+        ) {
+          window.setTimeout(generate, 350);
+        }
+      }
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) visibleTargets.add(entry.target);
+          else visibleTargets.delete(entry.target);
+        });
+        if (visibleTargets.size > 0) generate();
+      },
+      { rootMargin: "180px 0px" },
+    );
+
+    return {
+      register(target) {
+        if (targets.includes(target)) return;
+        targets.push(target);
+        observer.observe(target);
+      },
+    };
+  };
+
+  window.__techBGanManager ||= createManager();
+  document
+    .querySelectorAll("[data-gan-image]")
+    .forEach((target) => window.__techBGanManager.register(target));
+</script>
+
+<style>
+  .gan-image {
+    position: relative;
+    animation: gan-waiting 1.4s linear infinite;
+    margin: clamp(0.75rem, 1.5vw, 1.5rem);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    border-radius: clamp(1.5rem, 4vw, 4rem);
+    background:
+      linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.12),
+        transparent
+      ),
+      #111;
+    background-size: 200% 100%;
+    aspect-ratio: 3 / 1;
+    width: calc(100% - clamp(1.5rem, 3vw, 3rem));
+    overflow: hidden;
+  }
+
+  .gan-image[data-ready="true"] {
+    animation: none;
+  }
+
+  .gan-image canvas {
+    display: block;
+    transform: scale(1.16);
+    opacity: 0;
+    filter: blur(clamp(10px, 1.5vw, 22px)) saturate(1.35) contrast(1.08);
+    transition: opacity 700ms ease;
+    width: 100%;
+    height: 100%;
+  }
+
+  .gan-image[data-ready="true"] canvas {
+    opacity: 1;
+  }
+
+  @keyframes gan-waiting {
+    to {
+      background-position: -200% 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .gan-image {
+      animation: none;
+    }
+
+    .gan-image canvas {
+      transition: none;
+    }
+  }
+</style>

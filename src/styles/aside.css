@@ -1,11 +1,56 @@
 aside {
-  @apply m-[var(--margin)] border-y-5;
+  margin-block: 2rem 5rem;
+  border-top: 1px solid #fff;
+  border-bottom: 1px solid #fff;
 }
 
 aside > div {
-  @apply grid gap-4 py-[var(--padding)] sm:grid-cols-2 md:grid-cols-4;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  padding: 0;
+}
+
+aside > div > div {
+  border-right: 1px solid rgba(255, 255, 255, 0.45);
+  padding: 1rem;
+}
+
+aside > div > div:last-child {
+  border-right: 0;
 }
 
 aside h3 {
-  @apply mb-2;
+  display: inline-block;
+  margin-bottom: 1rem;
+  border: 1px solid #fff;
+  border-radius: 999px;
+  padding: 0.35rem 0.65rem;
+  font-weight: 500;
+  font-size: 0.8rem;
+}
+
+aside ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+aside li {
+  padding-block: 0.15rem;
+}
+
+@media (max-width: 767px) {
+  aside > div {
+    grid-template-columns: 1fr;
+  }
+
+  aside > div > div {
+    border-right: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.45);
+  }
+
+  aside > div > div:last-child {
+    border-bottom: 0;
+  }
 }

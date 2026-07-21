@@ -1,7 +1,27 @@
 .weekly {
-  @apply flex flex-col gap-4 border bg-white from-transparent px-4 py-4 even:border-t-0 md:bg-gradient-to-b md:p-8 md:[border:var(--border-dotted)] md:[even:mt-0] md:even:border-t md:even:border-l-0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  backdrop-filter: blur(8px);
+  margin: -1px 0 0 -1px;
+  border: 1px solid rgba(255, 255, 255, 0.55) !important;
+  border-radius: 0.85rem;
+  background: rgba(0, 0, 0, 0.38) !important;
+  padding: clamp(1.25rem, 3vw, 3rem);
+  color: #fff;
+}
+
+.weekly > .heading-2:first-child {
+  margin-bottom: 1rem;
+  font-weight: 500;
+  font-size: clamp(1.5rem, 2.5vw, 2.6rem);
+  line-height: 1.05;
+}
+
+.weekly > .heading-2:first-child::before {
+  content: none;
 }
 
 .two-column:not(:first-child) {
-  margin-top: -1px;
+  margin-top: 1rem;
 }

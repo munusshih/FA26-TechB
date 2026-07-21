@@ -10,19 +10,15 @@ import Module3 from "../doc/Module3.astro";
 import Grading from "../doc/Grading.astro";
 import Policies from "../doc/Policies.astro";
 import Resources from "../doc/Resources.astro";
-import Sketch from "../components/Sketch.astro";
 import Footer from "../components/Footer.astro";
+import SiteChat from "../components/SiteChat.astro";
 import SkipToMain from "@/components/SkipToMain.astro";
 import "../styles/global.css";
-import { selfieUrl } from "astro-selfie";
-const screenshotUrl = selfieUrl(Astro);
 ---
 
-<meta property="og:image" content={screenshotUrl.href} />
 <Layout>
   <SkipToMain />
   <Header />
-  <Sketch />
   <main class="mx-auto">
     <Info />
     <Description />
@@ -36,6 +32,7 @@ const screenshotUrl = selfieUrl(Astro);
     <Resources />
   </main>
   <Footer />
+  <SiteChat />
 </Layout>
 <script src="../scripts/glitter-cursor.js"></script>
-<script srct="../scripts/external-links.js"></script>
+<script src="../scripts/external-links.js"></script>

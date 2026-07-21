@@ -1,70 +1,45 @@
-details {
-  border-top: var(--border-dotted);
-  border-bottom: var(--border-dotted);
-}
-
-details:first-child {
-  border-top: none;
-}
-
-details[open] {
-  border-bottom: none;
-}
-
 .card {
-  @apply h-auto w-full overflow-hidden border bg-white p-4 transition-all duration-300 lg:[&:nth-child(3n)]:border-l-0 lg:[&:nth-child(3n+2)]:border-l-0 [&:nth-child(n+2)]:border-t-0 lg:[&:nth-child(n+2)]:border-t lg:[&:nth-child(n+4)]:border-t-0;
-}
-
-/* When searching, ensure all visible cards have full borders */
-.card.search-visible {
-  border-top: 1px solid;
-  border-right: 1px solid;
-  border-bottom: 1px solid;
-  border-left: 1px solid;
-}
-
-/* When searching, ensure all visible cards have full borders */
-.card.search-visible {
-  @apply border-t border-r border-b border-l;
+  backdrop-filter: blur(8px);
+  margin: -1px 0 0 -1px;
+  border: 1px solid rgba(255, 255, 255, 0.55) !important;
+  border-radius: 0.85rem;
+  background: rgba(0, 0, 0, 0.38) !important;
+  padding: clamp(1.25rem, 2.4vw, 2.5rem);
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+  color: #fff;
 }
 
 .card > h3 {
-  @apply mb-4;
+  margin-bottom: 1.5rem;
+  font-weight: 500;
+  font-size: clamp(1.35rem, 2vw, 2rem);
+  line-height: 1.05;
 }
 
 .card > ul,
 .two-column ul {
-  @apply flex list-none flex-col gap-2;
-}
-
-.card > ul > li::before,
-.two-column ul > li::before {
-  transform: translateY(-0.1rem);
-  margin-bottom: 0.5rem;
-  content: "+";
-  color: inherit;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 .card > ul > li,
 .two-column ul > li {
-  @apply flex items-start gap-2;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
 }
 
-.multiline-truncate {
-  position: relative;
+.card > ul > li::before,
+.two-column ul > li::before {
+  content: "↳";
 }
 
-.multiline-truncate[data-expanded="false"]::after {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(255, 255, 255, 0) 0%,
-    rgb(255, 255, 255) 100%
-  );
-  width: 100%;
-  height: 20%;
-  pointer-events: none; /* so it doesn't block clicks */
-  content: "";
+.card p + p {
+  margin-top: 1rem;
 }

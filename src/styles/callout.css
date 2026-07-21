@@ -1,26 +1,15 @@
-.bracket-border {
-  position: relative;
-  width: max-content;
+.callout {
+  display: flex;
+  flex-wrap: wrap;
+  align-self: flex-start;
+  gap: 0.35rem 1rem;
+  border: 1px solid #fff;
+  border-radius: 999px;
+  padding: 0.55rem 0.85rem;
+  width: auto;
+  font-weight: 500;
 }
-.bracket-border:before {
-  position: absolute;
-  top: -10px;
-  bottom: -10px;
-  left: -5px;
-  border-top: 3px solid #666;
-  border-bottom: 3px solid #666;
-  border-left: 3px solid #666;
-  padding: 5px;
-  content: " ";
-}
-.bracket-border:after {
-  position: absolute;
-  top: -10px;
-  right: -5px;
-  bottom: -10px;
-  border-top: 3px solid #666;
-  border-right: 3px solid #666;
-  border-bottom: 3px solid #666;
-  padding: 5px;
-  content: " ";
+
+.callout p {
+  font-size: 0.95rem;
 }

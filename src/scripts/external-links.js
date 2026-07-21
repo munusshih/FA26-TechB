@@ -1,3 +1,4 @@
+/* global URL */
 document.addEventListener("DOMContentLoaded", () => {
   const siteHost = window.location.hostname;
 
