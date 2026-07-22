@@ -1,0 +1,351 @@
+---
+import Nav from "./Nav.astro";
+import SiteChat from "./SiteChat.astro";
+import MLWidgets from "./MLWidgets.astro";
+---
+
+<aside
+  class="utility-panel"
+  data-utility-panel
+  data-active-panel="chat"
+  aria-label="Course tools"
+>
+  <header class="utility-switcher">
+    <div class="utility-modes" role="tablist" aria-label="Choose a panel">
+      <button
+        class="utility-mode"
+        type="button"
+        role="tab"
+        data-panel-mode="nav"
+        aria-controls="course-navigation-panel"
+        aria-selected="false"
+        aria-label="Show course navigation"
+      >
+        <span class="utility-mode-icon utility-mode-nav" aria-hidden="true"
+          >TB</span
+        >
+      </button>
+      <button
+        class="utility-mode"
+        type="button"
+        role="tab"
+        data-panel-mode="lab"
+        aria-controls="course-ml-panel"
+        aria-selected="false"
+        aria-label="Show machine learning sketches"
+      >
+        <span class="utility-mode-icon utility-mode-lab" aria-hidden="true"
+          >ML</span
+        >
+      </button>
+      <button
+        class="utility-mode"
+        type="button"
+        role="tab"
+        data-panel-mode="chat"
+        aria-controls="course-chat-panel"
+        aria-selected="true"
+        aria-label="Show Eliza chatbot"
+      >
+        <span class="utility-mode-icon utility-mode-chat" aria-hidden="true"
+        ></span>
+      </button>
+    </div>
+    <button
+      class="utility-collapse"
+      type="button"
+      data-panel-collapse
+      aria-expanded="true"
+      aria-label="Collapse course tools"
+    >
+      <span aria-hidden="true">→</span>
+    </button>
+  </header>
+
+  <div class="utility-stage">
+    <div
+      id="course-navigation-panel"
+      class="utility-view"
+      data-panel-view="nav"
+      role="tabpanel"
+      hidden
+    >
+      <Nav />
+    </div>
+    <div
+      id="course-chat-panel"
+      class="utility-view"
+      data-panel-view="chat"
+      role="tabpanel"
+    >
+      <SiteChat />
+    </div>
+    <div
+      id="course-ml-panel"
+      class="utility-view"
+      data-panel-view="lab"
+      role="tabpanel"
+      hidden
+    >
+      <MLWidgets />
+    </div>
+  </div>
+</aside>
+
+<script>
+  const PANEL_KEY = "tech-b-utility-panel";
+
+  document.querySelectorAll("[data-utility-panel]").forEach((panel) => {
+    if (panel.dataset.initialized === "true") return;
+    panel.dataset.initialized = "true";
+    const shell = panel.closest("[data-site-shell]");
+    const modeButtons = [...panel.querySelectorAll("[data-panel-mode]")];
+    const views = [...panel.querySelectorAll("[data-panel-view]")];
+    const collapseButton = panel.querySelector("[data-panel-collapse]");
+
+    const saveState = () => {
+      try {
+        localStorage.setItem(
+          PANEL_KEY,
+          JSON.stringify({
+            active: panel.dataset.activePanel,
+            collapsed: panel.dataset.collapsed === "true",
+          }),
+        );
+      } catch {
+        // The panel remains functional when storage is unavailable.
+      }
+    };
+
+    const setCollapsed = (collapsed) => {
+      panel.dataset.collapsed = String(collapsed);
+      if (shell) shell.dataset.panelCollapsed = String(collapsed);
+      collapseButton?.setAttribute("aria-expanded", String(!collapsed));
+      collapseButton?.setAttribute(
+        "aria-label",
+        collapsed ? "Expand course tools" : "Collapse course tools",
+      );
+      const icon = collapseButton?.querySelector("span");
+      if (icon) icon.textContent = collapsed ? "←" : "→";
+    };
+
+    const setActive = (name) => {
+      panel.dataset.activePanel = name;
+      modeButtons.forEach((button) => {
+        const active = button.dataset.panelMode === name;
+        button.setAttribute("aria-selected", String(active));
+      });
+      views.forEach((view) => {
+        view.hidden = view.dataset.panelView !== name;
+      });
+    };
+
+    let state = { active: "chat", collapsed: false };
+    try {
+      state = { ...state, ...JSON.parse(localStorage.getItem(PANEL_KEY)) };
+    } catch {
+      // Use the default state.
+    }
+    setActive(
+      ["nav", "chat", "lab"].includes(state.active) ? state.active : "chat",
+    );
+    setCollapsed(Boolean(state.collapsed));
+
+    modeButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        setActive(button.dataset.panelMode);
+        if (panel.dataset.collapsed === "true") setCollapsed(false);
+        saveState();
+      });
+    });
+
+    collapseButton?.addEventListener("click", () => {
+      setCollapsed(panel.dataset.collapsed !== "true");
+      saveState();
+    });
+  });
+</script>
+
+<style is:global>
+  .utility-panel {
+    display: grid;
+    position: sticky;
+    top: 0;
+    grid-template-rows: auto 1fr;
+    z-index: 20;
+    margin: 0;
+    border-top: 0;
+    border-bottom: 0;
+    border-left: 1px solid rgba(255, 255, 255, 0.18);
+    background: rgba(12, 9, 8, 0.96);
+    width: 100%;
+    height: 100svh;
+    overflow: hidden;
+    color: #fff;
+  }
+
+  .utility-switcher {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.4rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+    background: rgba(12, 9, 8, 0.96) !important;
+    padding: 0.55rem;
+  }
+
+  .utility-modes {
+    display: flex;
+    gap: 0.35rem;
+  }
+
+  .utility-mode,
+  .utility-collapse {
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    border: 1px solid transparent;
+    border-radius: 50%;
+    background: transparent;
+    padding: 0;
+    width: 2.1rem;
+    height: 2.1rem;
+  }
+
+  .utility-mode:hover,
+  .utility-mode:focus-visible,
+  .utility-mode[aria-selected="true"] {
+    border-color: rgba(255, 255, 255, 0.62);
+    background: rgba(255, 255, 255, 0.09);
+  }
+
+  .utility-mode-icon {
+    display: grid;
+    place-items: center;
+    box-shadow: inset 0 0 0.65rem rgba(255, 255, 255, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.32);
+    border-radius: 50%;
+    width: 1.65rem;
+    height: 1.65rem;
+  }
+
+  .utility-mode-nav {
+    background: #181818;
+    font-size: 0.5rem;
+    font-family: Arial, sans-serif;
+    letter-spacing: 0.04em;
+  }
+
+  .utility-mode-chat {
+    background:
+      radial-gradient(circle at 35% 30%, #ffe3cf 0 12%, transparent 35%),
+      radial-gradient(circle at 70% 65%, #d98568 0 12%, transparent 42%),
+      conic-gradient(from 40deg, #5d2f37, #e6a27e, #8c647a, #5d2f37);
+  }
+
+  .utility-mode-lab {
+    background: #201d2e;
+    color: #cfc5ff;
+    font-size: 0.48rem;
+    font-family: Arial, sans-serif;
+    letter-spacing: 0.04em;
+  }
+
+  .utility-collapse {
+    border-color: rgba(255, 255, 255, 0.28);
+    width: 1.65rem;
+    height: 1.65rem;
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 0.72rem;
+  }
+
+  .utility-collapse:hover,
+  .utility-collapse:focus-visible {
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+  .utility-stage {
+    display: block;
+    padding: 0;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .utility-view {
+    border: 0;
+    padding: 0;
+    height: 100%;
+    min-height: 0;
+  }
+
+  .utility-view[hidden] {
+    display: none;
+  }
+
+  .utility-panel[data-collapsed="true"] {
+    grid-template-rows: 1fr;
+  }
+
+  .utility-panel[data-collapsed="true"] .utility-switcher,
+  .utility-panel[data-collapsed="true"] .utility-modes {
+    flex-direction: column;
+  }
+
+  .utility-panel[data-collapsed="true"] .utility-switcher {
+    justify-content: flex-start;
+    border-bottom: 0;
+    height: 100%;
+  }
+
+  .utility-panel[data-collapsed="true"] .utility-stage {
+    display: none;
+  }
+
+  @media (max-width: 1280px) {
+    .utility-panel,
+    .utility-panel[data-collapsed="true"] {
+      position: fixed;
+      top: auto;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      grid-template-rows: 1fr auto;
+      box-shadow: 0 -1rem 3rem rgba(0, 0, 0, 0.28);
+      border-top: 0;
+      border-left: 0;
+      width: 100%;
+      height: min(56svh, 34rem);
+    }
+
+    .utility-stage {
+      grid-row: 1;
+    }
+
+    .utility-switcher {
+      grid-row: 2;
+      gap: 0;
+      border: 0;
+      padding: 0.42rem 0.6rem;
+    }
+
+    .utility-modes {
+      gap: 0.2rem;
+    }
+
+    .utility-panel[data-collapsed="true"] {
+      display: block;
+      box-shadow: none;
+      height: 3.15rem;
+    }
+
+    .utility-panel[data-collapsed="true"] .utility-switcher,
+    .utility-panel[data-collapsed="true"] .utility-modes {
+      flex-direction: row;
+    }
+
+    .utility-panel[data-collapsed="true"] .utility-switcher {
+      justify-content: space-between;
+      height: auto;
+    }
+  }
+</style>

@@ -46,6 +46,24 @@ body {
   color: #fff;
 }
 
+.site-shell {
+  --utility-column: clamp(17rem, 20vw, 20rem);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--utility-column);
+  align-items: start;
+  transition: grid-template-columns 280ms ease;
+  width: 100%;
+  min-height: 100svh;
+}
+
+.site-shell[data-panel-collapsed="true"] {
+  --utility-column: 3.75rem;
+}
+
+.site-content {
+  min-width: 0;
+}
+
 h1,
 h2,
 h3,
@@ -273,6 +291,17 @@ td {
 
 main {
   padding-bottom: clamp(4rem, 8vw, 8rem);
+}
+
+@media (max-width: 1280px) {
+  .site-shell,
+  .site-shell[data-panel-collapsed="true"] {
+    display: block;
+  }
+
+  .site-content {
+    padding-bottom: 3.15rem;
+  }
 }
 
 footer {

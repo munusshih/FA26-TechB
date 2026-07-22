@@ -1,5 +1,17 @@
-<figure class="gan-image" data-gan-image aria-hidden="true">
-  <canvas width="192" height="64"></canvas>
+---
+const { variant = "inline", storageKey = "" } = Astro.props;
+const isTitle = variant === "title";
+---
+
+<figure
+  class:list={["gan-image", { "gan-image-title": isTitle }]}
+  data-gan-image
+  data-variant={variant}
+  data-storage-key={storageKey || undefined}
+  aria-hidden={isTitle ? undefined : "true"}
+  aria-label={isTitle ? "Locally AI-generated title background" : undefined}
+>
+  <canvas width="192" height={isTitle ? 80 : 64}></canvas>
 </figure>
 
 <script>
@@ -29,6 +41,95 @@
     let busy = false;
     let cursor = 0;
 
+    const storageId = (target) => {
+      const key = target.dataset.storageKey;
+      return key ? `tech-b-gan-${key}-v2` : "";
+    };
+
+    const saveTarget = (target) => {
+      const key = storageId(target);
+      const canvas = target.querySelector("canvas");
+      if (!key || !canvas) return;
+      try {
+        localStorage.setItem(key, canvas.toDataURL("image/webp", 0.82));
+      } catch {
+        // Generation still works if browser storage is full or unavailable.
+      }
+    };
+
+    const restoreTarget = (target) => {
+      const key = storageId(target);
+      const canvas = target.querySelector("canvas");
+      if (!key || !canvas) return false;
+      let saved;
+      try {
+        saved = localStorage.getItem(key);
+      } catch {
+        return false;
+      }
+      if (!saved) return false;
+
+      target.dataset.ready = "true";
+      const image = new Image();
+      image.onload = () => {
+        canvas
+          .getContext("2d")
+          ?.drawImage(image, 0, 0, canvas.width, canvas.height);
+      };
+      image.onerror = () => {
+        delete target.dataset.ready;
+        generate();
+      };
+      image.src = saved;
+      return true;
+    };
+
+    const paintOutput = (target, raw) => {
+      const canvas = target.querySelector("canvas");
+      const context = canvas?.getContext("2d");
+      if (!canvas || !context || !raw) return false;
+
+      const source = document.createElement("canvas");
+      source.width = 64;
+      source.height = 64;
+      source.getContext("2d")?.putImageData(new ImageData(raw, 64, 64), 0, 0);
+      context.clearRect(0, 0, canvas.width, canvas.height);
+
+      if (target.dataset.variant === "title") {
+        context.fillStyle = "#08080b";
+        context.fillRect(0, 0, canvas.width, canvas.height);
+        const panelWidth = canvas.width / 3;
+        context.imageSmoothingEnabled = true;
+        context.imageSmoothingQuality = "high";
+        context.drawImage(source, 0, 0, panelWidth, canvas.height);
+        context.save();
+        context.translate(panelWidth * 2, 0);
+        context.scale(-1, 1);
+        context.drawImage(source, 0, 0, panelWidth, canvas.height);
+        context.restore();
+        context.drawImage(
+          source,
+          8,
+          0,
+          48,
+          64,
+          panelWidth * 2,
+          0,
+          panelWidth,
+          canvas.height,
+        );
+      } else {
+        context.drawImage(source, 0, 0);
+        context.save();
+        context.translate(128, 0);
+        context.scale(-1, 1);
+        context.drawImage(source, 0, 0);
+        context.restore();
+        context.drawImage(source, 16, 0, 48, 64, 128, 0, 64, 64);
+      }
+      return true;
+    };
+
     const loadModel = () => {
       if (!modelPromise) {
         modelPromise = loadMl5().then((ml5) => ml5.DCGAN(MODEL_URL));
@@ -54,26 +155,10 @@
           );
         });
 
-        const canvas = target.querySelector("canvas");
-        const context = canvas?.getContext("2d");
-        if (!canvas || !context || !result?.raw) return;
-
-        const source = document.createElement("canvas");
-        source.width = 64;
-        source.height = 64;
-        source
-          .getContext("2d")
-          ?.putImageData(new ImageData(result.raw, 64, 64), 0, 0);
-
-        context.clearRect(0, 0, canvas.width, canvas.height);
-        context.drawImage(source, 0, 0);
-        context.save();
-        context.translate(128, 0);
-        context.scale(-1, 1);
-        context.drawImage(source, 0, 0);
-        context.restore();
-        context.drawImage(source, 16, 0, 48, 64, 128, 0, 64, 64);
-        target.dataset.ready = "true";
+        if (paintOutput(target, result?.raw)) {
+          target.dataset.ready = "true";
+          saveTarget(target);
+        }
       } catch (error) {
         console.warn("The browser GAN could not generate an image.", error);
       } finally {
@@ -101,6 +186,7 @@
       register(target) {
         if (targets.includes(target)) return;
         targets.push(target);
+        restoreTarget(target);
         observer.observe(target);
       },
     };
@@ -149,6 +235,26 @@
 
   .gan-image[data-ready="true"] canvas {
     opacity: 1;
+  }
+
+  .gan-image-title {
+    position: absolute;
+    animation: gan-waiting 1.4s linear infinite;
+    margin: 0;
+    inset: 0;
+    border: 0;
+    border-radius: inherit;
+    width: 100%;
+    height: 100%;
+  }
+
+  .gan-image-title canvas {
+    transform: scale(1.14);
+    filter: blur(clamp(14px, 2vw, 28px)) brightness(0.54) saturate(1.18)
+      contrast(1.04);
+    image-rendering: auto;
+    width: 100%;
+    height: 100%;
   }
 
   @keyframes gan-waiting {

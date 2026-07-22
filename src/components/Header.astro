@@ -1,6 +1,6 @@
 ---
-import Nav from "../components/Nav.astro";
 import AISketch from "../components/AISketch.astro";
+import GanImage from "../components/GanImage.astro";
 
 const {
   programUrl = "https://www.pratt.edu/design/graduate-communications-design/",
@@ -9,7 +9,7 @@ const {
 } = Astro.props;
 ---
 
-<header class="course-hero">
+<header id="top" class="course-hero">
   <div class="course-meta-bar cutoff">
     <span>{courseCode}</span>
     <a href={programUrl}>{programLabel}</a>
@@ -17,13 +17,10 @@ const {
   </div>
 
   <div class="course-title-wrap cutoff">
+    <GanImage variant="title" />
     <h1 class="sr-only">Graduate Studio: Technology B</h1>
     <div class="title-studio" aria-hidden="true">Graduate Studio:</div>
     <AISketch />
     <div class="title-course" aria-hidden="true">Technology B</div>
-  </div>
-
-  <div class="course-nav-wrap cutoff">
-    <Nav />
   </div>
 </header>

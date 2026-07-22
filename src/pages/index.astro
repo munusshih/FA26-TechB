@@ -11,28 +11,32 @@ import Grading from "../doc/Grading.astro";
 import Policies from "../doc/Policies.astro";
 import Resources from "../doc/Resources.astro";
 import Footer from "../components/Footer.astro";
-import SiteChat from "../components/SiteChat.astro";
+import UtilityPanel from "../components/UtilityPanel.astro";
 import SkipToMain from "@/components/SkipToMain.astro";
 import "../styles/global.css";
 ---
 
 <Layout>
   <SkipToMain />
-  <Header />
-  <main class="mx-auto">
-    <Info />
-    <Description />
-    <Community />
+  <div class="site-shell" data-site-shell>
+    <div class="site-content">
+      <Header />
+      <main class="mx-auto">
+        <Info />
+        <Description />
+        <Community />
 
-    <Module1 />
-    <Module2 />
-    <Module3 />
-    <Grading />
-    <Policies />
-    <Resources />
-  </main>
-  <Footer />
-  <SiteChat />
+        <Module1 />
+        <Module2 />
+        <Module3 />
+        <Grading />
+        <Policies />
+        <Resources />
+      </main>
+      <Footer />
+    </div>
+    <UtilityPanel />
+  </div>
 </Layout>
 <script src="../scripts/glitter-cursor.js"></script>
 <script src="../scripts/external-links.js"></script>
