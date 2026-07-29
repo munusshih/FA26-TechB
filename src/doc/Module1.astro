@@ -2,6 +2,7 @@
 import Accordion from "@/components/Accordion.astro";
 import TwoColumn from "@/components/TwoColumn.astro";
 import Callout from "@/components/Callout.astro";
+import ModuleDesk from "@/components/ModuleDesk.astro";
 ---
 
 <Accordion title="Module 1: Crack Inside the Black Box" open>
@@ -73,4 +74,39 @@ import Callout from "@/components/Callout.astro";
       </p>
     </div>
   </TwoColumn>
+  <ModuleDesk
+    readings={[
+      {
+        title: "Alan Turing, “Computing Machinery and Intelligence”",
+        url: "https://academic.oup.com/mind/article/LIX/236/433/986238",
+        note: "The imitation game, objections, and learning machines.",
+      },
+      {
+        title: "Joseph Weizenbaum, “ELIZA”",
+        url: "https://findingeliza.org/",
+        note: "Read the program as a script, not a personality.",
+      },
+      {
+        title: "John Searle, “Minds, Brains, and Programs”",
+        note: "The Chinese Room and the limits of formal symbol manipulation.",
+      },
+    ]}
+    tools={[
+      {
+        title: "Finding ELIZA",
+        url: "https://findingeliza.org/",
+        note: "Recovered source, history, and runnable material.",
+      },
+      {
+        title: "Twine",
+        url: "https://twinery.org/",
+        note: "Branching rules and conversational prototypes.",
+      },
+      {
+        title: "p5.js",
+        url: "https://p5js.org/",
+        note: "Sketch procedural systems directly in the browser.",
+      },
+    ]}
+  />
 </Accordion>

@@ -1,11 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
-  <foreignObject width="32" height="32">
-    <div xmlns="http://www.w3.org/1999/xhtml" style="
-      font-size: 32px;
-      text-align: center;
-      font-family: 'Boldonse', system-ui;
-      font-weight: 700;
-      line-height: 1;
-    ">↳</div>
-  </foreignObject>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <style>
+    :root { color: #075fd1; }
+    .paper { fill: #f3ead7; }
+    .ink { stroke: currentColor; }
+  </style>
+  <rect class="paper" width="64" height="64"/>
+  <g class="ink" fill="none" stroke-width="1.5">
+    <circle cx="32" cy="32" r="13"/>
+    <circle cx="32" cy="32" r="3" fill="currentColor"/>
+    <path d="M32 5v54M5 32h54M13 13l38 38M51 13 13 51"/>
+    <path d="M32 2l3 6h-6zM62 32l-6 3v-6zM32 62l-3-6h6zM2 32l6-3v6z" fill="currentColor"/>
+  </g>
 </svg>

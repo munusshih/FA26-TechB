@@ -1,6 +1,5 @@
 ---
-import AISketch from "../components/AISketch.astro";
-import GanImage from "../components/GanImage.astro";
+import EnlightenmentDiagram from "./EnlightenmentDiagram.astro";
 
 const {
   programUrl = "https://www.pratt.edu/design/graduate-communications-design/",
@@ -17,10 +16,9 @@ const {
   </div>
 
   <div class="course-title-wrap cutoff">
-    <GanImage variant="title" />
+    <EnlightenmentDiagram />
     <h1 class="sr-only">Graduate Studio: Technology B</h1>
     <div class="title-studio" aria-hidden="true">Graduate Studio:</div>
-    <AISketch />
     <div class="title-course" aria-hidden="true">Technology B</div>
   </div>
 </header>

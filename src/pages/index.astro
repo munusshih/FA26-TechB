@@ -11,7 +11,6 @@ import Grading from "../doc/Grading.astro";
 import Policies from "../doc/Policies.astro";
 import Resources from "../doc/Resources.astro";
 import Footer from "../components/Footer.astro";
-import UtilityPanel from "../components/UtilityPanel.astro";
 import SkipToMain from "@/components/SkipToMain.astro";
 import "../styles/global.css";
 ---
@@ -21,7 +20,7 @@ import "../styles/global.css";
   <div class="site-shell" data-site-shell>
     <div class="site-content">
       <Header />
-      <main class="mx-auto">
+      <main id="main-content" class="mx-auto" tabindex="-1">
         <Info />
         <Description />
         <Community />
@@ -35,8 +34,7 @@ import "../styles/global.css";
       </main>
       <Footer />
     </div>
-    <UtilityPanel />
   </div>
 </Layout>
-<script src="../scripts/glitter-cursor.js"></script>
+<script src="../scripts/line-animations.js"></script>
 <script src="../scripts/external-links.js"></script>

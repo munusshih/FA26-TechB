@@ -1,63 +1,33 @@
 .accordion {
   margin-bottom: 0;
-  border-top: 1px solid #fff;
+  border-top: 1px solid var(--ink);
   padding: 0;
 }
 
 .accordion-button {
   all: unset;
   display: grid;
-  grid-template-columns: 2.8rem 1fr 2.8rem;
+  grid-template-columns: 1fr;
   align-items: center;
   cursor: pointer;
   box-sizing: border-box;
-  padding: clamp(1.2rem, 2vw, 2rem) 0;
+  padding: var(--space-3) 0;
   width: 100%;
 }
 
-.accordion-button::before {
-  display: grid;
-  place-items: center;
-  transition:
-    transform 180ms ease,
-    background 180ms ease,
-    color 180ms ease;
-  border: 1px solid #fff;
-  border-radius: 50%;
-  width: 2.15rem;
-  height: 2.15rem;
-  content: "+";
-  font-size: 1.4rem;
-  line-height: 1;
-}
-
-.accordion-button::after {
-  width: 2.15rem;
-  content: "";
-}
-
 .accordion-button h2 {
-  grid-column: 2;
-  font-weight: 400;
-  font-size: clamp(2.25rem, 5.5vw, 6rem);
-  line-height: 0.95;
-  font-family: "Source Serif 4", serif;
+  grid-column: 1;
+  font-weight: var(--title-weight);
+  font-style: var(--title-style);
+  font-size: var(--title-section);
+  line-height: var(--title-leading);
+  font-family: var(--font-display);
   letter-spacing: -0.045em;
   text-align: center;
 }
 
 .accordion-button h2::before {
   content: none;
-}
-
-.accordion-button:hover::before,
-.accordion-button:focus-visible::before {
-  background: #fff;
-  color: #000;
-}
-
-.accordion-button[aria-expanded="true"]::before {
-  transform: rotate(45deg);
 }
 
 .accordion-content {
@@ -68,21 +38,16 @@
   overflow: hidden;
 }
 
-.accordion-content[aria-expanded="true"] {
-  padding: 0 0 clamp(4rem, 8vw, 8rem);
+.accordion-content[data-expanded="true"] {
+  padding: 0 0 var(--space-section);
 }
 
 @media (max-width: 767px) {
   .accordion-button {
-    grid-template-columns: 2.3rem 1fr 2.3rem;
-  }
-
-  .accordion-button::before {
-    width: 1.85rem;
-    height: 1.85rem;
+    grid-template-columns: 1fr;
   }
 
   .accordion-button h2 {
-    font-size: clamp(2rem, 11vw, 4rem);
+    font-size: var(--title-section-mobile);
   }
 }

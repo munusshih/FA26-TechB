@@ -1,351 +1,303 @@
 ---
-import Nav from "./Nav.astro";
 import SiteChat from "./SiteChat.astro";
-import MLWidgets from "./MLWidgets.astro";
 ---
 
 <aside
-  class="utility-panel"
-  data-utility-panel
-  data-active-panel="chat"
-  aria-label="Course tools"
+  class="eliza-window"
+  data-eliza-window
+  data-collapsed="true"
+  aria-label="ELIZA chatbot window"
 >
-  <header class="utility-switcher">
-    <div class="utility-modes" role="tablist" aria-label="Choose a panel">
-      <button
-        class="utility-mode"
-        type="button"
-        role="tab"
-        data-panel-mode="nav"
-        aria-controls="course-navigation-panel"
-        aria-selected="false"
-        aria-label="Show course navigation"
-      >
-        <span class="utility-mode-icon utility-mode-nav" aria-hidden="true"
-          >TB</span
-        >
-      </button>
-      <button
-        class="utility-mode"
-        type="button"
-        role="tab"
-        data-panel-mode="lab"
-        aria-controls="course-ml-panel"
-        aria-selected="false"
-        aria-label="Show machine learning sketches"
-      >
-        <span class="utility-mode-icon utility-mode-lab" aria-hidden="true"
-          >ML</span
-        >
-      </button>
-      <button
-        class="utility-mode"
-        type="button"
-        role="tab"
-        data-panel-mode="chat"
-        aria-controls="course-chat-panel"
-        aria-selected="true"
-        aria-label="Show Eliza chatbot"
-      >
-        <span class="utility-mode-icon utility-mode-chat" aria-hidden="true"
-        ></span>
-      </button>
-    </div>
+  <header class="eliza-window-bar" data-eliza-drag-handle>
     <button
-      class="utility-collapse"
+      class="eliza-window-identity"
       type="button"
-      data-panel-collapse
-      aria-expanded="true"
-      aria-label="Collapse course tools"
+      data-eliza-toggle
+      aria-expanded="false"
+      aria-controls="eliza-window-content"
     >
-      <span aria-hidden="true">→</span>
+      <span class="chat-avatar chat-avatar-large" aria-hidden="true"></span>
+      <span>
+        <strong>ELIZA</strong>
+        <small data-eliza-window-status>Open conversation</small>
+      </span>
     </button>
+    <div class="eliza-window-actions">
+      <button
+        type="button"
+        data-eliza-reset-position
+        aria-label="Reset ELIZA window position"
+        title="Reset window position">⌾</button
+      >
+      <button
+        type="button"
+        data-eliza-toggle
+        aria-expanded="false"
+        aria-controls="eliza-window-content"
+        aria-label="Open ELIZA"
+      >
+        <span aria-hidden="true">↑</span>
+      </button>
+    </div>
   </header>
-
-  <div class="utility-stage">
-    <div
-      id="course-navigation-panel"
-      class="utility-view"
-      data-panel-view="nav"
-      role="tabpanel"
-      hidden
-    >
-      <Nav />
-    </div>
-    <div
-      id="course-chat-panel"
-      class="utility-view"
-      data-panel-view="chat"
-      role="tabpanel"
-    >
-      <SiteChat />
-    </div>
-    <div
-      id="course-ml-panel"
-      class="utility-view"
-      data-panel-view="lab"
-      role="tabpanel"
-      hidden
-    >
-      <MLWidgets />
-    </div>
+  <div id="eliza-window-content" class="eliza-window-content">
+    <SiteChat />
   </div>
 </aside>
 
 <script>
-  const PANEL_KEY = "tech-b-utility-panel";
+  const STORAGE_KEY = "tech-b-eliza-window-v1";
 
-  document.querySelectorAll("[data-utility-panel]").forEach((panel) => {
-    if (panel.dataset.initialized === "true") return;
-    panel.dataset.initialized = "true";
-    const shell = panel.closest("[data-site-shell]");
-    const modeButtons = [...panel.querySelectorAll("[data-panel-mode]")];
-    const views = [...panel.querySelectorAll("[data-panel-view]")];
-    const collapseButton = panel.querySelector("[data-panel-collapse]");
+  document.querySelectorAll("[data-eliza-window]").forEach((windowElement) => {
+    if (windowElement.dataset.initialized === "true") return;
+    windowElement.dataset.initialized = "true";
 
-    const saveState = () => {
+    const toggles = [...windowElement.querySelectorAll("[data-eliza-toggle]")];
+    const dragHandle = windowElement.querySelector("[data-eliza-drag-handle]");
+    const resetButton = windowElement.querySelector(
+      "[data-eliza-reset-position]",
+    );
+    let drag = null;
+
+    const save = () => {
       try {
         localStorage.setItem(
-          PANEL_KEY,
+          STORAGE_KEY,
           JSON.stringify({
-            active: panel.dataset.activePanel,
-            collapsed: panel.dataset.collapsed === "true",
+            collapsed: windowElement.dataset.collapsed === "true",
+            left: windowElement.dataset.dragged
+              ? windowElement.style.left
+              : null,
+            top: windowElement.dataset.dragged
+              ? windowElement.style.top
+              : null,
           }),
         );
       } catch {
-        // The panel remains functional when storage is unavailable.
+        // The window remains usable without persistence.
       }
     };
 
     const setCollapsed = (collapsed) => {
-      panel.dataset.collapsed = String(collapsed);
-      if (shell) shell.dataset.panelCollapsed = String(collapsed);
-      collapseButton?.setAttribute("aria-expanded", String(!collapsed));
-      collapseButton?.setAttribute(
-        "aria-label",
-        collapsed ? "Expand course tools" : "Collapse course tools",
-      );
-      const icon = collapseButton?.querySelector("span");
-      if (icon) icon.textContent = collapsed ? "←" : "→";
+      windowElement.dataset.collapsed = String(collapsed);
+      toggles.forEach((toggle) => {
+        toggle.setAttribute("aria-expanded", String(!collapsed));
+        if (toggle.matches("[aria-label]")) {
+          toggle.setAttribute("aria-label", collapsed ? "Open ELIZA" : "Close ELIZA");
+        }
+      });
+      const icon = toggles.at(-1)?.querySelector("span");
+      if (icon) icon.textContent = collapsed ? "↑" : "×";
+      if (!collapsed) {
+        window.setTimeout(
+          () => windowElement.querySelector("[data-chat-input]")?.focus(),
+          180,
+        );
+      }
     };
 
-    const setActive = (name) => {
-      panel.dataset.activePanel = name;
-      modeButtons.forEach((button) => {
-        const active = button.dataset.panelMode === name;
-        button.setAttribute("aria-selected", String(active));
-      });
-      views.forEach((view) => {
-        view.hidden = view.dataset.panelView !== name;
-      });
+    const resetPosition = () => {
+      delete windowElement.dataset.dragged;
+      windowElement.style.removeProperty("left");
+      windowElement.style.removeProperty("top");
+      windowElement.style.removeProperty("right");
+      windowElement.style.removeProperty("bottom");
+      windowElement.style.removeProperty("transform");
+      save();
     };
 
-    let state = { active: "chat", collapsed: false };
+    let state = { collapsed: true, left: null, top: null };
     try {
-      state = { ...state, ...JSON.parse(localStorage.getItem(PANEL_KEY)) };
+      state = { ...state, ...JSON.parse(localStorage.getItem(STORAGE_KEY)) };
     } catch {
-      // Use the default state.
+      // Use the default position.
     }
-    setActive(
-      ["nav", "chat", "lab"].includes(state.active) ? state.active : "chat",
-    );
     setCollapsed(Boolean(state.collapsed));
+    if (state.left && state.top) {
+      windowElement.dataset.dragged = "true";
+      windowElement.style.left = state.left;
+      windowElement.style.top = state.top;
+      windowElement.style.right = "auto";
+      windowElement.style.bottom = "auto";
+      windowElement.style.transform = "none";
+    }
 
-    modeButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        setActive(button.dataset.panelMode);
-        if (panel.dataset.collapsed === "true") setCollapsed(false);
-        saveState();
+    toggles.forEach((toggle) => {
+      toggle.addEventListener("click", () => {
+        setCollapsed(windowElement.dataset.collapsed !== "true");
+        save();
       });
     });
+    resetButton?.addEventListener("click", resetPosition);
 
-    collapseButton?.addEventListener("click", () => {
-      setCollapsed(panel.dataset.collapsed !== "true");
-      saveState();
+    dragHandle?.addEventListener("pointerdown", (event) => {
+      if (event.target.closest("button") || event.button !== 0) return;
+      const bounds = windowElement.getBoundingClientRect();
+      drag = {
+        pointerId: event.pointerId,
+        offsetX: event.clientX - bounds.left,
+        offsetY: event.clientY - bounds.top,
+      };
+      dragHandle.setPointerCapture(event.pointerId);
+      windowElement.dataset.dragging = "true";
     });
+
+    dragHandle?.addEventListener("pointermove", (event) => {
+      if (!drag || event.pointerId !== drag.pointerId) return;
+      const width = windowElement.offsetWidth;
+      const height = windowElement.offsetHeight;
+      const left = Math.min(
+        window.innerWidth - width,
+        Math.max(0, event.clientX - drag.offsetX),
+      );
+      const top = Math.min(
+        window.innerHeight - height,
+        Math.max(0, event.clientY - drag.offsetY),
+      );
+      windowElement.dataset.dragged = "true";
+      windowElement.style.left = `${left}px`;
+      windowElement.style.top = `${top}px`;
+      windowElement.style.right = "auto";
+      windowElement.style.bottom = "auto";
+      windowElement.style.transform = "none";
+    });
+
+    const endDrag = (event) => {
+      if (!drag || event.pointerId !== drag.pointerId) return;
+      drag = null;
+      delete windowElement.dataset.dragging;
+      save();
+    };
+
+    dragHandle?.addEventListener("pointerup", endDrag);
+    dragHandle?.addEventListener("pointercancel", endDrag);
   });
 </script>
 
 <style is:global>
-  .utility-panel {
+  .eliza-window {
     display: grid;
-    position: sticky;
-    top: 0;
-    grid-template-rows: auto 1fr;
-    z-index: 20;
+    position: fixed;
+    left: 50%;
+    bottom: 1rem;
+    transform: translateX(-50%);
+    grid-template-rows: auto minmax(0, 1fr);
+    z-index: 50;
     margin: 0;
-    border-top: 0;
-    border-bottom: 0;
-    border-left: 1px solid rgba(255, 255, 255, 0.18);
-    background: rgba(12, 9, 8, 0.96);
-    width: 100%;
-    height: 100svh;
+    border: 1px solid var(--line);
+    border-radius: 0.3rem;
+    background: var(--paper);
+    width: min(27rem, calc(100vw - 2rem));
+    height: min(68svh, 38rem);
     overflow: hidden;
-    color: #fff;
+    color: var(--ink);
+    transition:
+      width 180ms ease,
+      height 180ms ease,
+      border-color 300ms ease;
   }
 
-  .utility-switcher {
+  .eliza-window-bar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 0.4rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.16);
-    background: rgba(12, 9, 8, 0.96) !important;
-    padding: 0.55rem;
+    cursor: grab;
+    border-bottom: 1px solid var(--line-soft);
+    background: var(--paper) !important;
+    padding: 0.4rem;
+    touch-action: none;
+    user-select: none;
   }
 
-  .utility-modes {
+  .eliza-window[data-dragging="true"] .eliza-window-bar {
+    cursor: grabbing;
+  }
+
+  .eliza-window-identity {
     display: flex;
-    gap: 0.35rem;
+    align-items: center;
+    gap: 0.55rem;
+    cursor: pointer;
+    border: 0;
+    background: transparent;
+    padding: 0.1rem;
+    text-align: left;
   }
 
-  .utility-mode,
-  .utility-collapse {
+  .eliza-window-identity > span:last-child {
+    display: grid;
+    gap: 0.18rem;
+  }
+
+  .eliza-window-identity strong {
+    font-size: 0.74rem;
+    font-family: ui-monospace, "SFMono-Regular", monospace;
+    letter-spacing: 0.08em;
+  }
+
+  .eliza-window-identity small {
+    color: var(--muted-ink);
+    font-size: 0.65rem;
+  }
+
+  .eliza-window-actions {
+    display: flex;
+    gap: 0.3rem;
+  }
+
+  .eliza-window-actions button {
     display: grid;
     place-items: center;
     cursor: pointer;
-    border: 1px solid transparent;
-    border-radius: 50%;
+    border: 1px solid var(--line-soft);
+    border-radius: 0.15rem;
     background: transparent;
-    padding: 0;
-    width: 2.1rem;
-    height: 2.1rem;
+    width: 1.8rem;
+    height: 1.8rem;
+    color: inherit;
   }
 
-  .utility-mode:hover,
-  .utility-mode:focus-visible,
-  .utility-mode[aria-selected="true"] {
-    border-color: rgba(255, 255, 255, 0.62);
-    background: rgba(255, 255, 255, 0.09);
+  .eliza-window-actions button:hover,
+  .eliza-window-actions button:focus-visible {
+    background: var(--ink);
+    color: var(--paper);
   }
 
-  .utility-mode-icon {
-    display: grid;
-    place-items: center;
-    box-shadow: inset 0 0 0.65rem rgba(255, 255, 255, 0.18);
-    border: 1px solid rgba(255, 255, 255, 0.32);
-    border-radius: 50%;
-    width: 1.65rem;
-    height: 1.65rem;
-  }
-
-  .utility-mode-nav {
-    background: #181818;
-    font-size: 0.5rem;
-    font-family: Arial, sans-serif;
-    letter-spacing: 0.04em;
-  }
-
-  .utility-mode-chat {
-    background:
-      radial-gradient(circle at 35% 30%, #ffe3cf 0 12%, transparent 35%),
-      radial-gradient(circle at 70% 65%, #d98568 0 12%, transparent 42%),
-      conic-gradient(from 40deg, #5d2f37, #e6a27e, #8c647a, #5d2f37);
-  }
-
-  .utility-mode-lab {
-    background: #201d2e;
-    color: #cfc5ff;
-    font-size: 0.48rem;
-    font-family: Arial, sans-serif;
-    letter-spacing: 0.04em;
-  }
-
-  .utility-collapse {
-    border-color: rgba(255, 255, 255, 0.28);
-    width: 1.65rem;
-    height: 1.65rem;
-    color: rgba(255, 255, 255, 0.78);
-    font-size: 0.72rem;
-  }
-
-  .utility-collapse:hover,
-  .utility-collapse:focus-visible {
-    background: rgba(255, 255, 255, 0.12);
-  }
-
-  .utility-stage {
-    display: block;
-    padding: 0;
+  .eliza-window-content {
     min-height: 0;
     overflow: hidden;
   }
 
-  .utility-view {
-    border: 0;
-    padding: 0;
-    height: 100%;
-    min-height: 0;
+  .eliza-window[data-collapsed="true"] {
+    display: block;
+    width: 13.5rem;
+    height: 3.25rem;
   }
 
-  .utility-view[hidden] {
-    display: none;
-  }
-
-  .utility-panel[data-collapsed="true"] {
-    grid-template-rows: 1fr;
-  }
-
-  .utility-panel[data-collapsed="true"] .utility-switcher,
-  .utility-panel[data-collapsed="true"] .utility-modes {
-    flex-direction: column;
-  }
-
-  .utility-panel[data-collapsed="true"] .utility-switcher {
-    justify-content: flex-start;
+  .eliza-window[data-collapsed="true"] .eliza-window-bar {
     border-bottom: 0;
-    height: 100%;
   }
 
-  .utility-panel[data-collapsed="true"] .utility-stage {
+  .eliza-window[data-collapsed="true"] .eliza-window-content,
+  .eliza-window[data-collapsed="true"] [data-eliza-reset-position] {
     display: none;
   }
 
-  @media (max-width: 1280px) {
-    .utility-panel,
-    .utility-panel[data-collapsed="true"] {
-      position: fixed;
-      top: auto;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      grid-template-rows: 1fr auto;
-      box-shadow: 0 -1rem 3rem rgba(0, 0, 0, 0.28);
-      border-top: 0;
-      border-left: 0;
-      width: 100%;
-      height: min(56svh, 34rem);
-    }
+  .eliza-window[data-chat-state="thinking"] {
+    border-color: var(--accent);
+  }
 
-    .utility-stage {
-      grid-row: 1;
+  @media (max-width: 640px) {
+    .eliza-window {
+      bottom: 0.5rem;
+      width: calc(100vw - 1rem);
+      height: min(72svh, 36rem);
     }
+  }
 
-    .utility-switcher {
-      grid-row: 2;
-      gap: 0;
-      border: 0;
-      padding: 0.42rem 0.6rem;
-    }
-
-    .utility-modes {
-      gap: 0.2rem;
-    }
-
-    .utility-panel[data-collapsed="true"] {
-      display: block;
-      box-shadow: none;
-      height: 3.15rem;
-    }
-
-    .utility-panel[data-collapsed="true"] .utility-switcher,
-    .utility-panel[data-collapsed="true"] .utility-modes {
-      flex-direction: row;
-    }
-
-    .utility-panel[data-collapsed="true"] .utility-switcher {
-      justify-content: space-between;
-      height: auto;
+  @media (prefers-reduced-motion: reduce) {
+    .eliza-window {
+      transition: none;
     }
   }
 </style>

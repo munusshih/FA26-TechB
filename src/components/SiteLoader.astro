@@ -1,0 +1,224 @@
+<div class="site-loader" data-site-loader role="status" aria-label="Loading Technology B">
+  <div class="loader-instrument" aria-hidden="true">
+    <svg viewBox="0 0 320 320">
+      <g class="loader-ring loader-ring-outer">
+        <circle cx="160" cy="160" r="132"></circle>
+        <path d="M160 10v36M160 274v36M10 160h36M274 160h36"></path>
+      </g>
+      <g class="loader-ring loader-ring-inner">
+        <circle cx="160" cy="160" r="82"></circle>
+        <path d="M102 102l116 116M218 102 102 218"></path>
+      </g>
+      <g class="loader-rays">
+        <path d="M160 160 18 84M160 160l284 0M160 160 18 236"></path>
+        <path d="M160 160 302 84M160 160 18 160M160 160l142 76"></path>
+      </g>
+      <circle class="loader-core" cx="160" cy="160" r="8"></circle>
+    </svg>
+  </div>
+  <div class="loader-copy">
+    <span>Graduate Studio</span>
+    <strong>Technology B</strong>
+    <small>Arranging the faculties of intelligence…</small>
+  </div>
+  <button type="button" data-loader-skip>Enter site</button>
+</div>
+
+<script>
+  const loader = document.querySelector("[data-site-loader]");
+  if (loader) {
+    const started = performance.now();
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    document.body.dataset.loading = "true";
+
+    const dismiss = () => {
+      if (loader.dataset.exiting === "true") return;
+      loader.dataset.exiting = "true";
+      delete document.body.dataset.loading;
+      window.setTimeout(
+        () => loader.remove(),
+        reducedMotion ? 0 : 700,
+      );
+    };
+
+    const finishAfterMinimum = () => {
+      const elapsed = performance.now() - started;
+      window.setTimeout(dismiss, reducedMotion ? 0 : Math.max(0, 1350 - elapsed));
+    };
+
+    if (document.readyState === "complete") finishAfterMinimum();
+    else window.addEventListener("load", finishAfterMinimum, { once: true });
+
+    loader
+      .querySelector("[data-loader-skip]")
+      ?.addEventListener("click", dismiss);
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") dismiss();
+    });
+  }
+</script>
+
+<noscript><style>.site-loader { display: none !important; }</style></noscript>
+
+<style is:global>
+  body[data-loading="true"] {
+    overflow: hidden;
+  }
+
+  .site-loader {
+    display: grid;
+    position: fixed;
+    z-index: 2000;
+    inset: 0;
+    grid-template-rows: minmax(0, 1fr) auto auto;
+    place-items: center;
+    background:
+      linear-gradient(var(--line-soft) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line-soft) 1px, transparent 1px),
+      var(--paper);
+    background-size: 4rem 4rem;
+    padding: 2rem;
+    overflow: hidden;
+    color: var(--ink);
+  }
+
+  .site-loader[data-exiting="true"] {
+    animation: loader-leave 700ms cubic-bezier(0.65, 0, 0.35, 1) forwards;
+    pointer-events: none;
+  }
+
+  .loader-instrument {
+    align-self: end;
+    width: min(62vw, 30rem);
+  }
+
+  .loader-instrument svg {
+    display: block;
+    width: 100%;
+    overflow: visible;
+  }
+
+  .loader-instrument circle,
+  .loader-instrument path {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .loader-ring {
+    transform-origin: center;
+  }
+
+  .loader-ring-outer {
+    animation: loader-turn 8s linear infinite;
+  }
+
+  .loader-ring-inner {
+    animation: loader-turn 5s linear infinite reverse;
+  }
+
+  .loader-rays path {
+    animation: loader-ray 1.8s ease-in-out infinite;
+    stroke-dasharray: 340;
+    stroke-dashoffset: 340;
+  }
+
+  .loader-rays path:nth-child(2) {
+    animation-delay: 220ms;
+  }
+
+  .loader-core {
+    animation: loader-core 900ms ease-in-out infinite alternate;
+    fill: currentColor !important;
+  }
+
+  .loader-copy {
+    display: grid;
+    place-items: center;
+    margin-top: -2rem;
+    text-align: center;
+  }
+
+  .loader-copy span,
+  .loader-copy small {
+    font-family: ui-monospace, "SFMono-Regular", monospace;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .loader-copy span {
+    font-size: 0.66rem;
+  }
+
+  .loader-copy strong {
+    font-weight: 400;
+    font-style: italic;
+    font-size: clamp(3.5rem, 10vw, 8rem);
+    line-height: 0.95;
+    font-family: var(--font-display);
+  }
+
+  .loader-copy small {
+    margin-top: 0.8rem;
+    color: var(--muted-ink);
+    font-size: 0.56rem;
+  }
+
+  .site-loader button {
+    align-self: end;
+    cursor: pointer;
+    border: 1px solid var(--ink);
+    background: var(--paper-raised);
+    padding: 0.55rem 0.8rem;
+    color: inherit;
+    font-size: 0.68rem;
+    font-family: ui-monospace, "SFMono-Regular", monospace;
+    text-transform: uppercase;
+  }
+
+  @keyframes loader-turn {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes loader-ray {
+    40%,
+    68% {
+      stroke-dashoffset: 0;
+    }
+    100% {
+      stroke-dashoffset: -340;
+    }
+  }
+
+  @keyframes loader-core {
+    to {
+      transform: scale(1.8);
+      transform-origin: center;
+    }
+  }
+
+  @keyframes loader-leave {
+    65% {
+      clip-path: inset(49.5% 0);
+      opacity: 1;
+    }
+    100% {
+      clip-path: inset(50% 0);
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .loader-ring,
+    .loader-rays path,
+    .loader-core {
+      animation: none;
+      stroke-dashoffset: 0;
+    }
+  }
+</style>

@@ -1,7 +1,7 @@
 aside {
-  margin-block: 2rem 5rem;
-  border-top: 1px solid #fff;
-  border-bottom: 1px solid #fff;
+  margin-block: 1.25rem 3rem;
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
 }
 
 aside > div {
@@ -12,20 +12,21 @@ aside > div {
 }
 
 aside > div > div {
-  border-right: 1px solid rgba(255, 255, 255, 0.45);
-  padding: 1rem;
+  border-right: 1px solid var(--line-soft);
+  padding: var(--space-2);
 }
 
 aside > div > div:last-child {
   border-right: 0;
 }
 
+aside h2,
 aside h3 {
   display: inline-block;
-  margin-bottom: 1rem;
-  border: 1px solid #fff;
+  margin-bottom: var(--space-3);
+  border: 1px solid var(--ink);
   border-radius: 999px;
-  padding: 0.35rem 0.65rem;
+  padding: var(--space-1) var(--space-2);
   font-weight: 500;
   font-size: 0.8rem;
 }
@@ -47,7 +48,7 @@ aside li {
 
   aside > div > div {
     border-right: 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.45);
+    border-bottom: 1px solid var(--line-soft);
   }
 
   aside > div > div:last-child {

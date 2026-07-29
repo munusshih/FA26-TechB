@@ -1,5 +1,5 @@
 ---
-import GanImage from "@/components/GanImage.astro";
+import SectionCanvas from "@/components/SectionCanvas.astro";
 
 const {
   title = "Accordion Title",
@@ -9,6 +9,7 @@ const {
 const isOpen =
   typeof open === "string" ? open.toLowerCase() !== "false" : Boolean(open);
 const titleId = title.toLowerCase().replace(/\s+/g, "-");
+const contentId = `${titleId}-content`;
 const classes = `accordion ${noCutoff ? "" : "cutoff"}`.trim();
 ---
 
@@ -16,22 +17,26 @@ const classes = `accordion ${noCutoff ? "" : "cutoff"}`.trim();
   <button
     class="accordion-button"
     aria-expanded={isOpen ? "true" : "false"}
+    aria-controls={contentId}
     type="button"
   >
     <h2 class="heading-1">{title}</h2>
   </button>
   <div
+    id={contentId}
     class="accordion-content relative"
-    aria-expanded={isOpen ? "true" : "false"}
+    data-expanded={isOpen ? "true" : "false"}
+    aria-hidden={isOpen ? "false" : "true"}
+    inert={isOpen ? undefined : true}
   >
-    <GanImage />
+    <SectionCanvas title={title} />
     <slot />
   </div>
 </section>
 
 <script>
   const syncContentHeight = (content) => {
-    const isExpanded = content.getAttribute("aria-expanded") === "true";
+    const isExpanded = content.dataset.expanded === "true";
     content.style.maxHeight = isExpanded ? `${content.scrollHeight}px` : "0px";
   };
 
@@ -42,7 +47,9 @@ const classes = `accordion ${noCutoff ? "" : "cutoff"}`.trim();
 
     const value = String(expanded);
     button.setAttribute("aria-expanded", value);
-    content.setAttribute("aria-expanded", value);
+    content.dataset.expanded = value;
+    content.setAttribute("aria-hidden", String(!expanded));
+    content.toggleAttribute("inert", !expanded);
     accordion.setAttribute("data-open", value);
     syncContentHeight(content);
   };
@@ -63,7 +70,7 @@ const classes = `accordion ${noCutoff ? "" : "cutoff"}`.trim();
     });
 
     const expandedObserver = new MutationObserver(() => {
-      const isExpanded = content.getAttribute("aria-expanded") === "true";
+      const isExpanded = content.dataset.expanded === "true";
       button.setAttribute("aria-expanded", String(isExpanded));
       accordion.setAttribute("data-open", String(isExpanded));
       syncContentHeight(content);
@@ -71,12 +78,12 @@ const classes = `accordion ${noCutoff ? "" : "cutoff"}`.trim();
 
     expandedObserver.observe(content, {
       attributes: true,
-      attributeFilter: ["aria-expanded"],
+      attributeFilter: ["data-expanded"],
     });
 
     if ("ResizeObserver" in window) {
       const resizeObserver = new ResizeObserver(() => {
-        if (content.getAttribute("aria-expanded") === "true") {
+        if (content.dataset.expanded === "true") {
           syncContentHeight(content);
         }
       });
@@ -85,7 +92,7 @@ const classes = `accordion ${noCutoff ? "" : "cutoff"}`.trim();
     }
 
     window.addEventListener("resize", () => {
-      if (content.getAttribute("aria-expanded") === "true") {
+      if (content.dataset.expanded === "true") {
         syncContentHeight(content);
       }
     });

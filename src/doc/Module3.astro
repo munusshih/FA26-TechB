@@ -2,6 +2,7 @@
 import Accordion from "@/components/Accordion.astro";
 import TwoColumn from "@/components/TwoColumn.astro";
 import Callout from "@/components/Callout.astro";
+import ModuleDesk from "@/components/ModuleDesk.astro";
 ---
 
 <Accordion title="Module 3: Disrupting the Chain-of-Thought" open>
@@ -89,4 +90,39 @@ import Callout from "@/components/Callout.astro";
       </p>
     </div>
   </TwoColumn>
+  <ModuleDesk
+    readings={[
+      {
+        title: "Bender et al., “On the Dangers of Stochastic Parrots”",
+        url: "https://dl.acm.org/doi/10.1145/3442188.3445922",
+        note: "Scale, extraction, environmental cost, and synthetic fluency.",
+      },
+      {
+        title: "Kate Crawford, Atlas of AI",
+        note: "AI as an extractive industry and political infrastructure.",
+      },
+      {
+        title: "Allison Parrish, Programming Is Forgetting",
+        url: "https://opentranscripts.org/transcript/programming-forgetting-new-hacker-ethic/",
+        note: "Code, memory, language, and refusal.",
+      },
+    ]}
+    tools={[
+      {
+        title: "Ollama",
+        url: "https://docs.ollama.com/quickstart",
+        note: "Run and inspect language models locally.",
+      },
+      {
+        title: "LM Studio",
+        url: "https://lmstudio.ai/docs/app",
+        note: "A visual workspace for local models and APIs.",
+      },
+      {
+        title: "Hugging Face model cards",
+        url: "https://huggingface.co/models",
+        note: "Compare documentation, licenses, and training claims.",
+      },
+    ]}
+  />
 </Accordion>

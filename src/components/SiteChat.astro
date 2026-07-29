@@ -1,14 +1,4 @@
 <aside class="site-chat-panel" data-site-chat aria-label="Course chatbot">
-  <header class="chat-header">
-    <div class="chat-identity">
-      <span class="chat-avatar chat-avatar-large" aria-hidden="true"></span>
-      <span>
-        <strong>Eliza</strong>
-        <small>Classic 1966 chatbot</small>
-      </span>
-    </div>
-  </header>
-
   <div class="chat-body" data-chat-body>
     <div class="chat-log" data-chat-log aria-live="polite"></div>
     <form class="chat-form" data-chat-form>
@@ -17,7 +7,7 @@
         name="message"
         data-chat-input
         autocomplete="off"
-        aria-label="Ask about the course"
+        aria-label="Message ELIZA"
         placeholder="Message Eliza…"
       />
       <button type="submit" aria-label="Send message">↑</button>
@@ -49,12 +39,29 @@
     const form = panel.querySelector("[data-chat-form]");
     const input = panel.querySelector("[data-chat-input]");
     const clear = panel.querySelector("[data-chat-clear]");
+    const windowElement = panel.closest("[data-eliza-window]");
+    const windowStatus = windowElement?.querySelector(
+      "[data-eliza-window-status]",
+    );
     input.disabled = true;
     let eliza = await loadElizaInEnglish(of(elizaScript));
     input.disabled = false;
     let thinking = false;
     let showThinking = false;
     let responseToken = 0;
+
+    const setState = (state) => {
+      panel.dataset.chatState = state;
+      if (windowElement) windowElement.dataset.chatState = state;
+      if (windowStatus) {
+        windowStatus.textContent =
+          state === "thinking"
+            ? "ELIZA is thinking…"
+            : state === "speaking"
+              ? "ELIZA is responding…"
+              : "Classic 1966 chatbot";
+      }
+    };
 
     const readMessages = () => {
       try {
@@ -113,8 +120,8 @@
         avatar.setAttribute("aria-hidden", "true");
         const bubble = document.createElement("div");
         bubble.className = "chat-thinking";
-        bubble.setAttribute("aria-label", "Eliza is thinking");
-        bubble.textContent = "...";
+        bubble.setAttribute("role", "status");
+        bubble.textContent = "ELIZA is thinking…";
         row.append(avatar, bubble);
         log.appendChild(row);
       }
@@ -138,7 +145,8 @@
       input.value = "";
       saveMessages();
       thinking = true;
-      showThinking = Math.random() < 0.72;
+      showThinking = true;
+      setState("thinking");
       input.disabled = true;
       form.dataset.thinking = "true";
       const token = ++responseToken;
@@ -155,10 +163,14 @@
       messages.push({ role: "bot", text: replyTo(message) });
       thinking = false;
       showThinking = false;
+      setState("speaking");
       input.disabled = false;
       delete form.dataset.thinking;
       saveMessages();
       render();
+      window.setTimeout(() => {
+        if (!thinking) setState("idle");
+      }, 1200);
       input.focus();
     });
 
@@ -166,6 +178,7 @@
       responseToken += 1;
       thinking = false;
       showThinking = false;
+      setState("idle");
       input.disabled = false;
       delete form.dataset.thinking;
       messages = [...initialMessages];
@@ -178,6 +191,7 @@
     });
 
     render();
+    setState("idle");
   });
 </script>
 
@@ -186,81 +200,57 @@
     --chat-width: clamp(21rem, 28vw, 28rem);
     display: grid;
     position: relative;
-    grid-template-rows: auto 1fr;
+    grid-template-rows: 1fr;
     z-index: 20;
-    backdrop-filter: blur(18px);
     margin: 0;
     border-top: 0;
     border-bottom: 0;
     border-left: 0;
-    background: rgba(12, 9, 8, 0.96);
+    background: var(--paper);
     width: 100%;
     height: 100%;
-    color: #fff;
-  }
-
-  .chat-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.16);
-    padding: 0.72rem;
-    line-height: 1;
-  }
-
-  .chat-identity {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .chat-identity > span:last-child {
-    display: grid;
-    gap: 0.28rem;
-  }
-
-  .chat-identity strong {
-    font-weight: 600;
-    font-size: 0.86rem;
-  }
-
-  .chat-identity small {
-    color: rgba(255, 255, 255, 0.58);
-    font-size: 0.64rem;
+    color: var(--ink);
   }
 
   .chat-avatar {
-    display: block;
+    display: grid;
     position: relative;
     flex: 0 0 auto;
-    box-shadow:
-      0 0 1.5rem rgba(237, 153, 120, 0.25),
-      inset 0 0 0.8rem rgba(255, 255, 255, 0.24);
-    border: 1px solid rgba(255, 255, 255, 0.45);
-    border-radius: 50%;
-    background:
-      radial-gradient(circle at 35% 30%, #ffe3cf 0 12%, transparent 35%),
-      radial-gradient(circle at 70% 65%, #d98568 0 12%, transparent 42%),
-      conic-gradient(from 40deg, #5d2f37, #e6a27e, #8c647a, #5d2f37);
+    place-items: center;
+    border: 1px solid currentColor;
+    border-radius: 0.2rem;
+    background: var(--paper-raised);
     width: 1.85rem;
     height: 1.85rem;
-    overflow: hidden;
+    overflow: visible;
+  }
+
+  .chat-avatar::before {
+    position: relative;
+    z-index: 2;
+    content: "E";
+    font-weight: 600;
+    font-size: 0.78rem;
+    line-height: 1;
+    font-family: var(--font-display);
   }
 
   .chat-avatar::after {
     position: absolute;
-    transform: rotate(15deg);
-    opacity: 0.8;
-    filter: blur(5px);
-    animation: avatar-drift 6s ease-in-out infinite alternate;
-    inset: -25%;
-    background: linear-gradient(
-      120deg,
-      transparent 25%,
-      #fff 48%,
-      transparent 70%
-    );
+    opacity: 0;
+    inset: -4px;
+    border: 1px solid currentColor;
+    border-radius: 0.2rem;
     content: "";
+  }
+
+  [data-chat-state="thinking"] .chat-avatar::after {
+    opacity: 1;
+    animation: avatar-think 900ms ease-in-out infinite alternate;
+  }
+
+  [data-chat-state="speaking"] .chat-avatar::before {
+    animation: avatar-speak 420ms ease-in-out infinite alternate;
   }
 
   .chat-avatar-large {
@@ -304,7 +294,7 @@
     border-right: 0;
     padding: 1rem 0.7rem;
     overflow-y: auto;
-    scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+    scrollbar-color: var(--line-soft) transparent;
   }
 
   .chat-row {
@@ -330,7 +320,7 @@
 
   .chat-sender {
     padding: 0 0.38rem;
-    color: rgba(255, 255, 255, 0.48);
+    color: var(--muted-ink);
     font-size: 0.58rem;
     line-height: 1;
     font-family: Arial, sans-serif;
@@ -345,61 +335,39 @@
   }
 
   .chat-message-user {
-    border-radius: 1.2rem 1.2rem 0.35rem 1.2rem;
-    background: #f2d5c3;
+    border: 1px solid var(--ink);
+    border-radius: 0.2rem;
+    background: var(--paper-raised);
     padding: 0.72rem 0.9rem;
-    color: #211512;
-  }
-
-  .chat-message-user::after {
-    position: absolute;
-    right: -0.3rem;
-    bottom: 0;
-    border-bottom: 0.55rem solid #f2d5c3;
-    border-left: 0.55rem solid transparent;
-    width: 0;
-    height: 0;
-    content: "";
+    color: var(--ink);
   }
 
   .chat-message-bot {
-    border: 1px solid rgba(255, 255, 255, 0.13);
-    border-radius: 1.2rem 1.2rem 1.2rem 0.35rem;
-    background: rgba(255, 255, 255, 0.075);
+    border: 1px solid var(--line-soft);
+    border-radius: 0.2rem;
+    background: transparent;
     padding: 0.72rem 0.9rem;
-  }
-
-  .chat-message-bot::after {
-    position: absolute;
-    bottom: 0;
-    left: -0.3rem;
-    border-right: 0.55rem solid transparent;
-    border-bottom: 0.55rem solid rgba(255, 255, 255, 0.13);
-    width: 0;
-    height: 0;
-    content: "";
   }
 
   .chat-thinking {
     animation: thinking-pulse 1.1s ease-in-out infinite;
-    border: 1px solid rgba(255, 255, 255, 0.13);
-    border-radius: 1rem 1rem 1rem 0.35rem;
-    background: rgba(255, 255, 255, 0.075);
-    padding: 0.55rem 0.9rem 0.75rem;
-    color: #e7aa8c;
-    font-size: 1.2rem;
-    line-height: 0.8;
-    font-family: Arial, sans-serif;
-    letter-spacing: 0.16em;
+    border-left: 1px solid var(--accent);
+    padding: 0.4rem 0.7rem;
+    color: var(--accent);
+    font-size: 0.72rem;
+    line-height: 1.2;
+    font-family: ui-monospace, "SFMono-Regular", monospace;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
   }
 
   .chat-form {
     display: grid;
     grid-template-columns: 1fr auto;
     margin: 0 0.7rem 0.55rem;
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    border-radius: 1.6rem;
-    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid var(--line);
+    border-radius: 0.2rem;
+    background: transparent;
     padding: 0.28rem;
     overflow: hidden;
   }
@@ -417,18 +385,19 @@
   }
 
   .chat-form:focus-within {
-    box-shadow: 0 0 0 3px rgba(217, 133, 104, 0.12);
-    border-color: rgba(242, 213, 195, 0.75);
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-color: var(--accent);
   }
 
   .chat-form button {
     align-self: center;
     border: 0;
-    border-radius: 50%;
-    background: #f2d5c3;
+    border-radius: 0.1rem;
+    background: var(--ink);
     width: 2rem;
     height: 2rem;
-    color: #211512;
+    color: var(--paper);
     font-size: 1.15rem;
     line-height: 1;
   }
@@ -450,49 +419,8 @@
     border: 0;
     background: transparent;
     padding: 0.25rem 0.5rem;
-    color: rgba(255, 255, 255, 0.5);
+    color: var(--muted-ink);
     font-size: 0.75rem;
-  }
-
-  .site-chat-panel[data-collapsed="true"] {
-    height: 100svh;
-  }
-
-  .site-chat-panel[data-collapsed="true"] .chat-body {
-    display: none;
-  }
-
-  .site-chat-panel[data-collapsed="true"] .chat-header {
-    flex-direction: column;
-    gap: 0.75rem;
-    padding-inline: 0.5rem;
-  }
-
-  .site-chat-panel[data-collapsed="true"] .chat-identity > span:last-child {
-    display: none;
-  }
-
-  @media (max-width: 1280px) {
-    .site-chat-panel {
-      position: relative;
-      border-top: 0;
-      border-left: 0;
-      width: 100%;
-      height: 100%;
-    }
-
-    .site-chat-panel[data-collapsed="true"] {
-      height: auto;
-    }
-
-    .site-chat-panel[data-collapsed="true"] .chat-header {
-      flex-direction: row;
-      padding-inline: 1.1rem;
-    }
-
-    .site-chat-panel[data-collapsed="true"] .chat-identity > span:last-child {
-      display: grid;
-    }
   }
 
   @keyframes thinking-pulse {
@@ -501,14 +429,22 @@
     }
   }
 
-  @keyframes avatar-drift {
+  @keyframes avatar-think {
     to {
-      transform: translate(12%, -8%) rotate(35deg);
+      transform: scale(1.12);
+      opacity: 0.25;
+    }
+  }
+
+  @keyframes avatar-speak {
+    to {
+      transform: translateY(-2px);
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
     .chat-avatar::after,
+    [data-chat-state="speaking"] .chat-avatar::before,
     .chat-thinking {
       animation: none;
     }

@@ -1,16 +1,19 @@
 .skip-to-main {
-  position: absolute;
-  top: -99999px;
-  left: 6px;
+  position: fixed;
+  top: 0.5rem;
+  left: 0.5rem;
+  transform: translateY(-180%);
   z-index: 1000;
-  transition: top 0.3s ease;
-  color: #000;
+  border: 1px solid var(--ink);
+  background: var(--paper);
+  padding: 0.65rem 0.85rem;
+  color: var(--ink);
   font-weight: 600;
   font-size: 14px;
   text-decoration: none;
+  transition: transform 180ms ease;
 }
 
 .skip-to-main:focus {
-  top: 6px;
-  outline: none;
+  transform: translateY(0);
 }

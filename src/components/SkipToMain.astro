@@ -7,7 +7,7 @@
 </a>
 
 <script>
-  // Skip to Main Button Functionality
+  // Move focus to the main landmark after following the skip link.
   (function () {
     const skipLink = document.querySelector(".skip-to-main");
     const mainContent = document.querySelector("main");
@@ -16,22 +16,13 @@
       skipLink.addEventListener("click", function (e) {
         e.preventDefault();
 
-        // Focus the main content
         mainContent.focus();
-
-        // Scroll to main content smoothly
         mainContent.scrollIntoView({
-          behavior: "smooth",
+          behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+            ? "auto"
+            : "smooth",
           block: "start",
         });
-      });
-
-      // Handle keyboard navigation
-      skipLink.addEventListener("keydown", function (e) {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          skipLink.click();
-        }
       });
     }
   })();

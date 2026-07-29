@@ -1,0 +1,220 @@
+<figure
+  class="intelligence-diagram"
+  aria-labelledby="intelligence-diagram-caption"
+>
+  <svg viewBox="0 0 1200 520" role="img">
+    <title>
+      An animated geometric diagram of memory, reason, and imagination radiating
+      from a central point
+    </title>
+    <g class="diagram-orbits">
+      <ellipse cx="600" cy="260" rx="194" ry="194"></ellipse>
+      <ellipse cx="600" cy="260" rx="118" ry="118"></ellipse>
+      <path d="M600 38V482M378 260H822"></path>
+      <path d="M443 103L757 417M757 103L443 417"></path>
+    </g>
+
+    <g class="diagram-rays diagram-rays-left">
+      <path d="M600 260H72"></path>
+      <path d="M600 260L112 150"></path>
+      <path d="M600 260L112 370"></path>
+      <path d="M600 260L244 70"></path>
+      <path d="M600 260L244 450"></path>
+    </g>
+    <g class="diagram-rays diagram-rays-right">
+      <path d="M600 260H1128"></path>
+      <path d="M600 260L1088 150"></path>
+      <path d="M600 260L1088 370"></path>
+      <path d="M600 260L956 70"></path>
+      <path d="M600 260L956 450"></path>
+    </g>
+
+    <g class="diagram-marks">
+      <circle cx="600" cy="260" r="15"></circle>
+      <circle cx="600" cy="260" r="5" class="diagram-core"></circle>
+      <path d="M566 260c18-23 50-23 68 0-18 23-50 23-68 0Z"></path>
+      <path d="M72 248V272M1128 248V272"></path>
+      <path d="M588 38H612M588 482H612"></path>
+    </g>
+
+    <g class="diagram-stars" aria-hidden="true">
+      <path d="M244 54v32M228 70h32"></path>
+      <path d="M956 54v32M940 70h32"></path>
+      <path d="M244 434v32M228 450h32"></path>
+      <path d="M956 434v32M940 450h32"></path>
+    </g>
+
+    <g class="diagram-labels">
+      <text x="600" y="20" text-anchor="middle">REASON</text>
+      <text x="600" y="513" text-anchor="middle">SENSATION</text>
+      <text x="20" y="264">MEMORY</text>
+      <text x="1180" y="264" text-anchor="end">IMAGINATION</text>
+    </g>
+  </svg>
+  <figcaption id="intelligence-diagram-caption">
+    <span>Fig. 01</span>
+    Faculties of intelligence, arranged as a speculative instrument
+  </figcaption>
+</figure>
+
+<style>
+  .intelligence-diagram {
+    position: absolute;
+    z-index: 1;
+    inset: 4.5rem 0.75rem 2.5rem;
+    margin: 0;
+    pointer-events: none;
+  }
+
+  svg {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    color: var(--ink);
+  }
+
+  path,
+  circle,
+  ellipse {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .diagram-orbits {
+    opacity: 0.34;
+  }
+
+  .diagram-rays path {
+    animation: ray-out 4.8s cubic-bezier(0.45, 0, 0.2, 1) infinite;
+    stroke-dasharray: 540;
+    stroke-dashoffset: 540;
+  }
+
+  .diagram-rays-right path {
+    animation-name: ray-out-right;
+  }
+
+  .diagram-rays path:nth-child(2) {
+    animation-delay: 90ms;
+  }
+
+  .diagram-rays path:nth-child(3) {
+    animation-delay: 180ms;
+  }
+
+  .diagram-rays path:nth-child(4) {
+    animation-delay: 270ms;
+  }
+
+  .diagram-rays path:nth-child(5) {
+    animation-delay: 360ms;
+  }
+
+  .diagram-marks {
+    animation: core-flash 4.8s ease-in-out infinite;
+  }
+
+  .diagram-core {
+    fill: currentColor;
+  }
+
+  .diagram-stars {
+    opacity: 0.58;
+  }
+
+  .diagram-stars path {
+    animation: star-turn 18s linear infinite;
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+
+  .diagram-labels {
+    fill: currentColor;
+    font-size: 10px;
+    font-family: ui-monospace, "SFMono-Regular", monospace;
+    letter-spacing: 0.18em;
+  }
+
+  figcaption {
+    display: flex;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    justify-content: space-between;
+    border-top: 1px solid currentColor;
+    padding-top: 0.45rem;
+    color: var(--muted-ink);
+    font-size: 0.62rem;
+    font-family: ui-monospace, "SFMono-Regular", monospace;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  @keyframes ray-out {
+    0%,
+    12% {
+      opacity: 0;
+      stroke-dashoffset: 540;
+    }
+    38%,
+    76% {
+      opacity: 0.82;
+      stroke-dashoffset: 0;
+    }
+    100% {
+      opacity: 0;
+      stroke-dashoffset: -540;
+    }
+  }
+
+  @keyframes ray-out-right {
+    0%,
+    12% {
+      opacity: 0;
+      stroke-dashoffset: -540;
+    }
+    38%,
+    76% {
+      opacity: 0.82;
+      stroke-dashoffset: 0;
+    }
+    100% {
+      opacity: 0;
+      stroke-dashoffset: 540;
+    }
+  }
+
+  @keyframes core-flash {
+    0%,
+    10%,
+    100% {
+      opacity: 0.3;
+    }
+    18%,
+    24% {
+      opacity: 1;
+    }
+    21% {
+      opacity: 0.18;
+    }
+  }
+
+  @keyframes star-turn {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .diagram-rays path,
+    .diagram-marks,
+    .diagram-stars path {
+      animation: none;
+      opacity: 0.72;
+      stroke-dashoffset: 0;
+    }
+  }
+</style>

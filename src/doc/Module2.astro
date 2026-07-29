@@ -2,6 +2,7 @@
 import Accordion from "@/components/Accordion.astro";
 import TwoColumn from "@/components/TwoColumn.astro";
 import Callout from "@/components/Callout.astro";
+import ModuleDesk from "@/components/ModuleDesk.astro";
 ---
 
 <Accordion title="Module 2: The Coded Gaze" open>
@@ -84,4 +85,38 @@ import Callout from "@/components/Callout.astro";
       </p>
     </div>
   </TwoColumn>
+  <ModuleDesk
+    readings={[
+      {
+        title: "Ruha Benjamin, Race After Technology",
+        note: "The New Jim Code and discriminatory design.",
+      },
+      {
+        title: "Cathy O’Neil, Weapons of Math Destruction",
+        note: "How opaque models scale harm.",
+      },
+      {
+        title: "Kate Crawford & Trevor Paglen, “Excavating AI”",
+        url: "https://excavating.ai/",
+        note: "A close reading of ImageNet’s politics and categories.",
+      },
+    ]}
+    tools={[
+      {
+        title: "ml5.js",
+        url: "https://ml5js.org/",
+        note: "Friendly machine learning for the web.",
+      },
+      {
+        title: "Teachable Machine",
+        url: "https://teachablemachine.withgoogle.com/",
+        note: "Train a small classifier without setup.",
+      },
+      {
+        title: "Datasheets for Datasets",
+        url: "https://www.datasheetsfordatasets.org/",
+        note: "Document a corpus before asking a model to read it.",
+      },
+    ]}
+  />
 </Accordion>
