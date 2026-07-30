@@ -60,6 +60,22 @@ Gurumurthy, Anita, and Nandini Chami. *The Deal We Always Wanted: A Feminist Act
 
 ---
 
+## Historical and Cultural Models of Intelligence
+
+Coseru, Christian. “Mind in Indian Buddhist Philosophy.” *Stanford Encyclopedia of Philosophy*, first published 2009, Summer 2026 edition. Metaphysics Research Lab, Stanford University.
+[Open encyclopedia entry](https://plato.stanford.edu/archives/sum2026/entries/mind-indian-buddhism/)
+
+Hon, Tze-Ki. “Chinese Philosophy of Change (Yijing).” *Stanford Encyclopedia of Philosophy*, 2019, Summer 2024 edition. Metaphysics Research Lab, Stanford University.
+[Open encyclopedia entry](https://plato.stanford.edu/archives/sum2024/entries/chinese-change/)
+
+Priani, Ernesto. “Ramon Llull.” *Stanford Encyclopedia of Philosophy*, first published 2017, revised 2025. Metaphysics Research Lab, Stanford University.
+[Open encyclopedia entry](https://plato.stanford.edu/archives/fall2025/entries/llull/)
+
+Brooks, Rodney A. “Intelligence without Representation.” *Artificial Intelligence* 47, nos. 1–3 (1991): 139–160.
+[MIT CSAIL author copy](https://people.csail.mit.edu/brooks/papers/representation.pdf)
+
+---
+
 ## 2. Classification, Race, and the Coded Gaze
 
 Benjamin, Ruha. *Race After Technology: Abolitionist Tools for the New Jim Code*. Cambridge, UK: Polity, 2019.  
@@ -85,6 +101,24 @@ Costanza-Chock, Sasha. *Design Justice: Community-Led Practices to Build the Wor
 
 Costanza-Chock, Sasha. “Design Justice, A.I., and Escape from the Matrix of Domination.” *Journal of Design and Science*, 2018.  
 [Open article](https://jods.mitpress.mit.edu/pub/costanza-chock/release/4)
+
+Bowker, Geoffrey C., and Susan Leigh Star. *Sorting Things Out: Classification and Its Consequences*. Cambridge, MA: MIT Press, 1999.
+[Publisher page](https://mitpress.mit.edu/9780262024617/sorting-things-out/)
+
+Noble, Safiya Umoja. *Algorithms of Oppression: How Search Engines Reinforce Racism*. New York: NYU Press, 2018.
+[Publisher page](https://nyupress.org/9781479866762/algorithms-of-oppression/)
+
+Browne, Simone. *Dark Matters: On the Surveillance of Blackness*. Durham, NC: Duke University Press, 2015.
+[Publisher page](https://www.dukeupress.edu/dark-matters)
+
+Irani, Lilly. “The Cultural Work of Microwork.” *New Media & Society* 17, no. 5 (2015): 720–739.
+[Open university copy](https://escholarship.org/uc/item/2x10h7rs)
+
+Birhane, Abeba, and Vinay Uday Prabhu. “Large Image Datasets: A Pyrrhic Win for Computer Vision?” In *Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision*, 1537–1547. 2021.
+[Open conference paper](https://openaccess.thecvf.com/content/WACV2021/html/Birhane_Large_Image_Datasets_A_Pyrrhic_Win_for_Computer_Vision_WACV_2021_paper.html)
+
+Gebru, Timnit, Jamie Morgenstern, Briana Vecchione, Jennifer Wortman Vaughan, Hanna Wallach, Hal Daumé III, and Kate Crawford. “Datasheets for Datasets.” *Communications of the ACM* 64, no. 12 (2021): 86–92.
+[Open preprint](https://arxiv.org/abs/1803.09010)
 
 ---
 
@@ -132,6 +166,21 @@ Irani, Lilly. “Justice for ‘Data Janitors.’” *Public Books*, January 15,
 
 Gray, Mary L., and Siddharth Suri. *Ghost Work: How to Stop Silicon Valley from Building a New Global Underclass*. Boston: Houghton Mifflin Harcourt, 2019.  
 [Author and book resources](https://marylgray.org/bio/on-demand/)
+
+Parrish, Allison. “Programming Is Forgetting: Toward a New Hacker Ethic.” *Open Hardware Summit*, 2016.
+[Open transcript](https://opentranscripts.org/transcript/programming-forgetting-new-hacker-ethic/)
+
+Wei, Jason, Xuezhi Wang, Dale Schuurmans, Maarten Bosma, Fei Xia, Ed Chi, Quoc V. Le, and Denny Zhou. “Chain-of-Thought Prompting Elicits Reasoning in Large Language Models.” In *Advances in Neural Information Processing Systems 35*. 2022.
+[Open NeurIPS paper](https://proceedings.neurips.cc/paper_files/paper/2022/hash/9d5609613524ecf4f15af0f7b31abca4-Abstract.html)
+
+Turpin, Miles, Julian Michael, Ethan Perez, and Samuel R. Bowman. “Language Models Don’t Always Say What They Think: Unfaithful Explanations in Chain-of-Thought Prompting.” In *Advances in Neural Information Processing Systems 36*. 2023.
+[Open NeurIPS paper](https://proceedings.neurips.cc/paper_files/paper/2023/hash/ed3fea9033a80fea1376299fa7863f4a-Abstract.html)
+
+Widder, David Gray, Meredith Whittaker, and Sarah Myers West. “Why ‘Open’ AI Systems Are Actually Closed, and Why This Matters.” *Nature* 635 (2024): 827–833.
+[Open article](https://www.nature.com/articles/s41586-024-08141-1)
+
+Bird, Steven. “Must NLP Be Extractive?” In *Proceedings of the 62nd Annual Meeting of the Association for Computational Linguistics*. 2024.
+[Open ACL paper](https://aclanthology.org/2024.acl-long.797/)
 
 ---
 

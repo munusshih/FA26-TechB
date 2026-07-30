@@ -21,6 +21,10 @@ const readInk = (element) =>
   window.getComputedStyle(element).getPropertyValue("--ink").trim() ||
   "#392d2f";
 
+const readPaper = (element) =>
+  window.getComputedStyle(element).getPropertyValue("--paper").trim() ||
+  "#b8e1f5";
+
 const makeSketch = (host) => (p) => {
   let ants = [];
   let pheromones = [];
@@ -30,6 +34,7 @@ const makeSketch = (host) => (p) => {
   let symbolZones = [];
   let nest;
   let ink;
+  let paper;
   let population;
   let maxPheromones;
   let sceneDotSize;
@@ -98,10 +103,11 @@ const makeSketch = (host) => (p) => {
     return true;
   };
 
-  const drawDot = (x, y) => {
+  const drawAntDot = (x, y) => {
     if (!reservePosition(x, y)) return false;
-    p.noStroke();
-    p.fill(ink);
+    p.stroke(ink);
+    p.strokeWeight(Math.max(1.25, sceneDotSize * 0.12));
+    p.fill(paper);
     p.circle(x, y, sceneDotSize);
     return true;
   };
@@ -309,7 +315,7 @@ const makeSketch = (host) => (p) => {
       p.stroke(ink);
       p.strokeWeight(1);
       p.line(body[1].x, body[1].y, body[2].x, body[2].y);
-      body.forEach((dot) => drawDot(dot.x, dot.y));
+      body.forEach((dot) => drawAntDot(dot.x, dot.y));
     }
   }
 
@@ -476,6 +482,7 @@ const makeSketch = (host) => (p) => {
     );
     canvas.elt.tabIndex = 0;
     ink = p.color(readInk(host));
+    paper = p.color(readPaper(host));
     p.pixelDensity(Math.min(Math.max(window.devicePixelRatio || 1, 2), 3));
     p.rectMode(p.CENTER);
     p.frameRate(reducedMotion ? 8 : 40);

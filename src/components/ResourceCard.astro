@@ -1,27 +1,62 @@
 ---
 const { item } = Astro.props;
-const label = [item.title, item.author].filter(Boolean).join(", ");
+const hasImage = Boolean(item.image);
+const provenance = item.venue ?? item.provider;
+const provenanceLabel = item.venue ? "Source" : "Maintained by";
 ---
 
 <a
-  class={`resource-card resource-card-${item.format ?? "square"}`}
+  class:list={["resource-card", { "resource-card-featured": hasImage }]}
   href={item.url}
-  aria-label={label}
 >
   <figure>
-    <div class="resource-card-image">
-      <img
-        src={item.image.src}
-        alt={item.image.alt}
-        loading="lazy"
-        decoding="async"
-      />
-    </div>
+    {
+      hasImage && (
+        <div class="resource-card-image">
+          <img
+            src={item.image.src}
+            alt={item.image.alt}
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+      )
+    }
     <figcaption>
-      <span class="resource-kind">{item.kind}</span>
-      <h3 class="heading-3">{item.title}</h3>
-      {item.author && <p>{item.author}</p>}
-      {item.meta && <p>{item.meta}</p>}
+      <span class="resource-kind">
+        {item.kind}
+        {item.sourceType && <span aria-hidden="true"> · </span>}
+        {item.sourceType && <span>{item.sourceType}</span>}
+      </span>
+      <h4 class="heading-3">{item.title}</h4>
+      {item.author && <p class="resource-author">{item.author}</p>}
+      {item.meta && <p class="resource-meta">{item.meta}</p>}
+      {
+        provenance && (
+          <p class="resource-provenance">
+            <span>{provenanceLabel}</span>
+            {provenance}
+          </p>
+        )
+      }
+      {
+        item.origin && (
+          <p class="resource-provenance">
+            <span>Affiliations</span>
+            {item.origin}
+          </p>
+        )
+      }
+      {
+        item.accessHost && (
+          <p class="resource-provenance">
+            <span>Access copy</span>
+            {item.accessHost}
+          </p>
+        )
+      }
+      {item.status && <p class="resource-status">{item.status}</p>}
+      <span class="resource-arrow" aria-hidden="true">↗</span>
     </figcaption>
   </figure>
 </a>
@@ -39,10 +74,6 @@ const label = [item.title, item.author].filter(Boolean).join(", ");
     text-decoration: none;
   }
 
-  .resource-card-wide {
-    grid-column: span 2;
-  }
-
   figure {
     display: grid;
     grid-template-rows: auto 1fr;
@@ -57,12 +88,8 @@ const label = [item.title, item.author].filter(Boolean).join(", ");
     overflow: hidden;
   }
 
-  .resource-card-wide .resource-card-image {
-    aspect-ratio: 2 / 1;
-  }
-
-  .resource-card-portrait .resource-card-image {
-    aspect-ratio: 4 / 5;
+  .resource-card-featured .resource-card-image {
+    aspect-ratio: 3 / 2;
   }
 
   img {
@@ -76,23 +103,24 @@ const label = [item.title, item.author].filter(Boolean).join(", ");
 
   figcaption {
     display: flex;
+    position: relative;
     flex-direction: column;
     gap: var(--space-1);
-    padding: var(--space-2);
-    min-height: 8rem;
+    padding: var(--space-2) var(--space-2) 2.8rem;
+    min-height: 13rem;
   }
 
   .resource-kind {
     font-size: 0.72rem;
-    line-height: 1;
+    line-height: 1.2;
     font-family: var(--font-body);
     letter-spacing: 0.08em;
     text-transform: uppercase;
   }
 
-  h3 {
+  h4 {
     margin: auto 0 0;
-    font-size: clamp(1.35rem, 2vw, 2.35rem);
+    font-size: clamp(1.3rem, 1.65vw, 2rem);
     text-decoration: underline;
     text-decoration-color: var(--line-soft);
     text-decoration-thickness: 0.06em;
@@ -104,6 +132,35 @@ const label = [item.title, item.author].filter(Boolean).join(", ");
     margin: 0;
     font-size: 0.85rem;
     line-height: 1.25;
+  }
+
+  .resource-provenance {
+    font-size: 0.78rem;
+  }
+
+  .resource-provenance span {
+    display: block;
+    opacity: 0.78;
+    margin-bottom: 0.1rem;
+    font-weight: 700;
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .resource-status {
+    font-weight: 650;
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .resource-arrow {
+    position: absolute;
+    right: var(--space-2);
+    bottom: var(--space-2);
+    font-size: 1.25rem;
+    line-height: 1;
   }
 
   .resource-card:hover,
@@ -120,17 +177,6 @@ const label = [item.title, item.author].filter(Boolean).join(", ");
   .resource-card:focus-visible {
     outline: 3px solid var(--ink);
     outline-offset: 3px;
-  }
-
-  @media (max-width: 720px) {
-    .resource-card-wide {
-      grid-column: span 1;
-    }
-
-    .resource-card-wide .resource-card-image,
-    .resource-card-portrait .resource-card-image {
-      aspect-ratio: 4 / 3;
-    }
   }
 
   @media (prefers-reduced-motion: reduce) {

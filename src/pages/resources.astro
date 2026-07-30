@@ -2,33 +2,37 @@
 import Layout from "../layouts/Layout.astro";
 import Footer from "../components/Footer.astro";
 import ResourceCard from "../components/ResourceCard.astro";
+import ResourceDisclosure from "../components/ResourceDisclosure.astro";
 import SkipToMain from "../components/SkipToMain.astro";
 import readingListSource from "../data/critical_ai_global_south_reading_list.md?raw";
 import {
   archiveTools,
   createReadingArchive,
-  resourceImages,
-  withResourceImages,
+  readingCollections,
+  toolCollections,
 } from "../data/resource-library.js";
 import "../styles/global.css";
 
 const readingArchive = createReadingArchive(readingListSource);
-const readingGroups = new Map();
-
-readingArchive.forEach((item) => {
-  if (!readingGroups.has(item.group)) readingGroups.set(item.group, []);
-  readingGroups.get(item.group).push(item);
-});
-
-const sections = [...readingGroups].map(([title, items]) => ({
-  title,
-  items: withResourceImages(items, title),
+const readingSections = readingCollections.map((collection) => ({
+  ...collection,
+  items: readingArchive.filter((item) => item.collection === collection.id),
 }));
-
-sections.push({
-  title: "Studio tools",
-  items: withResourceImages(archiveTools, "Studio tools"),
-});
+const toolSections = toolCollections.map((collection) => ({
+  ...collection,
+  items: archiveTools.filter((item) => item.group === collection.id),
+}));
+const allItems = [
+  ...readingSections.flatMap((section) => section.items),
+  ...toolSections.flatMap((section) => section.items),
+];
+const usedImages = [
+  ...new Map(
+    allItems
+      .filter((item) => item.image)
+      .map((item) => [item.image.source, item.image]),
+  ).values(),
+];
 ---
 
 <Layout
@@ -53,45 +57,128 @@ sections.push({
       </div>
     </header>
 
-    <main id="main-content" tabindex="-1">
-      {
-        sections.map((section, sectionIndex) => (
-          <section
-            class="resource-section cutoff"
-            aria-labelledby={`resource-section-${sectionIndex}`}
-          >
-            <header class="resource-section-header">
-              <span class="resource-index">
-                {String(sectionIndex + 1).padStart(2, "0")}
-              </span>
-              <h2 id={`resource-section-${sectionIndex}`} class="heading-2">
-                {section.title}
-              </h2>
-              <span class="resource-count">
-                {String(section.items.length).padStart(2, "0")}
-              </span>
-            </header>
-            <div class="resource-grid">
-              {section.items.map((item) => (
-                <ResourceCard item={item} />
-              ))}
-            </div>
-          </section>
-        ))
-      }
+    <nav class="resource-type-nav cutoff" aria-label="Resource types">
+      <a href="#readings">
+        <span aria-hidden="true">01</span>
+        <strong>Readings</strong>
+        <small>{readingArchive.length}</small>
+      </a>
+      <a href="#tools">
+        <span aria-hidden="true">02</span>
+        <strong>Tools</strong>
+        <small>{archiveTools.length}</small>
+      </a>
+    </nav>
 
-      <aside class="image-sources cutoff" aria-labelledby="image-sources-title">
-        <h2 id="image-sources-title" class="heading-3">Image sources</h2>
-        <ul>
+    <main id="main-content" tabindex="-1">
+      <section
+        id="readings"
+        class="resource-collection cutoff"
+        aria-labelledby="readings-title"
+      >
+        <header class="resource-collection-header">
+          <span class="resource-collection-index" aria-hidden="true">01</span>
+          <div>
+            <h2 id="readings-title" class="heading-1">Readings</h2>
+            <p>
+              Each card names its publication venue or publisher and the host of
+              the linked copy. Corporate or mixed-industry research is labelled
+              explicitly.
+            </p>
+          </div>
+          <span class="resource-collection-count">
+            {readingArchive.length}
+            <span class="sr-only"> readings</span>
+          </span>
+        </header>
+
+        <div class="resource-disclosures">
           {
-            resourceImages.map((image) => (
-              <li>
-                <a href={image.source}>{image.credit}</a>
-              </li>
+            readingSections.map((section, sectionIndex) => (
+              <ResourceDisclosure
+                id={`readings-${section.id}`}
+                title={section.title}
+                number={sectionIndex + 1}
+                count={section.items.length}
+                itemLabel="readings"
+                open={sectionIndex === 0}
+              >
+                <ul class="resource-grid">
+                  {section.items.map((item) => (
+                    <li class:list={{ "resource-item-featured": item.image }}>
+                      <ResourceCard item={item} />
+                    </li>
+                  ))}
+                </ul>
+              </ResourceDisclosure>
             ))
           }
-        </ul>
-      </aside>
+        </div>
+      </section>
+
+      <section
+        id="tools"
+        class="resource-collection cutoff"
+        aria-labelledby="tools-title"
+      >
+        <header class="resource-collection-header">
+          <span class="resource-collection-index" aria-hidden="true">02</span>
+          <div>
+            <h2 id="tools-title" class="heading-1">Tools</h2>
+            <p>
+              AI and machine-learning tools grouped by how students might use
+              them. Each card identifies its maintainer, access model, and
+              whether it comes from a university, community, or company.
+            </p>
+          </div>
+          <span class="resource-collection-count">
+            {archiveTools.length}
+            <span class="sr-only"> tools</span>
+          </span>
+        </header>
+
+        <div class="resource-disclosures">
+          {
+            toolSections.map((section, sectionIndex) => (
+              <ResourceDisclosure
+                id={`tools-${section.id}`}
+                title={section.title}
+                number={sectionIndex + 1}
+                count={section.items.length}
+                itemLabel="tools"
+              >
+                <ul class="resource-grid">
+                  {section.items.map((item) => (
+                    <li>
+                      <ResourceCard item={item} />
+                    </li>
+                  ))}
+                </ul>
+              </ResourceDisclosure>
+            ))
+          }
+        </div>
+      </section>
+
+      {
+        usedImages.length > 0 && (
+          <aside
+            class="image-sources cutoff"
+            aria-labelledby="image-sources-title"
+          >
+            <h2 id="image-sources-title" class="heading-3">
+              Image sources
+            </h2>
+            <ul>
+              {usedImages.map((image) => (
+                <li>
+                  <a href={image.source}>{image.credit}</a>
+                </li>
+              ))}
+            </ul>
+          </aside>
+        )
+      }
     </main>
 
     <Footer />
@@ -148,32 +235,83 @@ sections.push({
     width: fit-content;
   }
 
-  .resource-section {
+  .resource-type-nav {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     border-bottom: var(--rule);
+  }
+
+  .resource-type-nav a {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: baseline;
+    gap: var(--space-2);
+    padding: var(--space-card);
+    text-decoration: none;
+  }
+
+  .resource-type-nav a:first-child {
+    border-right: var(--rule);
+  }
+
+  .resource-type-nav a:hover,
+  .resource-type-nav a:focus-visible {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .resource-type-nav a:focus-visible {
+    outline: 3px solid var(--ink);
+    outline-offset: 3px;
+  }
+
+  .resource-type-nav span,
+  .resource-type-nav small {
+    font-size: 0.78rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .resource-type-nav strong {
+    font-size: clamp(1.8rem, 3.2vw, 3.75rem);
+    line-height: 1;
+    font-family: var(--font-display);
+  }
+
+  .resource-collection {
     padding-block: var(--space-section);
   }
 
-  .resource-section-header {
+  .resource-collection + .resource-collection {
+    border-top: var(--rule);
+  }
+
+  .resource-collection-header {
     display: grid;
     grid-template-columns: 2.5rem minmax(0, 1fr) auto;
     align-items: start;
     gap: var(--space-2);
-    margin-bottom: var(--space-card);
+    margin-bottom: var(--space-section);
   }
 
-  .resource-section-header h2 {
+  .resource-collection-header h2 {
     margin: 0;
-    max-width: 16ch;
+    font-size: clamp(5rem, 12vw, 12rem);
+    line-height: 0.72;
   }
 
-  .resource-index {
+  .resource-collection-header p {
+    margin: clamp(1.5rem, 2.5vw, 2.75rem) 0 0;
+    max-width: 52rem;
+  }
+
+  .resource-collection-index {
     font-size: var(--title-card);
     line-height: 1;
     font-family: var(--font-display);
     writing-mode: vertical-rl;
   }
 
-  .resource-count {
+  .resource-collection-count {
     border: var(--rule);
     padding: 0.25rem 0.45rem;
     min-width: 2.75rem;
@@ -185,9 +323,26 @@ sections.push({
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .resource-grid > li {
+    display: flex;
+    min-width: 0;
+  }
+
+  .resource-grid > li > :global(*) {
+    width: 100%;
+  }
+
+  .resource-item-featured {
+    grid-column: span 2;
   }
 
   .image-sources {
+    border-top: var(--rule);
     padding-block: var(--space-section);
   }
 
@@ -225,13 +380,30 @@ sections.push({
       font-size: clamp(4.4rem, 23vw, 7rem);
     }
 
+    .resource-type-nav {
+      grid-template-columns: 1fr;
+    }
+
+    .resource-type-nav a:first-child {
+      border-right: 0;
+      border-bottom: var(--rule);
+    }
+
+    .resource-collection-header {
+      grid-template-columns: 2rem minmax(0, 1fr) auto;
+    }
+
+    .resource-collection-header h2 {
+      font-size: clamp(4rem, 20vw, 7rem);
+    }
+
     .resource-grid,
     .image-sources ul {
       grid-template-columns: 1fr;
     }
 
-    .resource-section-header {
-      grid-template-columns: 2rem minmax(0, 1fr) auto;
+    .resource-item-featured {
+      grid-column: span 1;
     }
   }
 </style>

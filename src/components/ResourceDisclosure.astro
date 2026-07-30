@@ -1,0 +1,153 @@
+---
+const {
+  id,
+  title,
+  number,
+  count,
+  itemLabel = "items",
+  open = false,
+} = Astro.props;
+---
+
+<details id={id} class="resource-disclosure" open={open}>
+  <summary>
+    <h3 class="heading-2">
+      <span class="resource-disclosure-number" aria-hidden="true">
+        {String(number).padStart(2, "0")}
+      </span>
+      <span class="resource-disclosure-title">{title}</span>
+      <span class="resource-disclosure-count">
+        {String(count).padStart(2, "0")}
+        <span class="sr-only"> {itemLabel}</span>
+      </span>
+      <span class="resource-disclosure-state" aria-hidden="true">
+        <span class="resource-disclosure-unfold">Unfold</span>
+        <span class="resource-disclosure-fold">Fold</span>
+      </span>
+    </h3>
+  </summary>
+  <div class="resource-disclosure-panel">
+    <slot />
+  </div>
+</details>
+
+<style>
+  .resource-disclosure {
+    border-top: var(--rule);
+  }
+
+  .resource-disclosure:last-child {
+    border-bottom: var(--rule);
+  }
+
+  summary {
+    cursor: pointer;
+    list-style: none;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  summary:focus-visible {
+    outline: 3px solid var(--ink);
+    outline-offset: -3px;
+  }
+
+  summary h3 {
+    display: grid;
+    position: relative;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--space-2);
+    box-sizing: border-box;
+    margin: 0;
+    padding: var(--space-3) 3.2rem;
+    min-height: 6rem;
+    text-align: center;
+  }
+
+  .resource-disclosure-title {
+    text-align: center;
+  }
+
+  .resource-disclosure-number,
+  .resource-disclosure-state {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-weight: 700;
+    font-size: clamp(0.68rem, 0.85vw, 0.9rem);
+    line-height: 1;
+    font-family: var(--font-body);
+    letter-spacing: 0.14em;
+    writing-mode: vertical-rl;
+    text-orientation: sideways;
+    text-transform: uppercase;
+  }
+
+  .resource-disclosure-number {
+    left: 0;
+  }
+
+  .resource-disclosure-state {
+    right: 0;
+  }
+
+  .resource-disclosure-count {
+    border: var(--rule);
+    padding: 0.25rem 0.45rem;
+    min-width: 2.75rem;
+    font-variant-numeric: tabular-nums;
+    text-align: center;
+  }
+
+  .resource-disclosure-fold,
+  details[open] .resource-disclosure-unfold {
+    display: none;
+  }
+
+  details[open] .resource-disclosure-fold {
+    display: block;
+  }
+
+  .resource-disclosure-panel {
+    padding-bottom: var(--space-section);
+  }
+
+  @media (max-width: 720px) {
+    summary h3 {
+      grid-template-columns: minmax(0, 1fr) auto;
+      padding-inline: 2.25rem;
+      min-height: 5rem;
+    }
+
+    .resource-disclosure-title {
+      font-size: clamp(2rem, 10vw, 3.25rem);
+      text-align: left;
+    }
+
+    .resource-disclosure-number,
+    .resource-disclosure-state {
+      font-size: 0.64rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    details[open] .resource-disclosure-panel {
+      animation: resource-panel-in 220ms ease-out both;
+    }
+  }
+
+  @keyframes resource-panel-in {
+    from {
+      transform: translateY(-0.35rem);
+      opacity: 0;
+    }
+
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+</style>

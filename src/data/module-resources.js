@@ -23,12 +23,12 @@ export const moduleResources = {
         url: "https://findingeliza.org/",
       },
       {
-        title: "NetLogo Web",
-        url: "https://www.netlogoweb.org/",
+        title: "CLIPS rule-based programming",
+        url: "https://clipsrules.net/",
       },
       {
-        title: "LOOPY",
-        url: "https://ncase.me/loopy/",
+        title: "AIMA Python implementations",
+        url: "https://github.com/aimacode/aima-python",
       },
     ],
   },

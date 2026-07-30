@@ -12,20 +12,14 @@ const classes = `accordion ${noCutoff ? "" : "cutoff"}`.trim();
 const sectionNumbers = {
   "Course Description": "01",
   "Community Agreement": "02",
-  "Module 1: Crack Inside the Black Box": "03",
-  "Module 2: The Coded Gaze": "04",
-  "Module 3: Disrupting the Chain-of-Thought": "05",
   "Grading and Attendance": "06",
   "Open Source Policies": "07",
   "Pratt MFA Communications Design Departmental Resources": "08",
 };
 const isModule = title.startsWith("Module ");
 const moduleNumber = title.match(/^Module\s+(\d+)/)?.[1];
-const sectionNumber =
-  sectionNumbers[title] ??
-  (moduleNumber
-    ? String(Number.parseInt(moduleNumber, 10) + 2).padStart(2, "0")
-    : undefined);
+const displayTitle = isModule ? title.replace(/^Module\s+\d+:\s*/, "") : title;
+const sectionNumber = moduleNumber?.padStart(2, "0") ?? sectionNumbers[title];
 const buttonClasses =
   `accordion-button ${isModule ? "texture-field" : ""}`.trim();
 ---
@@ -44,7 +38,10 @@ const buttonClasses =
         </span>
       )
     }
-    <h2 class="heading-1">{title}</h2>
+    <h2 class="heading-1">
+      {isModule && <span class="sr-only">{`Module ${moduleNumber}: `}</span>}
+      {displayTitle}
+    </h2>
     <span class="accordion-state-label" aria-hidden="true">
       <span class="accordion-icon-expand">Unfold</span>
       <span class="accordion-icon-collapse">Fold</span>
