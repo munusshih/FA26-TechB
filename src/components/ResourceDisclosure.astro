@@ -1,25 +1,11 @@
 ---
-const {
-  id,
-  title,
-  number,
-  count,
-  itemLabel = "items",
-  open = false,
-} = Astro.props;
+const { id, title, open = false } = Astro.props;
 ---
 
 <details id={id} class="resource-disclosure" open={open}>
   <summary>
     <h3 class="heading-2">
-      <span class="resource-disclosure-number" aria-hidden="true">
-        {String(number).padStart(2, "0")}
-      </span>
       <span class="resource-disclosure-title">{title}</span>
-      <span class="resource-disclosure-count">
-        {String(count).padStart(2, "0")}
-        <span class="sr-only"> {itemLabel}</span>
-      </span>
       <span class="resource-disclosure-state" aria-hidden="true">
         <span class="resource-disclosure-unfold">Unfold</span>
         <span class="resource-disclosure-fold">Fold</span>
@@ -32,16 +18,13 @@ const {
 </details>
 
 <style>
-  .resource-disclosure {
-    border-top: var(--rule);
-  }
-
-  .resource-disclosure:last-child {
-    border-bottom: var(--rule);
+  .resource-disclosure + .resource-disclosure {
+    margin-top: var(--space-1);
   }
 
   summary {
     cursor: pointer;
+    background: var(--paper-raised);
     list-style: none;
   }
 
@@ -55,11 +38,7 @@ const {
   }
 
   summary h3 {
-    display: grid;
     position: relative;
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: center;
-    gap: var(--space-2);
     box-sizing: border-box;
     margin: 0;
     padding: var(--space-3) 3.2rem;
@@ -71,7 +50,6 @@ const {
     text-align: center;
   }
 
-  .resource-disclosure-number,
   .resource-disclosure-state {
     position: absolute;
     top: 50%;
@@ -86,20 +64,8 @@ const {
     text-transform: uppercase;
   }
 
-  .resource-disclosure-number {
-    left: 0;
-  }
-
   .resource-disclosure-state {
     right: 0;
-  }
-
-  .resource-disclosure-count {
-    border: var(--rule);
-    padding: 0.25rem 0.45rem;
-    min-width: 2.75rem;
-    font-variant-numeric: tabular-nums;
-    text-align: center;
   }
 
   .resource-disclosure-fold,
@@ -127,7 +93,6 @@ const {
       text-align: left;
     }
 
-    .resource-disclosure-number,
     .resource-disclosure-state {
       font-size: 0.64rem;
     }

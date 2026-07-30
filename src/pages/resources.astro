@@ -22,17 +22,6 @@ const toolSections = toolCollections.map((collection) => ({
   ...collection,
   items: archiveTools.filter((item) => item.group === collection.id),
 }));
-const allItems = [
-  ...readingSections.flatMap((section) => section.items),
-  ...toolSections.flatMap((section) => section.items),
-];
-const usedImages = [
-  ...new Map(
-    allItems
-      .filter((item) => item.image)
-      .map((item) => [item.image.source, item.image]),
-  ).values(),
-];
 ---
 
 <Layout
@@ -45,7 +34,6 @@ const usedImages = [
   <div class="resource-site">
     <header class="resource-hero texture-field">
       <div class="cutoff resource-hero-inner">
-        <p class="resource-eyebrow">DES 720B · Extended index</p>
         <h1 class="heading-1">Resource<br />Archive</h1>
         <div class="resource-intro">
           <p>
@@ -59,14 +47,10 @@ const usedImages = [
 
     <nav class="resource-type-nav cutoff" aria-label="Resource types">
       <a href="#readings">
-        <span aria-hidden="true">01</span>
         <strong>Readings</strong>
-        <small>{readingArchive.length}</small>
       </a>
       <a href="#tools">
-        <span aria-hidden="true">02</span>
         <strong>Tools</strong>
-        <small>{archiveTools.length}</small>
       </a>
     </nav>
 
@@ -77,19 +61,13 @@ const usedImages = [
         aria-labelledby="readings-title"
       >
         <header class="resource-collection-header">
-          <span class="resource-collection-index" aria-hidden="true">01</span>
           <div>
             <h2 id="readings-title" class="heading-1">Readings</h2>
             <p>
-              Each card names its publication venue or publisher and the host of
-              the linked copy. Corporate or mixed-industry research is labelled
-              explicitly.
+              Each card names its publication source. Corporate and
+              mixed-industry research is labelled explicitly.
             </p>
           </div>
-          <span class="resource-collection-count">
-            {readingArchive.length}
-            <span class="sr-only"> readings</span>
-          </span>
         </header>
 
         <div class="resource-disclosures">
@@ -98,9 +76,6 @@ const usedImages = [
               <ResourceDisclosure
                 id={`readings-${section.id}`}
                 title={section.title}
-                number={sectionIndex + 1}
-                count={section.items.length}
-                itemLabel="readings"
                 open={sectionIndex === 0}
               >
                 <ul class="resource-grid">
@@ -122,30 +97,22 @@ const usedImages = [
         aria-labelledby="tools-title"
       >
         <header class="resource-collection-header">
-          <span class="resource-collection-index" aria-hidden="true">02</span>
           <div>
             <h2 id="tools-title" class="heading-1">Tools</h2>
             <p>
               AI and machine-learning tools grouped by how students might use
-              them. Each card identifies its maintainer, access model, and
-              whether it comes from a university, community, or company.
+              them. Each card identifies its source and whether it comes from a
+              university, community, or company.
             </p>
           </div>
-          <span class="resource-collection-count">
-            {archiveTools.length}
-            <span class="sr-only"> tools</span>
-          </span>
         </header>
 
         <div class="resource-disclosures">
           {
-            toolSections.map((section, sectionIndex) => (
+            toolSections.map((section) => (
               <ResourceDisclosure
                 id={`tools-${section.id}`}
                 title={section.title}
-                number={sectionIndex + 1}
-                count={section.items.length}
-                itemLabel="tools"
               >
                 <ul class="resource-grid">
                   {section.items.map((item) => (
@@ -159,26 +126,6 @@ const usedImages = [
           }
         </div>
       </section>
-
-      {
-        usedImages.length > 0 && (
-          <aside
-            class="image-sources cutoff"
-            aria-labelledby="image-sources-title"
-          >
-            <h2 id="image-sources-title" class="heading-3">
-              Image sources
-            </h2>
-            <ul>
-              {usedImages.map((image) => (
-                <li>
-                  <a href={image.source}>{image.credit}</a>
-                </li>
-              ))}
-            </ul>
-          </aside>
-        )
-      }
     </main>
 
     <Footer />
@@ -193,7 +140,6 @@ const usedImages = [
   }
 
   .resource-hero {
-    border-bottom: var(--rule);
     padding: var(--space-card) 0 var(--space-section);
   }
 
@@ -202,14 +148,6 @@ const usedImages = [
     grid-template-columns: minmax(0, 2fr) minmax(16rem, 0.8fr);
     align-items: end;
     gap: var(--space-card);
-  }
-
-  .resource-eyebrow {
-    grid-column: 1 / -1;
-    margin: 0;
-    font-size: 0.78rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
   }
 
   .resource-hero h1 {
@@ -238,20 +176,15 @@ const usedImages = [
   .resource-type-nav {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    border-bottom: var(--rule);
+    gap: var(--space-2);
+    padding-bottom: var(--space-section);
   }
 
   .resource-type-nav a {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto;
-    align-items: baseline;
-    gap: var(--space-2);
+    display: block;
+    background: var(--paper-raised);
     padding: var(--space-card);
     text-decoration: none;
-  }
-
-  .resource-type-nav a:first-child {
-    border-right: var(--rule);
   }
 
   .resource-type-nav a:hover,
@@ -263,12 +196,6 @@ const usedImages = [
   .resource-type-nav a:focus-visible {
     outline: 3px solid var(--ink);
     outline-offset: 3px;
-  }
-
-  .resource-type-nav span,
-  .resource-type-nav small {
-    font-size: 0.78rem;
-    font-variant-numeric: tabular-nums;
   }
 
   .resource-type-nav strong {
@@ -286,10 +213,6 @@ const usedImages = [
   }
 
   .resource-collection-header {
-    display: grid;
-    grid-template-columns: 2.5rem minmax(0, 1fr) auto;
-    align-items: start;
-    gap: var(--space-2);
     margin-bottom: var(--space-section);
   }
 
@@ -302,21 +225,6 @@ const usedImages = [
   .resource-collection-header p {
     margin: clamp(1.5rem, 2.5vw, 2.75rem) 0 0;
     max-width: 52rem;
-  }
-
-  .resource-collection-index {
-    font-size: var(--title-card);
-    line-height: 1;
-    font-family: var(--font-display);
-    writing-mode: vertical-rl;
-  }
-
-  .resource-collection-count {
-    border: var(--rule);
-    padding: 0.25rem 0.45rem;
-    min-width: 2.75rem;
-    font-variant-numeric: tabular-nums;
-    text-align: center;
   }
 
   .resource-grid {
@@ -341,32 +249,8 @@ const usedImages = [
     grid-column: span 2;
   }
 
-  .image-sources {
-    border-top: var(--rule);
-    padding-block: var(--space-section);
-  }
-
-  .image-sources h2 {
-    margin: 0 0 var(--space-2);
-  }
-
-  .image-sources ul {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: var(--space-1) var(--space-3);
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .image-sources li {
-    font-size: 0.78rem;
-    line-height: 1.25;
-  }
-
   @media (max-width: 1000px) {
-    .resource-grid,
-    .image-sources ul {
+    .resource-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
@@ -384,21 +268,11 @@ const usedImages = [
       grid-template-columns: 1fr;
     }
 
-    .resource-type-nav a:first-child {
-      border-right: 0;
-      border-bottom: var(--rule);
-    }
-
-    .resource-collection-header {
-      grid-template-columns: 2rem minmax(0, 1fr) auto;
-    }
-
     .resource-collection-header h2 {
       font-size: clamp(4rem, 20vw, 7rem);
     }
 
-    .resource-grid,
-    .image-sources ul {
+    .resource-grid {
       grid-template-columns: 1fr;
     }
 

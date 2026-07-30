@@ -14,7 +14,7 @@
   >
     <span class="eliza-identity">
       <strong data-assistant-name>AI</strong>
-      <small data-eliza-status>AI chatbot</small>
+      <small data-eliza-status>Local private AI chatbot</small>
     </span>
     <span data-eliza-toggle-label>Open chat</span>
   </button>
@@ -36,7 +36,7 @@
         class="eliza-message"
         data-speaker="eliza"
         data-label="AI"
-        aria-label="AI chatbot"
+        aria-label="Local private AI chatbot"
       >
         <p>
           Ask me about a module, project, reading, tool, deadline, grading, or
@@ -281,10 +281,10 @@
     });
 
     input.disabled = true;
-    status.textContent = "Loading AI chatbot";
+    status.textContent = "Loading local private AI chatbot";
     const eliza = await loadElizaInEnglish(of(elizaScript));
     input.disabled = false;
-    status.textContent = "AI chatbot";
+    status.textContent = "Local private AI chatbot";
 
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
@@ -321,7 +321,7 @@
       input.disabled = false;
       thinking = false;
       bar.dataset.state = "idle";
-      status.textContent = "AI chatbot";
+      status.textContent = "Local private AI chatbot";
       input.focus();
     });
 

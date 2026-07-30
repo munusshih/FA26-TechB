@@ -2,7 +2,7 @@
 const { item } = Astro.props;
 const hasImage = Boolean(item.image);
 const provenance = item.venue ?? item.provider;
-const provenanceLabel = item.venue ? "Source" : "Maintained by";
+const source = [provenance, item.origin].filter(Boolean).join(" · ");
 ---
 
 <a
@@ -23,39 +23,26 @@ const provenanceLabel = item.venue ? "Source" : "Maintained by";
       )
     }
     <figcaption>
-      <span class="resource-kind">
-        {item.kind}
-        {item.sourceType && <span aria-hidden="true"> · </span>}
-        {item.sourceType && <span>{item.sourceType}</span>}
-      </span>
+      <div class="resource-labels">
+        <span class="resource-label">{item.kind}</span>
+        {
+          item.sourceType && (
+            <span class="resource-label">{item.sourceType}</span>
+          )
+        }
+        {item.status && <span class="resource-label">{item.status}</span>}
+      </div>
       <h4 class="heading-3">{item.title}</h4>
       {item.author && <p class="resource-author">{item.author}</p>}
       {item.meta && <p class="resource-meta">{item.meta}</p>}
       {
-        provenance && (
-          <p class="resource-provenance">
-            <span>{provenanceLabel}</span>
-            {provenance}
+        source && (
+          <p class="resource-source">
+            <span class="sr-only">Source: </span>
+            {source}
           </p>
         )
       }
-      {
-        item.origin && (
-          <p class="resource-provenance">
-            <span>Affiliations</span>
-            {item.origin}
-          </p>
-        )
-      }
-      {
-        item.accessHost && (
-          <p class="resource-provenance">
-            <span>Access copy</span>
-            {item.accessHost}
-          </p>
-        )
-      }
-      {item.status && <p class="resource-status">{item.status}</p>}
       <span class="resource-arrow" aria-hidden="true">↗</span>
     </figcaption>
   </figure>
@@ -67,7 +54,6 @@ const provenanceLabel = item.venue ? "Source" : "Maintained by";
     transition:
       background-color 180ms ease,
       color 180ms ease;
-    border: var(--rule);
     background: color-mix(in srgb, var(--paper-raised) 84%, transparent);
     min-width: 0;
     color: var(--ink);
@@ -82,7 +68,6 @@ const provenanceLabel = item.venue ? "Source" : "Maintained by";
   }
 
   .resource-card-image {
-    border-bottom: var(--rule);
     background: var(--paper);
     aspect-ratio: 1;
     overflow: hidden;
@@ -110,21 +95,25 @@ const provenanceLabel = item.venue ? "Source" : "Maintained by";
     min-height: 13rem;
   }
 
-  .resource-kind {
+  .resource-labels {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  .resource-label {
+    border-radius: 999px !important;
+    background: var(--ink);
+    padding: 0.3rem 0.55rem;
+    color: var(--paper);
     font-size: 0.72rem;
     line-height: 1.2;
     font-family: var(--font-body);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
   }
 
   h4 {
     margin: auto 0 0;
     font-size: clamp(1.3rem, 1.65vw, 2rem);
-    text-decoration: underline;
-    text-decoration-color: var(--line-soft);
-    text-decoration-thickness: 0.06em;
-    text-underline-offset: 0.08em;
   }
 
   p {
@@ -134,25 +123,9 @@ const provenanceLabel = item.venue ? "Source" : "Maintained by";
     line-height: 1.25;
   }
 
-  .resource-provenance {
+  .resource-source {
+    font-style: italic;
     font-size: 0.78rem;
-  }
-
-  .resource-provenance span {
-    display: block;
-    opacity: 0.78;
-    margin-bottom: 0.1rem;
-    font-weight: 700;
-    font-size: 0.65rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-
-  .resource-status {
-    font-weight: 650;
-    font-size: 0.72rem;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
   }
 
   .resource-arrow {
@@ -167,6 +140,12 @@ const provenanceLabel = item.venue ? "Source" : "Maintained by";
   .resource-card:focus-visible {
     background: var(--ink);
     color: var(--paper);
+  }
+
+  .resource-card:hover .resource-label,
+  .resource-card:focus-visible .resource-label {
+    background: var(--paper);
+    color: var(--ink);
   }
 
   .resource-card:hover img,
