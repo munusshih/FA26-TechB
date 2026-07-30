@@ -18,7 +18,6 @@
 
 .accordion-state-label,
 .accordion-number {
-  position: absolute;
   top: 50%;
   transform: translateY(-50%);
   z-index: 3;
@@ -32,11 +31,18 @@
   text-transform: uppercase;
 }
 
+.accordion-button > .accordion-state-label,
+.accordion-button > .accordion-number {
+  position: absolute;
+}
+
 .accordion-state-label {
   right: 0;
+  left: auto;
 }
 
 .accordion-number {
+  right: auto;
   left: 0;
 }
 

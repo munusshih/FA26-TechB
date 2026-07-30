@@ -59,7 +59,7 @@ export const toolCollections = [
   },
   {
     id: "run-build-local",
-    title: "Run and build locally",
+    title: "Run private models and build locally",
   },
 ];
 
@@ -230,6 +230,38 @@ export const archiveTools = [
       sourceType: "Independent educational project",
     },
     {
+      title: "RAISE Playground",
+      url: "https://playground.raise.mit.edu/",
+      meta: "Build block-based AI projects with models and robots",
+      status: "Free · Open source",
+      provider: "MIT RAISE Initiative · MIT Media Lab",
+      sourceType: "University educational project",
+    },
+    {
+      title: "ENNUI",
+      url: "https://math.mit.edu/sites/ennui/",
+      meta: "Drag, train, and export neural-network architectures",
+      status: "Free · Open source",
+      provider: "ENNUI contributors · MIT Mathematics",
+      sourceType: "University-hosted educational project",
+    },
+    {
+      title: "AI with MIT App Inventor",
+      url: "https://appinventor.mit.edu/explore/ai-with-mit-app-inventor",
+      meta: "Make phone apps with vision, speech, and pose models",
+      status: "Free · Open source",
+      provider: "MIT App Inventor",
+      sourceType: "University educational platform",
+    },
+    {
+      title: "Edge Impulse Studio",
+      url: "https://studio.edgeimpulse.com/",
+      meta: "Collect data, train, and deploy small edge models",
+      status: "Free developer plan",
+      provider: "Edge Impulse",
+      sourceType: "Corporate educational tool",
+    },
+    {
       title: "MediaPipe Studio",
       url: "https://ai.google.dev/edge/mediapipe/solutions/studio",
       meta: "Test live-media models in the browser",
@@ -238,11 +270,27 @@ export const archiveTools = [
       sourceType: "Corporate tool",
     },
     {
+      title: "Quick, Draw! Data",
+      url: "https://quickdraw.withgoogle.com/data",
+      meta: "Play with millions of drawings used to train classifiers",
+      status: "Free · Open data",
+      provider: "Google Creative Lab",
+      sourceType: "Corporate educational experiment",
+    },
+    {
       title: "Orange Data Mining",
       url: "https://orangedatamining.com/",
       meta: "No-code visual machine-learning workflows",
       status: "Free · Open source",
       provider: "University of Ljubljana",
+      sourceType: "University research",
+    },
+    {
+      title: "CNN Explainer",
+      url: "https://poloclub.github.io/cnn-explainer/",
+      meta: "Inspect convolutions and feature maps step by step",
+      status: "Free · Open source",
+      provider: "Georgia Tech · Polo Club of Data Science",
       sourceType: "University research",
     },
     {
@@ -260,6 +308,38 @@ export const archiveTools = [
       status: "Free · Open source",
       provider: "Georgia Tech · Polo Club of Data Science",
       sourceType: "University research",
+    },
+    {
+      title: "Embedding Projector",
+      url: "https://projector.tensorflow.org/",
+      meta: "Explore high-dimensional embeddings in 3D",
+      status: "Free · Open source",
+      provider: "TensorFlow · Google",
+      sourceType: "Corporate research",
+    },
+    {
+      title: "Model Explorer",
+      url: "https://developers.google.com/edge/model-explorer",
+      meta: "Open real model graphs and compare transformations",
+      status: "Free · Open source",
+      provider: "Google AI Edge",
+      sourceType: "Corporate open-source project",
+    },
+    {
+      title: "Netron",
+      url: "https://netron.app/",
+      meta: "Open and inspect neural-network model graphs",
+      status: "Free · Open source",
+      provider: "Lutz Roeder and contributors",
+      sourceType: "Independent open-source project",
+    },
+    {
+      title: "LLM Visualization",
+      url: "https://bbycroft.net/llm",
+      meta: "Trace a GPT-style model down to each operation",
+      status: "Free · Source available",
+      provider: "Brendan Bycroft",
+      sourceType: "Independent educational project",
     },
     {
       title: "Learning Interpretability Tool",
@@ -362,6 +442,38 @@ export const archiveTools = [
       sourceType: "Company-maintained open source",
     },
     {
+      title: "LM Studio",
+      url: "https://lmstudio.ai/docs/app/offline",
+      meta: "Download, compare, and serve local models offline",
+      status: "Free app · Proprietary GUI",
+      provider: "LM Studio",
+      sourceType: "Commercial desktop tool",
+    },
+    {
+      title: "GPT4All",
+      url: "https://docs.gpt4all.io/gpt4all_desktop/quickstart.html",
+      meta: "Chat with local models and private documents",
+      status: "Free · Open source",
+      provider: "Nomic AI",
+      sourceType: "Company-maintained open source",
+    },
+    {
+      title: "AnythingLLM",
+      url: "https://docs.anythingllm.com/",
+      meta: "Build a private local assistant over your files",
+      status: "Free · Open source",
+      provider: "Mintplex Labs",
+      sourceType: "Company-maintained open source",
+    },
+    {
+      title: "Open WebUI",
+      url: "https://docs.openwebui.com/",
+      meta: "Self-host a private interface for local models",
+      status: "Free · Source available",
+      provider: "Open WebUI community",
+      sourceType: "Community project",
+    },
+    {
       title: "Transformers.js",
       url: "https://huggingface.co/docs/transformers.js",
       meta: "Run multimodal models in the browser",
@@ -370,12 +482,52 @@ export const archiveTools = [
       sourceType: "Company-maintained open source",
     },
     {
+      title: "MLX LM",
+      url: "https://github.com/ml-explore/mlx-lm",
+      meta: "Run and fine-tune language models on Apple silicon",
+      status: "Free · Open source",
+      provider: "Apple MLX contributors",
+      sourceType: "Corporate research",
+    },
+    {
+      title: "llama.cpp",
+      url: "https://github.com/ggml-org/llama.cpp",
+      meta: "Run, quantize, and locally serve GGUF models",
+      status: "Free · Open source",
+      provider: "ggml community",
+      sourceType: "Community project",
+    },
+    {
       title: "llamafile",
       url: "https://github.com/mozilla-ai/llamafile",
       meta: "Run a language model from one file",
       status: "Free · Open source",
       provider: "Mozilla Ocho",
       sourceType: "Open research project",
+    },
+    {
+      title: "LocalAI",
+      url: "https://localai.io/docs/overview/",
+      meta: "Serve local language, vision, and voice models",
+      status: "Free · Open source",
+      provider: "LocalAI community",
+      sourceType: "Community project",
+    },
+    {
+      title: "PrivateGPT",
+      url: "https://github.com/zylon-ai/private-gpt",
+      meta: "Build fully local document and RAG experiments",
+      status: "Free · Open source",
+      provider: "Zylon",
+      sourceType: "Company-maintained open source",
+    },
+    {
+      title: "Lemonade",
+      url: "https://github.com/lemonade-sdk/lemonade",
+      meta: "Run local language, speech, and image models",
+      status: "Free · Open source",
+      provider: "Lemonade contributors",
+      sourceType: "Community project",
     },
     {
       title: "Langflow",
@@ -443,6 +595,7 @@ const sourceFallbacks = {
   "interaction-design.org": {
     venue: "Interaction Design Foundation",
     sourceType: "Private education provider",
+    year: "n.d.",
   },
   "moma.org": {
     venue: "Museum of Modern Art",
@@ -612,7 +765,8 @@ function createProvenance({ citation, source, titleKind, url }) {
   const hostname = getHostname(url);
   const fallback = getHostEntry(sourceFallbacks, hostname);
   const override = readingProvenanceOverrides.get(url);
-  const year = citation.match(/\b(?:18|19|20)\d{2}\b/g)?.at(-1);
+  const year =
+    citation.match(/\b(?:18|19|20)\d{2}\b/g)?.at(-1) ?? fallback?.year;
   const venue = isYearOnly(source)
     ? [fallback?.venue ?? "Venue not listed", source || year]
         .filter(Boolean)

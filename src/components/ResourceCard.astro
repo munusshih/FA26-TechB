@@ -3,6 +3,10 @@ const { item } = Astro.props;
 const hasImage = Boolean(item.image);
 const provenance = item.venue ?? item.provider;
 const source = [provenance, item.origin].filter(Boolean).join(" · ");
+const readingYear = item.kind === "Reading" ? (item.year ?? "n.d.") : undefined;
+const displayTitle = readingYear
+  ? `${item.title} (${readingYear})`
+  : item.title;
 ---
 
 <a
@@ -24,15 +28,23 @@ const source = [provenance, item.origin].filter(Boolean).join(" · ");
     }
     <figcaption>
       <div class="resource-labels">
-        <span class="resource-label">{item.kind}</span>
+        <span class="resource-label resource-label-kind">{item.kind}</span>
         {
           item.sourceType && (
-            <span class="resource-label">{item.sourceType}</span>
+            <span class="resource-label resource-label-source">
+              {item.sourceType}
+            </span>
           )
         }
-        {item.status && <span class="resource-label">{item.status}</span>}
+        {
+          item.status && (
+            <span class="resource-label resource-label-status">
+              {item.status}
+            </span>
+          )
+        }
       </div>
-      <h4 class="heading-3">{item.title}</h4>
+      <h4 class="heading-3">{displayTitle}</h4>
       {item.author && <p class="resource-author">{item.author}</p>}
       {item.meta && <p class="resource-meta">{item.meta}</p>}
       {
@@ -54,7 +66,7 @@ const source = [provenance, item.origin].filter(Boolean).join(" · ");
     transition:
       background-color 180ms ease,
       color 180ms ease;
-    background: color-mix(in srgb, var(--paper-raised) 84%, transparent);
+    background: transparent;
     min-width: 0;
     color: var(--ink);
     text-decoration: none;
@@ -68,7 +80,7 @@ const source = [provenance, item.origin].filter(Boolean).join(" · ");
   }
 
   .resource-card-image {
-    background: var(--paper);
+    background: transparent;
     aspect-ratio: 1;
     overflow: hidden;
   }
@@ -102,13 +114,34 @@ const source = [provenance, item.origin].filter(Boolean).join(" · ");
   }
 
   .resource-label {
-    border-radius: 999px !important;
-    background: var(--ink);
-    padding: 0.3rem 0.55rem;
-    color: var(--paper);
-    font-size: 0.72rem;
-    line-height: 1.2;
+    display: inline-flex;
+    align-items: center;
+    transform: rotate(-0.65deg);
+    border: var(--rule);
+    border-radius: 48% 52% 46% 54% / 56% 47% 53% 44% !important;
+    background: transparent;
+    padding: 0.28rem 0.62rem 0.24rem;
+    color: var(--ink);
+    font-weight: 650;
+    font-size: 0.66rem;
+    line-height: 1;
     font-family: var(--font-body);
+    letter-spacing: 0.045em;
+    text-transform: uppercase;
+  }
+
+  .resource-label:nth-child(even) {
+    transform: rotate(0.65deg);
+    border-radius: 53% 47% 55% 45% / 45% 54% 46% 55% !important;
+  }
+
+  .resource-label-kind {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .resource-label-source {
+    font-style: italic;
   }
 
   h4 {
@@ -144,6 +177,13 @@ const source = [provenance, item.origin].filter(Boolean).join(" · ");
 
   .resource-card:hover .resource-label,
   .resource-card:focus-visible .resource-label {
+    border-color: var(--paper);
+    background: transparent;
+    color: var(--paper);
+  }
+
+  .resource-card:hover .resource-label-kind,
+  .resource-card:focus-visible .resource-label-kind {
     background: var(--paper);
     color: var(--ink);
   }

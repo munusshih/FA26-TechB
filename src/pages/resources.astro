@@ -177,12 +177,13 @@ const toolSections = toolCollections.map((collection) => ({
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--space-2);
+    border-bottom: var(--rule);
     padding-bottom: var(--space-section);
   }
 
   .resource-type-nav a {
     display: block;
-    background: var(--paper-raised);
+    background: transparent;
     padding: var(--space-card);
     text-decoration: none;
   }
