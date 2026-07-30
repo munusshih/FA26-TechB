@@ -5,7 +5,15 @@ import { courseMedia } from "../data/course-media.js";
 const { module, placement = "overview" } = Astro.props;
 const key =
   placement === "project" ? `module${module}Project` : `module${module}`;
-const media = courseMedia[key];
+const isProject = placement === "project";
+const media = {
+  ...courseMedia[key],
+  fit: "cover",
+};
 ---
 
-<MediaFigure media={media} variant="module" />
+<MediaFigure
+  media={media}
+  variant={isProject ? "project" : "module"}
+  imageClass="image-filter-dither"
+/>

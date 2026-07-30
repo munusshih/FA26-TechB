@@ -7,19 +7,23 @@
 
 .course-masthead {
   display: grid;
+  position: relative;
   grid-template-columns: minmax(0, 1fr) minmax(14rem, 0.28fr);
-  gap: var(--space-card);
   align-items: start;
+  gap: var(--space-card);
+  z-index: 2;
   padding-block: var(--space-card) var(--space-3);
 }
 
 .course-masthead h1 {
   margin: 0;
   max-width: 11ch;
-  font-size: clamp(4rem, 10.5vw, 10.5rem);
+}
+
+.course-masthead .site-title {
+  font-size: clamp(5.5rem, 12vw, 13rem);
   line-height: 0.76;
   letter-spacing: -0.055em;
-  text-wrap: balance;
 }
 
 .course-identity {
@@ -45,7 +49,8 @@
 }
 
 .course-nav-row {
-  border-bottom: 1px solid var(--ink);
+  position: relative;
+  z-index: 4;
   padding-bottom: var(--space-3);
 }
 
@@ -67,7 +72,7 @@
   justify-content: space-between;
   align-items: center;
   gap: 0.45rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+  border-bottom: var(--rule);
   padding: 0.72rem;
 }
 
@@ -102,7 +107,7 @@
   display: grid;
   flex: 0 0 2rem;
   place-items: center;
-  border: 1px solid rgba(255, 255, 255, 0.38);
+  border: var(--rule);
   border-radius: 50%;
   background:
     radial-gradient(circle at 35% 30%, #ffe3cf 0 10%, transparent 34%),
@@ -120,7 +125,7 @@
   flex: 0 0 1.65rem;
   place-items: center;
   cursor: pointer;
-  border: 1px solid rgba(255, 255, 255, 0.32);
+  border: var(--rule);
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.06);
   width: 1.65rem;
@@ -212,8 +217,11 @@
 
   .course-masthead h1 {
     max-width: none;
-    font-size: clamp(3.2rem, 13.5vw, 5.5rem);
-    line-height: 0.82;
+  }
+
+  .course-masthead .site-title {
+    font-size: clamp(4.5rem, 18vw, 8rem);
+    line-height: 0.8;
   }
 
   .course-identity {
@@ -281,7 +289,6 @@
     display: block;
     padding-inline: 0.85rem;
   }
-
 }
 
 @media (prefers-reduced-motion: reduce) {

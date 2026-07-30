@@ -6,7 +6,7 @@
     "lint": "eslint . --ext .astro,.js",
     "lint:fix": "eslint . --fix --ext .astro,.js",
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "astro build && node scripts/generate-og-image.mjs",
     "preview": "astro preview",
     "astro": "astro"
   },
@@ -17,6 +17,7 @@
     "eliza-core": "^1.2.0-beta.0",
     "eliza-util": "^1.1.0-alpha.1",
     "gsap": "^3.13.0",
+    "p5": "^2.3.1",
     "tailwindcss": "^4.1.11"
   },
   "devDependencies": {
@@ -26,6 +27,7 @@
     "prettier": "^3.6.2",
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-css-order": "^2.1.2",
-    "prettier-plugin-tailwindcss": "^0.6.14"
+    "prettier-plugin-tailwindcss": "^0.6.14",
+    "puppeteer": "^25.4.0"
   }
 }

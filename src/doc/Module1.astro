@@ -4,13 +4,14 @@ import TwoColumn from "@/components/TwoColumn.astro";
 import Callout from "@/components/Callout.astro";
 import ModuleDesk from "@/components/ModuleDesk.astro";
 import ModuleMedia from "@/components/ModuleMedia.astro";
+import { moduleResources } from "@/data/module-resources.js";
 ---
 
 <Accordion title="Module 1: Crack Inside the Black Box" open>
   <TwoColumn>
     <div class="weekly">
-      <h3 class="heading-2">Week 1–4: Crack Inside the Black Box</h3>
       <ModuleMedia module="1" />
+      <h3 class="heading-2">Week 1–4: Crack Inside the Black Box</h3>
       <p>
         This module examines how intelligence has been modeled, simulated, and
         represented across different historical and cultural contexts. Through
@@ -40,11 +41,11 @@ import ModuleMedia from "@/components/ModuleMedia.astro";
     </div>
 
     <div class="weekly">
+      <ModuleMedia module="1" placement="project" />
       <h3 class="heading-2">
         Project 1: Epistemological Research of Technology
       </h3>
       <Callout><p>Due Week 4</p></Callout>
-      <ModuleMedia module="1" placement="project" />
       <p>
         Students will select a historical or computational model of intelligence
         and reconstruct its underlying logic through research and prototyping.
@@ -78,38 +79,7 @@ import ModuleMedia from "@/components/ModuleMedia.astro";
     </div>
   </TwoColumn>
   <ModuleDesk
-    readings={[
-      {
-        title: "Alan Turing, “Computing Machinery and Intelligence”",
-        url: "https://academic.oup.com/mind/article/LIX/236/433/986238",
-        note: "The imitation game, objections, and learning machines.",
-      },
-      {
-        title: "Joseph Weizenbaum, “ELIZA”",
-        url: "https://findingeliza.org/",
-        note: "Read the program as a script, not a personality.",
-      },
-      {
-        title: "John Searle, “Minds, Brains, and Programs”",
-        note: "The Chinese Room and the limits of formal symbol manipulation.",
-      },
-    ]}
-    tools={[
-      {
-        title: "Finding ELIZA",
-        url: "https://findingeliza.org/",
-        note: "Recovered source, history, and runnable material.",
-      },
-      {
-        title: "Twine",
-        url: "https://twinery.org/",
-        note: "Branching rules and conversational prototypes.",
-      },
-      {
-        title: "p5.js",
-        url: "https://p5js.org/",
-        note: "Sketch procedural systems directly in the browser.",
-      },
-    ]}
+    readings={moduleResources.module1.readings}
+    tools={moduleResources.module1.tools}
   />
 </Accordion>

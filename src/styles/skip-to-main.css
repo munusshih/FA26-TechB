@@ -4,7 +4,7 @@
   left: 0.5rem;
   transform: translateY(-180%);
   z-index: 1000;
-  border: 1px solid var(--ink);
+  border: var(--rule);
   background: var(--paper);
   padding: 0.65rem 0.85rem;
   color: var(--ink);

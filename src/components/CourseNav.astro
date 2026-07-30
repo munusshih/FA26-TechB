@@ -1,30 +1,74 @@
 <nav class="course-nav" aria-label="Course sections">
-  <a href="#module-1:-crack-inside-the-black-box">Course Modules</a>
-  <a href="#grading-and-attendance">Grading</a>
-  <a href="#open-source-policies">Policies</a>
-  <a href="#pratt-mfa-communications-design-departmental-resources"
-    >Resources</a
+  <a href="#course-description"><small>01</small><span>Description</span></a>
+  <a href="#community-agreement"><small>02</small><span>Community</span></a>
+  <a href="#module-1:-crack-inside-the-black-box"
+    ><small>03</small><span>Module One</span></a
   >
+  <a href="#module-2:-the-coded-gaze"
+    ><small>04</small><span>Module Two</span></a
+  >
+  <a href="#module-3:-disrupting-the-chain-of-thought"
+    ><small>05</small><span>Module Three</span></a
+  >
+  <a href="#grading-and-attendance"><small>06</small><span>Grading</span></a>
+  <a href="#open-source-policies"><small>07</small><span>Policies</span></a>
+  <a href="#pratt-mfa-communications-design-departmental-resources"
+    ><small>08</small><span>Resources</span></a
+  >
+  <a href="#colophon"><small>09</small><span>Colophon</span></a>
 </nav>
 
 <style>
   .course-nav {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-3);
-    font-weight: 700;
-    font-size: clamp(1rem, 1.5vw, 1.35rem);
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: var(--space-2) var(--space-card);
+    padding-block: var(--space-2);
   }
 
   .course-nav a {
-    text-decoration-thickness: 1px;
-    text-underline-offset: 0.18em;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: start;
+    gap: 0.35rem;
+    transition:
+      transform 180ms ease,
+      letter-spacing 180ms ease;
+    background: none !important;
+    font-weight: 600;
+    font-size: clamp(1.65rem, 2.7vw, 3.3rem);
+    line-height: 0.88;
+    font-family: var(--font-display);
+    letter-spacing: -0.025em;
+    text-decoration: none !important;
+  }
+
+  .course-nav a:hover,
+  .course-nav a:focus-visible {
+    transform: translateX(0.14em);
+    letter-spacing: 0;
+  }
+
+  .course-nav small {
+    padding-top: 0.15em;
+    font-size: 0.58rem;
+    line-height: 1;
+    font-family: var(--font-body);
+    letter-spacing: 0.08em;
+  }
+
+  .course-nav span {
+    min-width: 0;
   }
 
   @media (max-width: 640px) {
     .course-nav {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: var(--space-2);
-      font-size: 0.9rem;
+    }
+
+    .course-nav a {
+      font-size: clamp(1.5rem, 8vw, 2.35rem);
     }
   }
 </style>

@@ -1,26 +1,43 @@
 .accordion {
   margin-bottom: 0;
-  border-top: 1px solid var(--ink);
+  border-top: var(--rule);
   padding: 0;
 }
 
 .accordion-button {
   all: unset;
   display: grid;
+  position: relative;
   grid-template-columns: 1fr;
   align-items: center;
-  position: relative;
   cursor: pointer;
   box-sizing: border-box;
   padding: var(--space-3) 0;
   width: 100%;
 }
 
-.accordion-toggle-icon {
+.accordion-state-label,
+.accordion-number {
   position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+  font-weight: 700;
+  font-size: clamp(0.68rem, 0.85vw, 0.9rem);
+  line-height: 1;
+  font-family: var(--font-body);
+  letter-spacing: 0.14em;
+  writing-mode: vertical-rl;
+  text-orientation: sideways;
+  text-transform: uppercase;
+}
+
+.accordion-state-label {
   right: 0;
-  width: var(--title-section);
-  height: var(--title-section);
+}
+
+.accordion-number {
+  left: 0;
 }
 
 .accordion-icon-collapse,
@@ -33,15 +50,11 @@
 }
 
 .accordion-button h2 {
+  position: relative;
   grid-column: 1;
+  z-index: 3;
   box-sizing: border-box;
   padding-inline: var(--title-section);
-  font-weight: var(--title-weight);
-  font-style: var(--title-style);
-  font-size: var(--title-section);
-  line-height: var(--title-leading);
-  font-family: var(--font-display);
-  letter-spacing: -0.045em;
   text-align: center;
 }
 
@@ -68,11 +81,10 @@
 
   .accordion-button h2 {
     padding-inline: var(--title-section-mobile);
-    font-size: var(--title-section-mobile);
   }
 
-  .accordion-toggle-icon {
-    width: var(--title-section-mobile);
-    height: var(--title-section-mobile);
+  .accordion-state-label,
+  .accordion-number {
+    font-size: 0.64rem;
   }
 }

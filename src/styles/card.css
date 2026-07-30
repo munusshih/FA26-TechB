@@ -1,8 +1,12 @@
 .card {
   margin: 0;
-  border: 1px solid var(--line) !important;
+  border: var(--rule) !important;
   border-radius: 0.85rem;
-  background: color-mix(in srgb, var(--paper-raised) 82%, transparent) !important;
+  background: color-mix(
+    in srgb,
+    var(--paper-raised) 82%,
+    transparent
+  ) !important;
   padding: var(--space-card);
   width: 100%;
   height: auto;
@@ -12,11 +16,6 @@
 
 .card > h3 {
   margin-bottom: var(--space-2);
-  font-weight: var(--title-weight);
-  font-style: var(--title-style);
-  font-size: var(--title-card);
-  line-height: var(--title-leading);
-  font-family: var(--font-display);
 }
 
 .card > ul,

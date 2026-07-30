@@ -1,6 +1,6 @@
 ---
 import CourseNav from "./CourseNav.astro";
-import HeroMedia from "./HeroMedia.astro";
+import AntColonyHero from "./AntColonyHero.astro";
 
 const {
   programUrl = "https://www.pratt.edu/design/graduate-communications-design/",
@@ -11,7 +11,7 @@ const {
 
 <header id="top" class="course-hero">
   <div class="course-masthead cutoff">
-    <h1>Graduate Studio:<br />Technology B</h1>
+    <h1 class="heading-1 site-title">Graduate Studio:<br />Technology B</h1>
     <div class="course-identity">
       <a href={programUrl}>↳ {programLabel}</a>
       <span>↳ {courseCode}</span>
@@ -21,5 +21,5 @@ const {
   <div class="course-nav-row cutoff">
     <CourseNav />
   </div>
-  <HeroMedia />
+  <AntColonyHero />
 </header>

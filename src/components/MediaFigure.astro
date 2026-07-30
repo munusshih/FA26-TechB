@@ -2,9 +2,15 @@
 const {
   media,
   variant = "module",
+  imageClass = "",
   loading = "lazy",
   sizes = "(min-width: 768px) 50vw, 100vw",
 } = Astro.props;
+
+const creatorCredit =
+  media.creator && media.creator !== "Unknown author"
+    ? ` · ${media.creator}`
+    : "";
 ---
 
 <figure class={`media-figure media-figure-${variant}`}>
@@ -15,14 +21,14 @@ const {
       loading={loading}
       decoding="async"
       sizes={sizes}
+      class={imageClass}
       style={`object-position: ${media.position ?? "center"}; object-fit: ${media.fit ?? "cover"}`}
     />
   </div>
   <figcaption>
-    <span>
-      <em>{media.title}</em>, {media.creator}, {media.year}
-    </span>
-    <a href={media.source} rel="license">Wikimedia Commons · {media.license}</a>
+    <a href={media.source} rel="license">
+      <em>{media.title}</em>{creatorCredit}
+    </a>
   </figcaption>
 </figure>
 
@@ -33,7 +39,7 @@ const {
   }
 
   .media-well {
-    border: 1px solid var(--ink);
+    border: var(--rule);
     background: var(--paper-raised);
     overflow: hidden;
   }
@@ -46,23 +52,13 @@ const {
   }
 
   figcaption {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: var(--space-2);
-    align-items: baseline;
-    border-bottom: 1px solid var(--ink);
+    border-bottom: 0;
     padding: var(--space-2) 0;
     font-size: 0.76rem;
     line-height: 1.25;
   }
 
   figcaption a {
-    text-align: right;
-  }
-
-  figcaption span,
-  figcaption a {
-    min-width: 0;
     overflow-wrap: anywhere;
   }
 
@@ -78,19 +74,21 @@ const {
     margin-bottom: var(--space-card);
   }
 
-  .media-figure-module .media-well {
+  .media-figure-module .media-well,
+  .media-figure-project .media-well {
+    border: 0;
     aspect-ratio: 4 / 3;
   }
 
+  .media-figure-project {
+    margin-bottom: var(--space-card);
+  }
+
+  .image-filter-dither {
+    filter: url("#single-color-dither");
+  }
+
   @media (max-width: 640px) {
-    figcaption {
-      grid-template-columns: 1fr;
-    }
-
-    figcaption a {
-      text-align: left;
-    }
-
     .media-figure-hero .media-well {
       aspect-ratio: 4 / 3;
       height: auto;

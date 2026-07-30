@@ -1,0 +1,65 @@
+<figure class="ant-colony-hero cutoff">
+  <div class="ant-colony-well texture-field" data-ant-colony></div>
+  <figcaption>
+    <a
+      href="https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.1001805"
+      ><em>The Ecology of Collective Behavior</em>, Deborah M. Gordon, 2014</a
+    >
+  </figcaption>
+</figure>
+
+<script>
+  import { mountAntColonies } from "../scripts/ant-colony.js";
+
+  mountAntColonies();
+</script>
+
+<style>
+  .ant-colony-hero {
+    position: relative;
+    z-index: 3;
+    margin-top: clamp(-13rem, -12vw, -7rem);
+    margin-bottom: var(--space-3);
+    pointer-events: none;
+  }
+
+  .ant-colony-well {
+    position: relative;
+    cursor: crosshair;
+    border: var(--rule);
+    border-radius: 50% !important;
+    background: transparent;
+    height: clamp(24rem, 48vw, 44rem);
+    overflow: hidden;
+    pointer-events: auto;
+  }
+
+  .ant-colony-well :global(canvas) {
+    display: block;
+    outline: 0;
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  .ant-colony-well :global(canvas:focus-visible) {
+    outline: 2px solid var(--ink);
+    outline-offset: -4px;
+  }
+
+  figcaption {
+    border-bottom: var(--rule);
+    padding: var(--space-2) 0;
+    font-size: 0.76rem;
+    line-height: 1.25;
+  }
+
+  @media (max-width: 640px) {
+    .ant-colony-hero {
+      margin-top: -12rem;
+    }
+
+    .ant-colony-well {
+      height: 24rem;
+    }
+  }
+</style>

@@ -1,0 +1,655 @@
+<section
+  class="eliza-bar"
+  data-eliza-bar
+  data-expanded="false"
+  data-state="idle"
+  aria-label="Talk to the course assistant"
+>
+  <button
+    class="eliza-toggle"
+    data-eliza-toggle
+    type="button"
+    aria-expanded="false"
+    aria-controls="eliza-console"
+  >
+    <span class="eliza-identity">
+      <strong data-assistant-name>AI</strong>
+      <small data-eliza-status>AI chatbot</small>
+    </span>
+    <span data-eliza-toggle-label>Open chat</span>
+  </button>
+
+  <div
+    class="eliza-console"
+    id="eliza-console"
+    data-eliza-console
+    aria-hidden="true"
+    inert
+  >
+    <ol
+      class="eliza-transcript"
+      data-eliza-transcript
+      aria-live="polite"
+      aria-label="Conversation transcript"
+    >
+      <li
+        class="eliza-message"
+        data-speaker="eliza"
+        data-label="AI"
+        aria-label="AI chatbot"
+      >
+        <p>
+          Ask me about a module, project, reading, tool, deadline, grading, or
+          course policy.
+        </p>
+      </li>
+    </ol>
+    <form class="eliza-form" data-eliza-form>
+      <label class="eliza-input-label">
+        <span>YOU</span>
+        <input
+          id="eliza-bar-input"
+          data-eliza-input
+          name="message"
+          type="text"
+          autocomplete="off"
+          placeholder="Ask about the course"
+          aria-label="Your message to the course assistant"
+        />
+      </label>
+      <button type="submit">Send</button>
+    </form>
+  </div>
+</section>
+
+<script>
+  import { getAssembledReply, loadElizaInEnglish } from "eliza-core";
+  import elizaScript from "eliza-util/eliza.script?raw";
+  import { of } from "rxjs";
+
+  const courseKnowledge = [
+    {
+      pattern: /\b(project|assignment)\s*(one|1)\b/i,
+      response:
+        "Project 1 is Epistemological Research of Technology, due Week 4. Choose a historical or computational model of intelligence, reconstruct its logic through research and prototyping, and make a functioning artifact that reveals how it produces the appearance of intelligence.",
+    },
+    {
+      pattern: /\b(project|assignment)\s*(two|2)\b/i,
+      response:
+        "Project 2 is Uncertain Archive, due Week 9. Build a corpus of 100–500 items, organize it through morphology, taxonomy, and typology, then compare your own classification with machine interpretation. The final design should make bias, omission, and distortion visible.",
+    },
+    {
+      pattern: /\b(project|assignment)\s*(three|3)\b|\bfinal project\b/i,
+      response:
+        "Project 3 is Alternative Now(s), due Week 15. Create a speculative prototype that imagines AI beyond productivity and optimization, using approaches such as local models, custom datasets, archives, physical computing, publishing, or experimental media.",
+    },
+    {
+      pattern: /\b(reading|readings).*(one|1)\b|\b(one|1).*readings\b/i,
+      response:
+        "Module 1 readings include Alan Turing’s “Computing Machinery and Intelligence,” Joseph Weizenbaum’s “ELIZA,” and John Searle’s “Minds, Brains, and Programs.” They frame intelligence through imitation, conversational rules, and the Chinese Room critique.",
+    },
+    {
+      pattern: /\b(reading|readings).*(two|2)\b|\b(two|2).*readings\b/i,
+      response:
+        "Module 2 readings include Ruha Benjamin’s Race After Technology, Cathy O’Neil’s Weapons of Math Destruction, and Kate Crawford and Trevor Paglen’s “Excavating AI.” They focus on discriminatory design, scaled harm, and the politics of datasets.",
+    },
+    {
+      pattern: /\b(reading|readings).*(three|3)\b|\b(three|3).*readings\b/i,
+      response:
+        "Module 3 readings include “On the Dangers of Stochastic Parrots,” Kate Crawford’s Atlas of AI, and Allison Parrish’s “Programming Is Forgetting.” They address extraction, environmental cost, language, memory, and refusal.",
+    },
+    {
+      pattern:
+        /\bmodule\s*(one|1)\b|black box|turing|chinese room|blockhead|weizenbaum/i,
+      response:
+        "Module 1, Crack Inside the Black Box, runs Weeks 1–4. It examines historical and cultural models of intelligence—from the five skandhas and I Ching to Llull, Turing, Searle, Block, ELIZA, and rule-based systems—so you can treat AI as a designed structure rather than magic.",
+    },
+    {
+      pattern:
+        /\bmodule\s*(two|2)\b|coded gaze|algorithmic bias|classification|dataset|taxonomy/i,
+      response:
+        "Module 2, The Coded Gaze, runs Weeks 5–9. It studies classification, datasets, invisible labeling labor, algorithmic bias, and the colonial histories of taxonomy through cases such as Gender Shades, ImageNet Roulette, and The Library of Missing Datasets.",
+    },
+    {
+      pattern:
+        /\bmodule\s*(three|3)\b|chain.of.thought|\bllms?\b|language model|stochastic parrot|ollama|lm studio/i,
+      response:
+        "Module 3, Disrupting the Chain-of-Thought, runs Weeks 9–15. It critiques LLM extraction, ecological cost, ghost labor, and standardized prompt logic while exploring local models, privacy, uncertainty, care, and alternative interfaces.",
+    },
+    {
+      pattern: /deadline|due|when.*project/i,
+      response:
+        "The project deadlines are Week 4 for Project 1, Week 9 for Project 2, and Week 15 for Project 3.",
+    },
+    {
+      pattern: /grading|grade|weight|percentage|percent/i,
+      response:
+        "The grade is divided equally: attendance and participation, Project 1, Project 2, and Project 3 are each worth 25%. Evaluation emphasizes conceptual understanding, meaningful application, learning, and experimentation—not technical efficiency alone.",
+    },
+    {
+      pattern: /attendance|absen|late|lateness|miss class|early departure/i,
+      response:
+        "Attendance contributes to the 25% participation grade. Three weeks or 20% of class time is considered a significant absence; lateness or early departure may count as a full absence. Communicate with faculty in advance whenever possible.",
+    },
+    {
+      pattern:
+        /borrowed code|open source|citation|cite|license|copying|integrity/i,
+      response:
+        "You may learn from and reuse snippets, but label borrowed code, credit the source, respect its license, and understand what you use. Unless stated otherwise, submit your own work and do not turn in someone else’s full project.",
+    },
+    {
+      pattern: /\btools?\b|software|what.*use/i,
+      response:
+        "Suggested tools include Twine and p5.js for Module 1; ml5.js, Teachable Machine, and Datasheets for Datasets for Module 2; and Ollama, LM Studio, and Hugging Face model cards for Module 3. Choose the tool that makes your critical idea testable.",
+    },
+    {
+      pattern: /resource|support|help|library|production lab|starfish|access/i,
+      response:
+        "Course resources include the readings folder, Production Labs, Pratt Libraries, Starfish, the Writing and Tutorial Center, and the Learning/Access Center. The Resources section contains the relevant links and contact details.",
+    },
+    {
+      pattern: /faculty|teacher|instructor|who teaches/i,
+      response:
+        "The listed faculty are Alex Liebergesell, Tom Klinkowstein, Munus Shih, and Tyler Paige.",
+    },
+    {
+      pattern: /schedule|what time|when.*class|meeting/i,
+      response:
+        "Technology B meets every Tuesday from 2:00–4:50 PM in Fall 2026. It is a three-credit course.",
+    },
+    {
+      pattern: /course|syllabus|technology b|des 720b|goal/i,
+      response:
+        "Technology B connects interface, interaction, imaging, information, networks, and dynamic content through historical research, critical readings, studio practice, prototyping, writing, and critique. Its central question is how designers can understand and reshape emerging technology systems.",
+    },
+  ];
+
+  const answerCourseQuestion = (message) =>
+    courseKnowledge.find(({ pattern }) => pattern.test(message))?.response;
+
+  document.querySelectorAll("[data-eliza-bar]").forEach(async (bar) => {
+    if (bar.dataset.initialized === "true") return;
+    bar.dataset.initialized = "true";
+
+    const toggle = bar.querySelector("[data-eliza-toggle]");
+    const nameElement = bar.querySelector("[data-assistant-name]");
+    const toggleLabel = bar.querySelector("[data-eliza-toggle-label]");
+    const status = bar.querySelector("[data-eliza-status]");
+    const consoleElement = bar.querySelector("[data-eliza-console]");
+    const form = bar.querySelector("[data-eliza-form]");
+    const input = bar.querySelector("[data-eliza-input]");
+    const transcript = bar.querySelector("[data-eliza-transcript]");
+    const names = [
+      "Delta",
+      "Echo",
+      "Field",
+      "Index",
+      "Loop",
+      "Node",
+      "Orbit",
+      "Pixel",
+      "Query",
+      "Relay",
+      "Signal",
+      "Static",
+      "Thread",
+      "Trace",
+    ];
+    const randomValue = new Uint32Array(1);
+    window.crypto?.getRandomValues(randomValue);
+    const assistantName =
+      names[
+        (randomValue[0] || Math.floor(Math.random() * names.length)) %
+          names.length
+      ];
+    const firstAssistantMessage = transcript.querySelector(
+      '[data-speaker="eliza"]',
+    );
+    const reflectiveFallbacks = [
+      "Which part of that feels most important to your project?",
+      "How might that connect to the system you are designing?",
+      "What assumption about intelligence do you notice there?",
+      "What would change if you treated that tension as material?",
+      "Can you connect that thought to one of the course modules?",
+      "What would you want to test through a prototype?",
+    ];
+    let lastFallbackIndex = -1;
+    let thinking = false;
+
+    nameElement.textContent = assistantName;
+    bar.setAttribute(
+      "aria-label",
+      `Talk to ${assistantName}, course assistant`,
+    );
+    input.setAttribute("aria-label", `Your message to ${assistantName}`);
+    firstAssistantMessage.dataset.label = assistantName;
+    firstAssistantMessage.setAttribute("aria-label", assistantName);
+
+    const diversifyFallback = (reply) => {
+      if (!/^I'm not sure I understand you fully\.?$/i.test(reply)) {
+        return reply;
+      }
+
+      let nextIndex = Math.floor(Math.random() * reflectiveFallbacks.length);
+      if (nextIndex === lastFallbackIndex) {
+        nextIndex = (nextIndex + 1) % reflectiveFallbacks.length;
+      }
+      lastFallbackIndex = nextIndex;
+      return reflectiveFallbacks[nextIndex];
+    };
+
+    const appendMessage = (speaker, message, isThinking = false) => {
+      const item = document.createElement("li");
+      const paragraph = document.createElement("p");
+      item.className = "eliza-message";
+      item.dataset.speaker = speaker;
+      item.dataset.label = speaker === "user" ? "You" : assistantName;
+      item.setAttribute(
+        "aria-label",
+        speaker === "user" ? "You" : assistantName,
+      );
+      item.classList.toggle("is-thinking", isThinking);
+      paragraph.textContent = message;
+      item.append(paragraph);
+      transcript.append(item);
+      window.requestAnimationFrame(() => {
+        transcript.scrollTop = transcript.scrollHeight;
+        syncPageInset();
+      });
+      return item;
+    };
+
+    const syncPageInset = () => {
+      document.documentElement.style.setProperty(
+        "--eliza-bar-height",
+        `${bar.offsetHeight}px`,
+      );
+    };
+
+    const setExpanded = (expanded) => {
+      bar.dataset.expanded = String(expanded);
+      toggle.setAttribute("aria-expanded", String(expanded));
+      toggleLabel.textContent = expanded ? "Close chat" : "Open chat";
+      consoleElement.setAttribute("aria-hidden", String(!expanded));
+      consoleElement.toggleAttribute("inert", !expanded);
+      window.requestAnimationFrame(syncPageInset);
+      if (expanded && !input.disabled) input.focus();
+    };
+
+    toggle.addEventListener("click", () => {
+      setExpanded(bar.dataset.expanded !== "true");
+    });
+
+    input.disabled = true;
+    status.textContent = "Loading AI chatbot";
+    const eliza = await loadElizaInEnglish(of(elizaScript));
+    input.disabled = false;
+    status.textContent = "AI chatbot";
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const message = input.value.trim();
+      if (!message || thinking) return;
+
+      thinking = true;
+      bar.dataset.state = "thinking";
+      status.textContent = "Thinking";
+      input.value = "";
+      input.disabled = true;
+      appendMessage("user", message);
+      const thinkingMessage = appendMessage(
+        "eliza",
+        `${assistantName} is thinking...`,
+        true,
+      );
+
+      await new Promise((resolve) => window.setTimeout(resolve, 350));
+
+      const courseAnswer = answerCourseQuestion(message);
+      const originalElizaAnswer = getAssembledReply(
+        eliza.processInput(message),
+        "Please tell me more.",
+      ).trim();
+      const reflectiveAnswer = diversifyFallback(originalElizaAnswer);
+      thinkingMessage.querySelector("p").textContent = courseAnswer
+        ? `${courseAnswer}\n\n${reflectiveAnswer}`
+        : reflectiveAnswer;
+      thinkingMessage.classList.remove("is-thinking");
+      window.requestAnimationFrame(() => {
+        transcript.scrollTop = transcript.scrollHeight;
+      });
+      input.disabled = false;
+      thinking = false;
+      bar.dataset.state = "idle";
+      status.textContent = "AI chatbot";
+      input.focus();
+    });
+
+    const sizeObserver = new ResizeObserver(syncPageInset);
+    sizeObserver.observe(bar);
+    syncPageInset();
+  });
+</script>
+
+<style is:global>
+  body {
+    padding-bottom: calc(var(--eliza-bar-height, 4rem) + var(--space-2));
+  }
+
+  .eliza-bar {
+    --eliza-closed-height: 3.4rem;
+    display: grid;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    grid-template-rows: auto minmax(0, 1fr);
+    z-index: 10000;
+    transition: height 460ms cubic-bezier(0.22, 1, 0.36, 1);
+    box-sizing: border-box;
+    margin: 0;
+    border: 0;
+    isolation: isolate;
+    padding: 1.15rem var(--margin) 0.7rem;
+    width: 100vw;
+    max-width: 100vw;
+    height: var(--eliza-closed-height);
+    overflow: visible;
+    color: var(--paper);
+  }
+
+  .eliza-bar[data-expanded="true"] {
+    height: 50svh;
+  }
+
+  .eliza-bar::before {
+    position: absolute;
+    z-index: -1;
+    inset: -6rem -12vw -4rem;
+    background-image:
+      radial-gradient(
+        circle at 18% 26%,
+        rgba(184, 225, 245, 0.18) 0 0.55px,
+        transparent 0.9px
+      ),
+      url("data:image/svg+xml,%3Csvg viewBox='0 0 90 90' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.48' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='.9'/%3E%3C/svg%3E");
+    background-size:
+      4px 4px,
+      6rem 6rem;
+    background-color: var(--ink);
+    background-blend-mode: screen, soft-light;
+    pointer-events: none;
+    content: "";
+    -webkit-mask-image:
+      url("data:image/svg+xml,%3Csvg viewBox='0 0 1200 180' preserveAspectRatio='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='white' stop-opacity='0'/%3E%3Cstop offset='.3' stop-color='white' stop-opacity='.12'/%3E%3Cstop offset='.68' stop-color='white'/%3E%3C/linearGradient%3E%3Cfilter id='w' x='-8%25' y='-28%25' width='116%25' height='156%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.008 .035' numOctaves='4' seed='17' result='n'/%3E%3CfeDisplacementMap in='SourceGraphic' in2='n' scale='34' xChannelSelector='R' yChannelSelector='B'/%3E%3C/filter%3E%3C/defs%3E%3Crect width='1200' height='180' fill='url(%23g)' filter='url(%23w)'/%3E%3C/svg%3E"),
+      linear-gradient(#000, #000);
+    mask-image:
+      url("data:image/svg+xml,%3Csvg viewBox='0 0 1200 180' preserveAspectRatio='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='white' stop-opacity='0'/%3E%3Cstop offset='.3' stop-color='white' stop-opacity='.12'/%3E%3Cstop offset='.68' stop-color='white'/%3E%3C/linearGradient%3E%3Cfilter id='w' x='-8%25' y='-28%25' width='116%25' height='156%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.008 .035' numOctaves='4' seed='17' result='n'/%3E%3CfeDisplacementMap in='SourceGraphic' in2='n' scale='34' xChannelSelector='R' yChannelSelector='B'/%3E%3C/filter%3E%3C/defs%3E%3Crect width='1200' height='180' fill='url(%23g)' filter='url(%23w)'/%3E%3C/svg%3E"),
+      linear-gradient(#000, #000);
+    -webkit-mask-position:
+      center top,
+      center bottom;
+    mask-position:
+      center top,
+      center bottom;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size:
+      100% 10rem,
+      100% calc(100% - 8.5rem);
+    transform-origin: center bottom;
+    mask-size:
+      100% 10rem,
+      100% calc(100% - 8.5rem);
+    animation: eliza-ocean 14s ease-in-out infinite alternate;
+  }
+
+  .eliza-toggle {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: var(--space-3);
+    cursor: pointer;
+    border: 0;
+    background: transparent;
+    padding: 0.25rem 0;
+    width: 100%;
+    min-width: 0;
+    color: inherit;
+    text-align: left;
+  }
+
+  .eliza-identity {
+    display: grid;
+    grid-template-columns: auto auto;
+    align-items: baseline;
+    gap: var(--space-2);
+  }
+
+  .eliza-identity strong {
+    font-size: 1rem;
+    line-height: 1;
+    letter-spacing: 0.08em;
+  }
+
+  .eliza-identity small,
+  .eliza-toggle > span:last-child,
+  .eliza-input-label > span,
+  .eliza-form button {
+    font-weight: 700;
+    font-size: 0.66rem;
+    line-height: 1;
+    font-family: var(--font-body);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .eliza-identity small {
+    opacity: 0.68;
+  }
+
+  .eliza-toggle > span:last-child {
+    position: absolute;
+    top: 1.15rem;
+    right: var(--margin);
+    transition:
+      background-color 160ms ease,
+      color 160ms ease;
+    border: 1px solid var(--paper);
+    background: var(--paper);
+    padding: 0.58rem 0.78rem;
+    min-width: 7rem;
+    color: var(--ink);
+    text-align: center;
+  }
+
+  .eliza-toggle:hover > span:last-child {
+    background: transparent;
+    color: var(--paper);
+  }
+
+  .eliza-console {
+    display: grid;
+    grid-template-rows: minmax(0, 1fr) auto;
+    transform: translateY(0);
+    visibility: visible;
+    opacity: 1;
+    transition:
+      opacity 280ms ease 100ms,
+      transform 420ms cubic-bezier(0.22, 1, 0.36, 1) 60ms,
+      visibility 0s linear;
+    box-sizing: border-box;
+    padding-top: var(--space-2);
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .eliza-bar[data-expanded="false"] .eliza-console {
+    transform: translateY(0.8rem);
+    visibility: hidden;
+    opacity: 0;
+    transition:
+      opacity 160ms ease,
+      transform 240ms ease,
+      visibility 0s linear 460ms;
+    pointer-events: none;
+  }
+
+  .eliza-transcript {
+    display: grid;
+    align-content: start;
+    gap: var(--space-3);
+    margin: 0;
+    padding: var(--space-2) 0 var(--space-3);
+    min-height: 0;
+    overflow-y: auto;
+    scrollbar-color: var(--paper) transparent;
+    list-style: none;
+  }
+
+  .eliza-message {
+    max-width: min(72ch, 82%);
+  }
+
+  .eliza-message::before {
+    display: block;
+    opacity: 0.68;
+    margin-bottom: 0.3rem;
+    content: attr(data-label);
+    font-weight: 700;
+    font-size: 0.62rem;
+    line-height: 1;
+    font-family: var(--font-body);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .eliza-message[data-speaker="user"] {
+    justify-self: end;
+    width: min(72ch, 82%);
+  }
+
+  .eliza-message[data-speaker="user"]::before {
+    text-align: right;
+  }
+
+  .eliza-message p {
+    margin: 0;
+    background: var(--paper);
+    padding: 0.72rem 0.82rem;
+    max-width: none;
+    color: var(--ink);
+    font-size: clamp(0.92rem, 1.2vw, 1.15rem);
+    line-height: 1.25;
+    white-space: pre-line;
+  }
+
+  .eliza-message[data-speaker="user"] p {
+    background: color-mix(in srgb, var(--paper) 18%, transparent);
+    color: var(--paper);
+  }
+
+  .eliza-form {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--space-2);
+    border-top: 1px solid var(--paper);
+    padding-top: var(--space-2);
+  }
+
+  .eliza-input-label {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: var(--space-2);
+    min-width: 0;
+  }
+
+  .eliza-form input {
+    border: 0;
+    border-bottom: 1px solid currentColor;
+    background: transparent;
+    padding: 0.2rem 0;
+    width: 100%;
+    min-width: 0;
+    color: inherit;
+    font-size: 1rem;
+  }
+
+  .eliza-form input::placeholder {
+    opacity: 0.55;
+    color: currentColor;
+  }
+
+  .eliza-form button {
+    cursor: pointer;
+    border: 0;
+    background: transparent;
+    padding: 0.35rem 0;
+    color: inherit;
+  }
+
+  .eliza-toggle:focus-visible,
+  .eliza-form input:focus-visible,
+  .eliza-form button:focus-visible {
+    outline: 2px solid var(--paper);
+    outline-offset: 3px;
+  }
+
+  .eliza-message.is-thinking {
+    animation: eliza-thinking 650ms ease-in-out infinite alternate;
+  }
+
+  @keyframes eliza-thinking {
+    to {
+      opacity: 0.5;
+    }
+  }
+
+  @keyframes eliza-ocean {
+    0% {
+      transform: scale(1.01, 0.97);
+      background-position: 0 0;
+    }
+    50% {
+      transform: scale(1.04, 1.035);
+      background-position: 3rem -1.25rem;
+    }
+    100% {
+      transform: scale(1.02, 1);
+      background-position: -2rem 1.75rem;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .eliza-bar {
+      --eliza-closed-height: 4.25rem;
+      padding-inline: var(--space-2);
+    }
+
+    .eliza-identity {
+      grid-template-columns: 1fr;
+      gap: 0.15rem;
+    }
+
+    .eliza-toggle > span:last-child {
+      right: var(--space-2);
+    }
+
+    .eliza-input-label > span {
+      display: none;
+    }
+
+    .eliza-input-label {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .eliza-bar::before,
+    .eliza-message.is-thinking {
+      animation: none;
+    }
+  }
+</style>

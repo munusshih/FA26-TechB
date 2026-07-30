@@ -9,28 +9,46 @@ const isOpen =
 const titleId = title.toLowerCase().replace(/\s+/g, "-");
 const contentId = `${titleId}-content`;
 const classes = `accordion ${noCutoff ? "" : "cutoff"}`.trim();
+const sectionNumbers = {
+  "Course Description": "01",
+  "Community Agreement": "02",
+  "Module 1: Crack Inside the Black Box": "03",
+  "Module 2: The Coded Gaze": "04",
+  "Module 3: Disrupting the Chain-of-Thought": "05",
+  "Grading and Attendance": "06",
+  "Open Source Policies": "07",
+  "Pratt MFA Communications Design Departmental Resources": "08",
+};
+const isModule = title.startsWith("Module ");
+const moduleNumber = title.match(/^Module\s+(\d+)/)?.[1];
+const sectionNumber =
+  sectionNumbers[title] ??
+  (moduleNumber
+    ? String(Number.parseInt(moduleNumber, 10) + 2).padStart(2, "0")
+    : undefined);
+const buttonClasses =
+  `accordion-button ${isModule ? "texture-field" : ""}`.trim();
 ---
 
 <section id={`${titleId}`} class={classes} data-open={isOpen}>
   <button
-    class="accordion-button"
+    class={buttonClasses}
     aria-expanded={isOpen ? "true" : "false"}
     aria-controls={contentId}
     type="button"
   >
+    {
+      sectionNumber && (
+        <span class="accordion-number" aria-hidden="true">
+          {sectionNumber}
+        </span>
+      )
+    }
     <h2 class="heading-1">{title}</h2>
-    <svg
-      class="accordion-toggle-icon"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="1.25"
-      aria-hidden="true"
-      focusable="false"
-    >
-      <path class="accordion-icon-expand" d="m5 8 7 8 7-8"></path>
-      <path class="accordion-icon-collapse" d="m5 16 7-8 7 8"></path>
-    </svg>
+    <span class="accordion-state-label" aria-hidden="true">
+      <span class="accordion-icon-expand">Unfold</span>
+      <span class="accordion-icon-collapse">Fold</span>
+    </span>
   </button>
   <div
     id={contentId}

@@ -3,24 +3,29 @@
   flex-direction: column;
   gap: var(--space-2);
   margin: 0;
-  border: 1px solid var(--line) !important;
+  border: var(--rule) !important;
   border-radius: 0.85rem;
-  background: color-mix(in srgb, var(--paper-raised) 82%, transparent) !important;
+  background: color-mix(
+    in srgb,
+    var(--paper-raised) 82%,
+    transparent
+  ) !important;
   padding: var(--space-card);
   color: var(--ink);
 }
 
-.weekly > .heading-2:first-child {
+.weekly > .heading-2 {
   margin-bottom: var(--space-1);
-  font-weight: var(--title-weight);
-  font-style: var(--title-style);
-  font-size: var(--title-card);
-  line-height: var(--title-leading);
-  font-family: var(--font-display);
 }
 
-.weekly > .heading-2:first-child::before {
-  content: none;
+.weekly > .media-figure:first-child {
+  margin: calc(var(--space-card) * -1) calc(var(--space-card) * -1)
+    var(--space-card);
+  width: calc(100% + var(--space-card) * 2);
+}
+
+.weekly > .media-figure:first-child figcaption {
+  padding-inline: var(--space-card);
 }
 
 .two-column:not(:first-child) {

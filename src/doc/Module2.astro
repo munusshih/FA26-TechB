@@ -4,13 +4,14 @@ import TwoColumn from "@/components/TwoColumn.astro";
 import Callout from "@/components/Callout.astro";
 import ModuleDesk from "@/components/ModuleDesk.astro";
 import ModuleMedia from "@/components/ModuleMedia.astro";
+import { moduleResources } from "@/data/module-resources.js";
 ---
 
 <Accordion title="Module 2: The Coded Gaze" open>
   <TwoColumn>
     <div class="weekly">
-      <h3 class="heading-2">Week 5–9: The Coded Gaze</h3>
       <ModuleMedia module="2" />
+      <h3 class="heading-2">Week 5–9: The Coded Gaze</h3>
       <p>
         This module introduces machine learning as a shift from general
         artificial intelligence and rule-based programming to systems
@@ -49,9 +50,9 @@ import ModuleMedia from "@/components/ModuleMedia.astro";
     </div>
 
     <div class="weekly">
+      <ModuleMedia module="2" placement="project" />
       <h3 class="heading-2">Project 2: Uncertain Archive</h3>
       <Callout><p>Due Week 9</p></Callout>
-      <ModuleMedia module="2" placement="project" />
       <p>
         In Project 2, students will act as both archivist and algorithm to
         examine how classification systems generate content, shape knowledge,
@@ -89,37 +90,7 @@ import ModuleMedia from "@/components/ModuleMedia.astro";
     </div>
   </TwoColumn>
   <ModuleDesk
-    readings={[
-      {
-        title: "Ruha Benjamin, Race After Technology",
-        note: "The New Jim Code and discriminatory design.",
-      },
-      {
-        title: "Cathy O’Neil, Weapons of Math Destruction",
-        note: "How opaque models scale harm.",
-      },
-      {
-        title: "Kate Crawford & Trevor Paglen, “Excavating AI”",
-        url: "https://excavating.ai/",
-        note: "A close reading of ImageNet’s politics and categories.",
-      },
-    ]}
-    tools={[
-      {
-        title: "ml5.js",
-        url: "https://ml5js.org/",
-        note: "Friendly machine learning for the web.",
-      },
-      {
-        title: "Teachable Machine",
-        url: "https://teachablemachine.withgoogle.com/",
-        note: "Train a small classifier without setup.",
-      },
-      {
-        title: "Datasheets for Datasets",
-        url: "https://www.datasheetsfordatasets.org/",
-        note: "Document a corpus before asking a model to read it.",
-      },
-    ]}
+    readings={moduleResources.module2.readings}
+    tools={moduleResources.module2.tools}
   />
 </Accordion>

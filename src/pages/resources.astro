@@ -1,0 +1,237 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Footer from "../components/Footer.astro";
+import ResourceCard from "../components/ResourceCard.astro";
+import SkipToMain from "../components/SkipToMain.astro";
+import readingListSource from "../data/critical_ai_global_south_reading_list.md?raw";
+import {
+  archiveTools,
+  createReadingArchive,
+  resourceImages,
+  withResourceImages,
+} from "../data/resource-library.js";
+import "../styles/global.css";
+
+const readingArchive = createReadingArchive(readingListSource);
+const readingGroups = new Map();
+
+readingArchive.forEach((item) => {
+  if (!readingGroups.has(item.group)) readingGroups.set(item.group, []);
+  readingGroups.get(item.group).push(item);
+});
+
+const sections = [...readingGroups].map(([title, items]) => ({
+  title,
+  items: withResourceImages(items, title),
+}));
+
+sections.push({
+  title: "Studio tools",
+  items: withResourceImages(archiveTools, "Studio tools"),
+});
+---
+
+<Layout
+  pageTitle="Resource Archive — Technology B"
+  pageDescription="An extended critical AI reading and creative-tool archive for Graduate Studio: Technology B."
+  robots="noindex"
+  showChat={false}
+>
+  <SkipToMain />
+  <div class="resource-site">
+    <header class="resource-hero texture-field">
+      <div class="cutoff resource-hero-inner">
+        <p class="resource-eyebrow">DES 720B · Extended index</p>
+        <h1 class="heading-1">Resource<br />Archive</h1>
+        <div class="resource-intro">
+          <p>
+            Critical histories, situated perspectives, design methods, and
+            creative tools for following paths beyond the core syllabus.
+          </p>
+          <a href="/">← Return to the syllabus</a>
+        </div>
+      </div>
+    </header>
+
+    <main id="main-content" tabindex="-1">
+      {
+        sections.map((section, sectionIndex) => (
+          <section
+            class="resource-section cutoff"
+            aria-labelledby={`resource-section-${sectionIndex}`}
+          >
+            <header class="resource-section-header">
+              <span class="resource-index">
+                {String(sectionIndex + 1).padStart(2, "0")}
+              </span>
+              <h2 id={`resource-section-${sectionIndex}`} class="heading-2">
+                {section.title}
+              </h2>
+              <span class="resource-count">
+                {String(section.items.length).padStart(2, "0")}
+              </span>
+            </header>
+            <div class="resource-grid">
+              {section.items.map((item) => (
+                <ResourceCard item={item} />
+              ))}
+            </div>
+          </section>
+        ))
+      }
+
+      <aside class="image-sources cutoff" aria-labelledby="image-sources-title">
+        <h2 id="image-sources-title" class="heading-3">Image sources</h2>
+        <ul>
+          {
+            resourceImages.map((image) => (
+              <li>
+                <a href={image.source}>{image.credit}</a>
+              </li>
+            ))
+          }
+        </ul>
+      </aside>
+    </main>
+
+    <Footer />
+  </div>
+</Layout>
+
+<script src="../scripts/external-links.js"></script>
+
+<style>
+  .resource-site {
+    min-height: 100svh;
+  }
+
+  .resource-hero {
+    border-bottom: var(--rule);
+    padding: var(--space-card) 0 var(--space-section);
+  }
+
+  .resource-hero-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(16rem, 0.8fr);
+    align-items: end;
+    gap: var(--space-card);
+  }
+
+  .resource-eyebrow {
+    grid-column: 1 / -1;
+    margin: 0;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .resource-hero h1 {
+    margin: 0;
+    font-size: clamp(5.5rem, 14vw, 14rem);
+    line-height: 0.72;
+  }
+
+  .resource-intro {
+    display: flex;
+    flex-direction: column;
+    align-self: end;
+    gap: var(--space-3);
+  }
+
+  .resource-intro p {
+    margin: 0;
+    font-size: clamp(1.2rem, 1.8vw, 1.8rem);
+    line-height: 1.25;
+  }
+
+  .resource-intro a {
+    width: fit-content;
+  }
+
+  .resource-section {
+    border-bottom: var(--rule);
+    padding-block: var(--space-section);
+  }
+
+  .resource-section-header {
+    display: grid;
+    grid-template-columns: 2.5rem minmax(0, 1fr) auto;
+    align-items: start;
+    gap: var(--space-2);
+    margin-bottom: var(--space-card);
+  }
+
+  .resource-section-header h2 {
+    margin: 0;
+    max-width: 16ch;
+  }
+
+  .resource-index {
+    font-size: var(--title-card);
+    line-height: 1;
+    font-family: var(--font-display);
+    writing-mode: vertical-rl;
+  }
+
+  .resource-count {
+    border: var(--rule);
+    padding: 0.25rem 0.45rem;
+    min-width: 2.75rem;
+    font-variant-numeric: tabular-nums;
+    text-align: center;
+  }
+
+  .resource-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--space-2);
+  }
+
+  .image-sources {
+    padding-block: var(--space-section);
+  }
+
+  .image-sources h2 {
+    margin: 0 0 var(--space-2);
+  }
+
+  .image-sources ul {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--space-1) var(--space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .image-sources li {
+    font-size: 0.78rem;
+    line-height: 1.25;
+  }
+
+  @media (max-width: 1000px) {
+    .resource-grid,
+    .image-sources ul {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 720px) {
+    .resource-hero-inner {
+      grid-template-columns: 1fr;
+    }
+
+    .resource-hero h1 {
+      font-size: clamp(4.4rem, 23vw, 7rem);
+    }
+
+    .resource-grid,
+    .image-sources ul {
+      grid-template-columns: 1fr;
+    }
+
+    .resource-section-header {
+      grid-template-columns: 2rem minmax(0, 1fr) auto;
+    }
+  }
+</style>

@@ -184,7 +184,7 @@ import SiteChat from "./SiteChat.astro";
     grid-template-rows: auto minmax(0, 1fr);
     z-index: 50;
     margin: 0;
-    border: 1px solid var(--line);
+    border: var(--rule);
     border-radius: 0.3rem;
     background: var(--paper);
     width: min(27rem, calc(100vw - 2rem));
@@ -202,7 +202,7 @@ import SiteChat from "./SiteChat.astro";
     justify-content: space-between;
     align-items: center;
     cursor: grab;
-    border-bottom: 1px solid var(--line-soft);
+    border-bottom: var(--rule);
     background: var(--paper) !important;
     padding: 0.4rem;
     touch-action: none;
@@ -249,7 +249,7 @@ import SiteChat from "./SiteChat.astro";
     display: grid;
     place-items: center;
     cursor: pointer;
-    border: 1px solid var(--line-soft);
+    border: var(--rule);
     border-radius: 0.15rem;
     background: transparent;
     width: 1.8rem;
@@ -284,7 +284,7 @@ import SiteChat from "./SiteChat.astro";
   }
 
   .eliza-window[data-chat-state="thinking"] {
-    border-color: var(--accent);
+    border-color: var(--ink);
   }
 
   @media (max-width: 640px) {
