@@ -59,7 +59,7 @@ export const toolCollections = [
   },
   {
     id: "run-build-local",
-    title: "Run private models and build locally",
+    title: "Run models, agents, and assistants",
   },
 ];
 
@@ -528,6 +528,46 @@ export const archiveTools = [
       status: "Free · Open source",
       provider: "Lemonade contributors",
       sourceType: "Community project",
+    },
+    {
+      title: "Aider",
+      url: "https://aider.chat/docs/",
+      meta: "Pair-program inside a local Git repository",
+      status: "Free · Open source",
+      provider: "Aider AI and contributors",
+      sourceType: "Community open-source project",
+    },
+    {
+      title: "Cline",
+      url: "https://github.com/cline/cline",
+      meta: "Run a coding agent in an IDE or terminal",
+      status: "Free · Open source",
+      provider: "Cline",
+      sourceType: "Company-maintained open source",
+    },
+    {
+      title: "goose",
+      url: "https://github.com/aaif-goose/goose",
+      meta: "Use a local desktop or CLI agent with any model",
+      status: "Free · Open source",
+      provider: "Agentic AI Foundation · Linux Foundation",
+      sourceType: "Foundation open-source project",
+    },
+    {
+      title: "Khoj",
+      url: "https://github.com/khoj-ai/khoj",
+      meta: "Chat with documents and build self-hosted personal agents",
+      status: "Free · Open source",
+      provider: "Khoj",
+      sourceType: "Company-maintained open source",
+    },
+    {
+      title: "DocsGPT",
+      url: "https://github.com/arc53/DocsGPT",
+      meta: "Build private document assistants and research agents",
+      status: "Free · Open source",
+      provider: "Arc53",
+      sourceType: "Company-maintained open source",
     },
     {
       title: "Langflow",

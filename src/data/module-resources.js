@@ -23,12 +23,28 @@ export const moduleResources = {
         url: "https://findingeliza.org/",
       },
       {
-        title: "CLIPS rule-based programming",
-        url: "https://clipsrules.net/",
+        title: "Markov Chain Name Generator",
+        url: "https://thecodingtrain.com/challenges/42-markov-chain-name-generator/",
       },
       {
-        title: "AIMA Python implementations",
-        url: "https://github.com/aimacode/aima-python",
+        title: "RiTa generative writing toolkit",
+        url: "https://rednoise.org/rita/",
+      },
+      {
+        title: "RiveScript chatbot playground",
+        url: "https://play.rivescript.com/",
+      },
+      {
+        title: "Tracery generative grammar",
+        url: "https://github.com/galaxykate/tracery",
+      },
+      {
+        title: "Twine interactive storytelling",
+        url: "https://twinery.org/",
+      },
+      {
+        title: "Squiffy interactive stories",
+        url: "https://squiffystory.com/",
       },
     ],
   },
@@ -60,6 +76,30 @@ export const moduleResources = {
         title: "Data Cards Playbook",
         url: "https://sites.research.google/datacardsplaybook/",
       },
+      {
+        title: "ml5.js",
+        url: "https://ml5js.org/",
+      },
+      {
+        title: "Wekinator",
+        url: "https://www.wekinator.org/",
+      },
+      {
+        title: "Quick, Draw! Data",
+        url: "https://quickdraw.withgoogle.com/data",
+      },
+      {
+        title: "Fairlearn",
+        url: "https://fairlearn.org/",
+      },
+      {
+        title: "AI Blindspot",
+        url: "https://aiblindspot.media.mit.edu/",
+      },
+      {
+        title: "Learning Interpretability Tool",
+        url: "https://pair-code.github.io/lit/",
+      },
     ],
   },
   module3: {
@@ -89,6 +129,22 @@ export const moduleResources = {
       {
         title: "Hugging Face model cards",
         url: "https://huggingface.co/docs/hub/model-cards",
+      },
+      {
+        title: "Google NotebookLM",
+        url: "https://notebooklm.google.com/",
+      },
+      {
+        title: "Open Notebook",
+        url: "https://github.com/lfnovo/open-notebook",
+      },
+      {
+        title: "Continue coding agent",
+        url: "https://docs.continue.dev/",
+      },
+      {
+        title: "OpenHands coding agent",
+        url: "https://docs.openhands.dev/",
       },
     ],
   },

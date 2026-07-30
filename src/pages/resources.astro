@@ -45,15 +45,6 @@ const toolSections = toolCollections.map((collection) => ({
       </div>
     </header>
 
-    <nav class="resource-type-nav cutoff" aria-label="Resource types">
-      <a href="#readings">
-        <strong>Readings</strong>
-      </a>
-      <a href="#tools">
-        <strong>Tools</strong>
-      </a>
-    </nav>
-
     <main id="main-content" tabindex="-1">
       <section
         id="readings"
@@ -72,11 +63,11 @@ const toolSections = toolCollections.map((collection) => ({
 
         <div class="resource-disclosures">
           {
-            readingSections.map((section, sectionIndex) => (
+            readingSections.map((section) => (
               <ResourceDisclosure
                 id={`readings-${section.id}`}
                 title={section.title}
-                open={sectionIndex === 0}
+                open
               >
                 <ul class="resource-grid">
                   {section.items.map((item) => (
@@ -113,6 +104,7 @@ const toolSections = toolCollections.map((collection) => ({
               <ResourceDisclosure
                 id={`tools-${section.id}`}
                 title={section.title}
+                open
               >
                 <ul class="resource-grid">
                   {section.items.map((item) => (
@@ -173,38 +165,6 @@ const toolSections = toolCollections.map((collection) => ({
     width: fit-content;
   }
 
-  .resource-type-nav {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--space-2);
-    border-bottom: var(--rule);
-    padding-bottom: var(--space-section);
-  }
-
-  .resource-type-nav a {
-    display: block;
-    background: transparent;
-    padding: var(--space-card);
-    text-decoration: none;
-  }
-
-  .resource-type-nav a:hover,
-  .resource-type-nav a:focus-visible {
-    background: var(--ink);
-    color: var(--paper);
-  }
-
-  .resource-type-nav a:focus-visible {
-    outline: 3px solid var(--ink);
-    outline-offset: 3px;
-  }
-
-  .resource-type-nav strong {
-    font-size: clamp(1.8rem, 3.2vw, 3.75rem);
-    line-height: 1;
-    font-family: var(--font-display);
-  }
-
   .resource-collection {
     padding-block: var(--space-section);
   }
@@ -263,10 +223,6 @@ const toolSections = toolCollections.map((collection) => ({
 
     .resource-hero h1 {
       font-size: clamp(4.4rem, 23vw, 7rem);
-    }
-
-    .resource-type-nav {
-      grid-template-columns: 1fr;
     }
 
     .resource-collection-header h2 {
