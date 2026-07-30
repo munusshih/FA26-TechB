@@ -1,0 +1,11 @@
+---
+import MediaFigure from "./MediaFigure.astro";
+import { courseMedia } from "../data/course-media.js";
+
+const { module, placement = "overview" } = Astro.props;
+const key =
+  placement === "project" ? `module${module}Project` : `module${module}`;
+const media = courseMedia[key];
+---
+
+<MediaFigure media={media} variant="module" />

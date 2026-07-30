@@ -3,12 +3,14 @@ import Accordion from "@/components/Accordion.astro";
 import TwoColumn from "@/components/TwoColumn.astro";
 import Callout from "@/components/Callout.astro";
 import ModuleDesk from "@/components/ModuleDesk.astro";
+import ModuleMedia from "@/components/ModuleMedia.astro";
 ---
 
 <Accordion title="Module 2: The Coded Gaze" open>
   <TwoColumn>
     <div class="weekly">
       <h3 class="heading-2">Week 5–9: The Coded Gaze</h3>
+      <ModuleMedia module="2" />
       <p>
         This module introduces machine learning as a shift from general
         artificial intelligence and rule-based programming to systems
@@ -49,6 +51,7 @@ import ModuleDesk from "@/components/ModuleDesk.astro";
     <div class="weekly">
       <h3 class="heading-2">Project 2: Uncertain Archive</h3>
       <Callout><p>Due Week 9</p></Callout>
+      <ModuleMedia module="2" placement="project" />
       <p>
         In Project 2, students will act as both archivist and algorithm to
         examine how classification systems generate content, shape knowledge,

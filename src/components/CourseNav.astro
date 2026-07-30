@@ -1,0 +1,30 @@
+<nav class="course-nav" aria-label="Course sections">
+  <a href="#module-1:-crack-inside-the-black-box">Course Modules</a>
+  <a href="#grading-and-attendance">Grading</a>
+  <a href="#open-source-policies">Policies</a>
+  <a href="#pratt-mfa-communications-design-departmental-resources"
+    >Resources</a
+  >
+</nav>
+
+<style>
+  .course-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    font-weight: 700;
+    font-size: clamp(1rem, 1.5vw, 1.35rem);
+  }
+
+  .course-nav a {
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
+  }
+
+  @media (max-width: 640px) {
+    .course-nav {
+      gap: var(--space-2);
+      font-size: 0.9rem;
+    }
+  }
+</style>

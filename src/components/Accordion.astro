@@ -1,6 +1,4 @@
 ---
-import SectionCanvas from "@/components/SectionCanvas.astro";
-
 const {
   title = "Accordion Title",
   open = true,
@@ -21,6 +19,18 @@ const classes = `accordion ${noCutoff ? "" : "cutoff"}`.trim();
     type="button"
   >
     <h2 class="heading-1">{title}</h2>
+    <svg
+      class="accordion-toggle-icon"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.25"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path class="accordion-icon-expand" d="m5 8 7 8 7-8"></path>
+      <path class="accordion-icon-collapse" d="m5 16 7-8 7 8"></path>
+    </svg>
   </button>
   <div
     id={contentId}
@@ -29,7 +39,6 @@ const classes = `accordion ${noCutoff ? "" : "cutoff"}`.trim();
     aria-hidden={isOpen ? "false" : "true"}
     inert={isOpen ? undefined : true}
   >
-    <SectionCanvas title={title} />
     <slot />
   </div>
 </section>

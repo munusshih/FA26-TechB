@@ -1,5 +1,6 @@
 ---
-import EnlightenmentDiagram from "./EnlightenmentDiagram.astro";
+import CourseNav from "./CourseNav.astro";
+import HeroMedia from "./HeroMedia.astro";
 
 const {
   programUrl = "https://www.pratt.edu/design/graduate-communications-design/",
@@ -9,16 +10,16 @@ const {
 ---
 
 <header id="top" class="course-hero">
-  <div class="course-meta-bar cutoff">
-    <span>{courseCode}</span>
-    <a href={programUrl}>{programLabel}</a>
-    <span>Fall 2026</span>
+  <div class="course-masthead cutoff">
+    <h1>Graduate Studio:<br />Technology B</h1>
+    <div class="course-identity">
+      <a href={programUrl}>↳ {programLabel}</a>
+      <span>↳ {courseCode}</span>
+      <span>Fall 2026</span>
+    </div>
   </div>
-
-  <div class="course-title-wrap cutoff">
-    <EnlightenmentDiagram />
-    <h1 class="sr-only">Graduate Studio: Technology B</h1>
-    <div class="title-studio" aria-hidden="true">Graduate Studio:</div>
-    <div class="title-course" aria-hidden="true">Technology B</div>
+  <div class="course-nav-row cutoff">
+    <CourseNav />
   </div>
+  <HeroMedia />
 </header>

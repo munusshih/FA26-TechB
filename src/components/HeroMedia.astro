@@ -1,0 +1,19 @@
+---
+import MediaFigure from "./MediaFigure.astro";
+import { courseMedia } from "../data/course-media.js";
+---
+
+<div class="hero-media cutoff">
+  <MediaFigure
+    media={courseMedia.hero}
+    variant="hero"
+    loading="eager"
+    sizes="calc(100vw - 2rem)"
+  />
+</div>
+
+<style>
+  .hero-media {
+    margin-top: var(--space-3);
+  }
+</style>

@@ -1,0 +1,99 @@
+---
+const {
+  media,
+  variant = "module",
+  loading = "lazy",
+  sizes = "(min-width: 768px) 50vw, 100vw",
+} = Astro.props;
+---
+
+<figure class={`media-figure media-figure-${variant}`}>
+  <div class="media-well">
+    <img
+      src={media.src}
+      alt={media.alt}
+      loading={loading}
+      decoding="async"
+      sizes={sizes}
+      style={`object-position: ${media.position ?? "center"}; object-fit: ${media.fit ?? "cover"}`}
+    />
+  </div>
+  <figcaption>
+    <span>
+      <em>{media.title}</em>, {media.creator}, {media.year}
+    </span>
+    <a href={media.source} rel="license">Wikimedia Commons · {media.license}</a>
+  </figcaption>
+</figure>
+
+<style>
+  .media-figure {
+    margin: 0;
+    color: var(--ink);
+  }
+
+  .media-well {
+    border: 1px solid var(--ink);
+    background: var(--paper-raised);
+    overflow: hidden;
+  }
+
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  figcaption {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: var(--space-2);
+    align-items: baseline;
+    border-bottom: 1px solid var(--ink);
+    padding: var(--space-2) 0;
+    font-size: 0.76rem;
+    line-height: 1.25;
+  }
+
+  figcaption a {
+    text-align: right;
+  }
+
+  figcaption span,
+  figcaption a {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .media-figure-hero .media-well {
+    height: clamp(24rem, 58vw, 52rem);
+  }
+
+  .media-figure-hero figcaption {
+    padding-inline: 0;
+  }
+
+  .media-figure-module {
+    margin-bottom: var(--space-card);
+  }
+
+  .media-figure-module .media-well {
+    aspect-ratio: 4 / 3;
+  }
+
+  @media (max-width: 640px) {
+    figcaption {
+      grid-template-columns: 1fr;
+    }
+
+    figcaption a {
+      text-align: left;
+    }
+
+    .media-figure-hero .media-well {
+      aspect-ratio: 4 / 3;
+      height: auto;
+    }
+  }
+</style>

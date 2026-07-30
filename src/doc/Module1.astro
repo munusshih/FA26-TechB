@@ -3,12 +3,14 @@ import Accordion from "@/components/Accordion.astro";
 import TwoColumn from "@/components/TwoColumn.astro";
 import Callout from "@/components/Callout.astro";
 import ModuleDesk from "@/components/ModuleDesk.astro";
+import ModuleMedia from "@/components/ModuleMedia.astro";
 ---
 
 <Accordion title="Module 1: Crack Inside the Black Box" open>
   <TwoColumn>
     <div class="weekly">
       <h3 class="heading-2">Week 1–4: Crack Inside the Black Box</h3>
+      <ModuleMedia module="1" />
       <p>
         This module examines how intelligence has been modeled, simulated, and
         represented across different historical and cultural contexts. Through
@@ -42,6 +44,7 @@ import ModuleDesk from "@/components/ModuleDesk.astro";
         Project 1: Epistemological Research of Technology
       </h3>
       <Callout><p>Due Week 4</p></Callout>
+      <ModuleMedia module="1" placement="project" />
       <p>
         Students will select a historical or computational model of intelligence
         and reconstruct its underlying logic through research and prototyping.
