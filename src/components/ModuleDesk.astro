@@ -1,14 +1,24 @@
 ---
 import TwoColumn from "./TwoColumn.astro";
 
-const { tools = [] } = Astro.props;
+const { readings = [], tools = [] } = Astro.props;
 ---
 
 <div class="module-resources mt-4">
   <TwoColumn>
     <div class="weekly">
       <h3 class="heading-2">Suggested reading</h3>
-      <p>TKTKT</p>
+      <ul>
+        {
+          readings.map((item) => (
+            <li>
+              <span>
+                {item.url ? <a href={item.url}>{item.title}</a> : item.title}
+              </span>
+            </li>
+          ))
+        }
+      </ul>
     </div>
     <div class="weekly">
       <h3 class="heading-2">Tools / materials</h3>
