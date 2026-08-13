@@ -1,15 +1,15 @@
 /* global URL */
 
+import { moduleResources } from "./module-resources.js";
+
 const selectedReadingUrls = new Set([
-  "https://www.cs.otago.ac.nz/cosc343/Resources/turing1950.pdf",
-  "https://courses.cs.umbc.edu/331/papers/eliza.html",
-  "https://oro.open.ac.uk/46718/",
-  "https://www.ruhabenjamin.com/race-after-technology",
-  "https://proceedings.mlr.press/v81/buolamwini18a.html",
-  "https://excavating.ai/",
-  "https://aclanthology.org/2020.acl-main.463/",
+  ...Object.values(moduleResources).flatMap(({ readings }) =>
+    readings.map(({ url }) => url),
+  ),
+  // The extended bibliography uses alternate URLs for these same works.
+  "https://proceedings.neurips.cc/paper_files/paper/2022/hash/9d5609613524ecf4f15af0f7b31abca4-Abstract.html",
+  "https://proceedings.neurips.cc/paper_files/paper/2023/hash/ed3fea9033a80fea1376299fa7863f4a-Abstract.html",
   "https://faculty.washington.edu/ebender/stochasticparrots/",
-  "https://jods.mitpress.mit.edu/pub/lewis-arista-pechawis-kite/release/1",
 ]);
 
 export const readingCollections = [

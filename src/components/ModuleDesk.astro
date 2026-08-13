@@ -7,14 +7,15 @@ const { readings = [], tools = [] } = Astro.props;
 <div class="module-resources mt-4">
   <TwoColumn>
     <div class="weekly">
-      <h3 class="heading-2">Suggested reading</h3>
-      <ul>
+      <h3 class="heading-2">Core readings</h3>
+      <ul class="reading-list">
         {
           readings.map((item) => (
             <li>
               <span>
                 {item.url ? <a href={item.url}>{item.title}</a> : item.title}
               </span>
+              {item.note && <small class="resource-note">{item.note}</small>}
             </li>
           ))
         }
@@ -36,3 +37,18 @@ const { readings = [], tools = [] } = Astro.props;
     </div>
   </TwoColumn>
 </div>
+
+<style>
+  .reading-list li + li {
+    margin-top: var(--space-2);
+  }
+
+  .resource-note {
+    display: block;
+    opacity: 0.76;
+    margin-top: 0.2rem;
+    max-width: 62ch;
+    font-size: 0.88em;
+    line-height: 1.4;
+  }
+</style>
