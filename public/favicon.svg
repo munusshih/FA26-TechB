@@ -1,14 +1,40 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <style>
-    :root { color: #075fd1; }
-    .paper { fill: #f3ead7; }
-    .ink { stroke: currentColor; }
-  </style>
-  <rect class="paper" width="64" height="64"/>
-  <g class="ink" fill="none" stroke-width="1.5">
-    <circle cx="32" cy="32" r="13"/>
-    <circle cx="32" cy="32" r="3" fill="currentColor"/>
-    <path d="M32 5v54M5 32h54M13 13l38 38M51 13 13 51"/>
-    <path d="M32 2l3 6h-6zM62 32l-6 3v-6zM32 62l-3-6h6zM2 32l6-3v6z" fill="currentColor"/>
+  <defs>
+    <pattern id="field" width="8" height="8" patternUnits="userSpaceOnUse">
+      <path
+        d="M4 2v4M2 4h4"
+        fill="none"
+        stroke="#392d2f"
+        stroke-width=".6"
+        opacity=".2"
+      />
+    </pattern>
+  </defs>
+
+  <rect width="64" height="64" fill="#b8e1f5" />
+  <rect width="64" height="64" fill="url(#field)" />
+
+  <g fill="#392d2f">
+    <rect x="5" y="48" width="4" height="4" />
+    <rect x="12" y="45" width="4" height="4" />
+    <rect x="18" y="40" width="4" height="4" />
+    <rect x="47" y="19" width="4" height="4" />
+    <rect x="54" y="14" width="4" height="4" />
+  </g>
+
+  <path
+    d="M8 50c10-2 14-11 23-14 10-3 15-11 25-20"
+    fill="none"
+    stroke="#392d2f"
+    stroke-width="1.5"
+    stroke-linecap="round"
+    opacity=".45"
+  />
+
+  <g fill="#b8e1f5" stroke="#392d2f" stroke-width="2.5">
+    <path d="M23 40 33 34 43 28" fill="none" stroke-linecap="round" />
+    <circle cx="23" cy="40" r="4.5" />
+    <circle cx="33" cy="34" r="4.5" />
+    <circle cx="43" cy="28" r="4.5" />
   </g>
 </svg>
