@@ -21,7 +21,8 @@
     "eliza-util": "^1.1.0-alpha.1",
     "gsap": "^3.13.0",
     "p5": "^2.3.1",
-    "tailwindcss": "^4.1.11"
+    "tailwindcss": "^4.1.11",
+    "tslib": "^2.8.1"
   },
   "devDependencies": {
     "@sparticuz/chromium": "149.0.0",
