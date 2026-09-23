@@ -1,0 +1,181 @@
+---
+import Accordion from "@/components/Accordion.astro";
+import Footer from "@/components/Footer.astro";
+import Header from "@/components/Header.astro";
+import ProjectSearch from "@/components/ProjectSearch.astro";
+import SkipToMain from "@/components/SkipToMain.astro";
+import Layout from "@/layouts/Layout.astro";
+import {
+  groupProjectsByModule,
+  getProjectTitle,
+  getProjectAuthor,
+  getPrimaryMediaEntry,
+  getThumbnailPath,
+} from "@/lib/projects.js";
+
+const { projects, season, year } = Astro.props;
+const groupedProjects = groupProjectsByModule(projects);
+const totalProjects = projects.length;
+---
+
+<Layout
+  pageTitle={`Technology B Project Archive — ${season} ${year}`}
+  pageDescription={`Student work from Graduate Studio: Technology B, ${season} ${year}.`}
+  showChat={false}
+>
+  <SkipToMain />
+  <Header />
+  <main id="main-content" class="project-archive cutoff" tabindex="-1">
+    <section class="archive-intro texture-field">
+      <p class="eyebrow">{season} {year} · Student work</p>
+      <h2 class="heading-1">Project Archive</h2>
+      <div class="archive-actions">
+        <a href="/">Back to syllabus</a>
+        <a href="https://forms.gle/sdDc4o4MTqzJHg1m6">Submit a project</a>
+      </div>
+    </section>
+
+    <ProjectSearch totalProjects={totalProjects} />
+
+    {
+      totalProjects === 0 ? (
+        <section class="empty-state card">
+          <h3 class="heading-2">No projects have been published yet.</h3>
+          <p>New submissions will appear here after the nightly refresh.</p>
+        </section>
+      ) : (
+        groupedProjects.map(([moduleName, moduleProjects]) => (
+          <Accordion title={moduleName} open noCutoff={true}>
+            <div class="project-grid">
+              {moduleProjects.map((project) => {
+                const title = getProjectTitle(project);
+                const author = getProjectAuthor(project);
+                const primaryMedia = getPrimaryMediaEntry(project);
+                const thumbnailPath = primaryMedia
+                  ? getThumbnailPath(primaryMedia.value)
+                  : null;
+                const rawCredits =
+                  project[
+                    "Credit (List out collaborators, tutorials, libraries, references, AI agents used)"
+                  ];
+                const credits =
+                  typeof rawCredits === "string" ? rawCredits : "";
+                return (
+                  <article
+                    class="card project-card"
+                    data-project-card
+                    data-credits={credits}
+                  >
+                    <a
+                      href={`/work/${project.slug}`}
+                      class="project-media no-underline"
+                    >
+                      {primaryMedia ? (
+                        primaryMedia.type === "video" ? (
+                          thumbnailPath ? (
+                            <img
+                              src={thumbnailPath}
+                              alt={primaryMedia.description || title}
+                              loading="lazy"
+                            />
+                          ) : (
+                            <video
+                              src={primaryMedia.value}
+                              muted
+                              loop
+                              playsInline
+                              preload="metadata"
+                            />
+                          )
+                        ) : (
+                          <img
+                            src={thumbnailPath || primaryMedia.value}
+                            alt={primaryMedia.description || title}
+                            loading="lazy"
+                          />
+                        )
+                      ) : (
+                        <span class="media-placeholder">No media provided</span>
+                      )}
+                    </a>
+                    <h3 class="heading-3">
+                      <a href={`/work/${project.slug}`}>{title}</a>
+                    </h3>
+                    <p>{author}</p>
+                  </article>
+                );
+              })}
+            </div>
+          </Accordion>
+        ))
+      )
+    }
+  </main>
+  <Footer />
+</Layout>
+
+<style>
+  .project-archive {
+    padding-block: var(--space-section);
+  }
+  .archive-intro {
+    margin-bottom: var(--space-section);
+    border: var(--rule);
+    border-radius: 1rem;
+    padding: var(--space-card);
+  }
+  .eyebrow {
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .archive-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 2rem;
+    margin-top: var(--space-3);
+  }
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-card);
+    padding-block: var(--space-card);
+  }
+  .project-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+  .project-media {
+    display: block;
+    border: var(--rule);
+    border-radius: 0.6rem;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+  }
+  .project-media img,
+  .project-media video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .media-placeholder {
+    display: grid;
+    place-items: center;
+    background: var(--paper);
+    height: 100%;
+  }
+  .empty-state {
+    margin-block: var(--space-section);
+  }
+  @media (max-width: 900px) {
+    .project-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 600px) {
+    .project-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

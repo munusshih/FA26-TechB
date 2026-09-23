@@ -5,6 +5,7 @@ import Callout from "@/components/Callout.astro";
 import ModuleDesk from "@/components/ModuleDesk.astro";
 import ModuleMedia from "@/components/ModuleMedia.astro";
 import { moduleResources } from "@/data/module-resources.js";
+import { SITE } from "@/lib/projects.js";
 ---
 
 <Accordion title="Module 3: Disrupting the Chain-of-Thought" open>
@@ -47,6 +48,7 @@ import { moduleResources } from "@/data/module-resources.js";
       <ModuleMedia module="3" placement="project" />
       <h3 class="heading-2">Project 3: Alternative Now(s)</h3>
       <Callout><p>Due Week 15</p></Callout>
+      <a href={SITE.formUrl} class="big-btn">Submit Project 3</a>
       <p>
         For the final project, students will create a speculative design
         prototype that reimagines artificial intelligence beyond dominant

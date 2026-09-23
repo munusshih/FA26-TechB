@@ -1,0 +1,195 @@
+---
+/* eslint-disable jsx-a11y/media-has-caption */
+import Footer from "@/components/Footer.astro";
+import Header from "@/components/Header.astro";
+import SkipToMain from "@/components/SkipToMain.astro";
+import Layout from "@/layouts/Layout.astro";
+import "@/styles/global.css";
+import {
+  projectsWithMeta,
+  getProjectTitle,
+  getProjectAuthor,
+  buildParagraphs,
+  fileEntriesForProject,
+  buildLinkList,
+  DESCRIPTION_FIELD,
+  DESCRIPTION_FALLBACK_FIELD,
+} from "@/lib/projects.js";
+
+export function getStaticPaths() {
+  return projectsWithMeta.map((project) => ({
+    params: { slug: project.slug },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const title = getProjectTitle(project);
+const author = getProjectAuthor(project);
+const description =
+  project[DESCRIPTION_FIELD] ?? project[DESCRIPTION_FALLBACK_FIELD] ?? "";
+const descriptionParagraphs = buildParagraphs(description);
+const mediaEntries = fileEntriesForProject(project);
+const links = buildLinkList(project);
+const creditsValue =
+  project[
+    "Credit (List out collaborators, tutorials, libraries, references, AI agents used)"
+  ];
+const credits =
+  typeof creditsValue === "string"
+    ? creditsValue
+        .split(/\r?\n/)
+        .map((line) => line.trim())
+        .filter(Boolean)
+    : [];
+---
+
+<Layout
+  pageTitle={`${title} — Technology B`}
+  pageDescription={`${title} by ${author}, a Technology B student project.`}
+  showChat={false}
+>
+  <SkipToMain />
+  <Header />
+  <main id="main-content" class="project-detail cutoff" tabindex="-1">
+    <nav class="project-back" aria-label="Project archive navigation">
+      <a href="/work/">← All projects</a>
+    </nav>
+    <header class="project-title texture-field">
+      <p>{project.moduleName}</p>
+      <h2 class="heading-1">{title}</h2>
+      <p class="heading-3">by {author}</p>
+    </header>
+
+    {
+      mediaEntries.length > 0 && (
+        <section class="media-stack" aria-label="Project media">
+          {mediaEntries.map((entry) => (
+            <figure>
+              {entry.type === "video" ? (
+                <video
+                  src={entry.value}
+                  controls
+                  playsInline
+                  preload="metadata"
+                />
+              ) : entry.type === "image" || entry.type === "local" ? (
+                <img src={entry.value} alt={entry.description || entry.label} />
+              ) : (
+                <a href={entry.value} target="_blank" rel="noopener noreferrer">
+                  {entry.label}
+                </a>
+              )}
+              {entry.description && (
+                <figcaption>{entry.description}</figcaption>
+              )}
+            </figure>
+          ))}
+        </section>
+      )
+    }
+
+    <div class="project-copy">
+      {
+        descriptionParagraphs.length > 0 && (
+          <section>
+            <h3 class="heading-2">Project description</h3>
+            {descriptionParagraphs.map((paragraph) => (
+              <p>{paragraph}</p>
+            ))}
+          </section>
+        )
+      }
+      {
+        (credits.length > 0 || links.length > 0) && (
+          <aside class="card">
+            {credits.length > 0 && (
+              <section>
+                <h3 class="heading-3">Credits</h3>
+                <ul>
+                  {credits.map((credit) => (
+                    <li>{credit}</li>
+                  ))}
+                </ul>
+              </section>
+            )}
+            {links.length > 0 && (
+              <section>
+                <h3 class="heading-3">Links</h3>
+                <ul>
+                  {links.map((link) => (
+                    <li>
+                      <a
+                        href={link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {link.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
+          </aside>
+        )
+      }
+    </div>
+  </main>
+  <Footer />
+</Layout>
+
+<style>
+  .project-detail {
+    padding-block: var(--space-section);
+  }
+  .project-back {
+    margin-bottom: var(--space-card);
+  }
+  .project-title {
+    border: var(--rule);
+    border-radius: 1rem;
+    padding: var(--space-card);
+  }
+  .media-stack {
+    display: grid;
+    gap: var(--space-card);
+    margin-block: var(--space-section);
+  }
+  figure {
+    margin: 0;
+  }
+  figure img,
+  figure video {
+    display: block;
+    border: var(--rule);
+    border-radius: 0.85rem;
+    background: var(--paper-raised);
+    width: 100%;
+    max-height: 85svh;
+    object-fit: contain;
+  }
+  figcaption {
+    margin-top: var(--space-2);
+    font-size: 1rem;
+  }
+  .project-copy {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(16rem, 1fr);
+    gap: var(--space-section);
+    margin-block: var(--space-section);
+  }
+  .project-copy p + p {
+    margin-top: var(--space-3);
+  }
+  .project-copy aside {
+    display: grid;
+    align-content: start;
+    gap: var(--space-card);
+  }
+  @media (max-width: 760px) {
+    .project-copy {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

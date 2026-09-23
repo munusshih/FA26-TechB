@@ -5,6 +5,7 @@ import Callout from "@/components/Callout.astro";
 import ModuleDesk from "@/components/ModuleDesk.astro";
 import ModuleMedia from "@/components/ModuleMedia.astro";
 import { moduleResources } from "@/data/module-resources.js";
+import { SITE } from "@/lib/projects.js";
 ---
 
 <Accordion title="Module 2: Gazing Into the Code" open>
@@ -53,6 +54,7 @@ import { moduleResources } from "@/data/module-resources.js";
       <ModuleMedia module="2" placement="project" />
       <h3 class="heading-2">Project 2: Uncertain Archive</h3>
       <Callout><p>Due Week 10</p></Callout>
+      <a href={SITE.formUrl} class="big-btn">Submit Project 2</a>
       <p>
         In Project 2, students will act as both archivist and algorithm to
         examine how classification systems generate content, shape knowledge,

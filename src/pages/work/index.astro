@@ -1,0 +1,11 @@
+---
+import ProjectGallery from "@/components/ProjectGallery.astro";
+import { currentYearProjects, SITE } from "@/lib/projects.js";
+import "@/styles/global.css";
+---
+
+<ProjectGallery
+  projects={currentYearProjects}
+  season={SITE.season}
+  year={SITE.year}
+/>

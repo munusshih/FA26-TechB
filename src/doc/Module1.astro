@@ -5,6 +5,7 @@ import Callout from "@/components/Callout.astro";
 import ModuleDesk from "@/components/ModuleDesk.astro";
 import ModuleMedia from "@/components/ModuleMedia.astro";
 import { moduleResources } from "@/data/module-resources.js";
+import { SITE } from "@/lib/projects.js";
 ---
 
 <Accordion title="Module 1: Crack Inside the Black Box" open>
@@ -43,6 +44,7 @@ import { moduleResources } from "@/data/module-resources.js";
         Project 1: Epistemological Research of Technology
       </h3>
       <Callout><p>Due Week 5</p></Callout>
+      <a href={SITE.formUrl} class="big-btn">Submit Project 1</a>
       <p>
         Students will select a historical or computational model of intelligence
         and examine its underlying logic through research and prototyping.
