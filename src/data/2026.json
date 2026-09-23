@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "Timestamp": "9/22/2026 16:49:21",
+    "Email Address": "mbalde@pratt.edu",
+    "Your Name (First + Last Name)": "lulah balde",
+    "What is your section?": "Munus Shih",
+    "Which Module is this?": "Project 1: Epistemological Research of Technology",
+    "Your Project Name": "FOTO RECIPE",
+    "Your Project Description (max 2000 characters)": "Foto Recipe is an intelligence system that is inspired by what my Fujifilm X-S20 actually does when it adds film simulation. Instead of writing about the \"intelligence\" behind it, I built a working version of an extractive logic. Upload a photo and it reads it the way the camera would: a 5-zone tone curve (blacks, shadows, midtones, highlights, whites), real white balance/temperature, exposure, contrast, dynamic range, and grain, all pulled from the actual pixels, no presets. From that, it generates three things: a \"developed pattern,\" an abstract, textile-looking pattern built from the photo's own real colors and tones, so it's basically a visual fingerprint of the image; a vintage-style recipe receipt that translates the readout into plain language plus the full technical settings; and a recipe chart with a pie chart of the tone zones and sliding gauges for saturation and warm/cool temp. The whole site is styled like an old-school desktop: beveled windows, pixel cursor, draggable pop-ups, so the camera's invisible math feels tactile instead of hidden in a menu. You can save recipes to 'the collection' and pull them back up later with the original photo, pattern, and receipt all together. Basically: making the camera show its work.",
+    "Is there a web or code component to your project?": "Yes",
+    "Link 1 Title": "FOTO RECIPE",
+    "Link 1 URL": "https://peoplesgarments.github.io/foto-recipe/",
+    "Link 2 Title": "",
+    "Link 2 URL": "",
+    "Link 3 Title": "",
+    "Link 3 URL": "",
+    "File 1": "/project-media/mbalde_pratt_edu/foto_recipe/file_1.bin",
+    "File 1 description": "Project Presentation",
+    "File 2": "/project-media/mbalde_pratt_edu/foto_recipe/file_2.bin",
+    "File 2 description": "Map Documentation: includes my entire thought process + development ",
+    "File 3": "/project-media/mbalde_pratt_edu/foto_recipe/file_3.bin",
+    "File 3 description": "Initial system testing outputs",
+    "Credit (List out collaborators, tutorials, libraries, references, AI agents used)": "claude",
+    "I certify that this submission is my own work and adheres to the course's academic integrity and open source policy.": "Yes",
+    "Anyone's work inspired you at the open classroom?": "n/a"
+  }
+]
