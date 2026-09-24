@@ -23,5 +23,30 @@
     "Credit (List out collaborators, tutorials, libraries, references, AI agents used)": "claude",
     "I certify that this submission is my own work and adheres to the course's academic integrity and open source policy.": "Yes",
     "Anyone's work inspired you at the open classroom?": "n/a"
+  },
+  {
+    "Timestamp": "9/23/2026 13:48:13",
+    "Email Address": "lzhang76@pratt.edu",
+    "Your Name (First + Last Name)": "Li Zhang",
+    "What is your section?": "Munus Shih",
+    "Which Module is this?": "Project 1: Epistemological Research of Technology",
+    "Your Project Name": "New World",
+    "Your Project Description (max 2000 characters)": "Two travelers chase the same destination. Oldwise knows the shortest path, but every careful step seems to cost a breath; every few moves, he has to rest. Youngblood races ahead, bumps into walls, doubles back, and leaves a messy trail of second guesses. They share one map, yet seem to have two very different minds. When the race ends, the winner may surprise you—but winning is only part of the puzzle. Which one is intelligent? Which one is more intelligent?",
+    "Is there a web or code component to your project?": "Yes",
+    "Link 1 Title": "Project One Portfolio",
+    "Link 1 URL": "https://liliprincess216.github.io/TecB/#week-4-2",
+    "Link 2 Title": "Project One Github Repo",
+    "Link 2 URL": "https://github.com/liliprincess216/TecB",
+    "Link 3 Title": "",
+    "Link 3 URL": "",
+    "File 1": "/project-media/lzhang76_pratt_edu/new_world/file_1.bin",
+    "File 1 description": "Using the A* algorithm I researched in Week 1, I built the first demo. Written steps and scrolling text show how the code works.",
+    "File 2": "/project-media/lzhang76_pratt_edu/new_world/file_2.bin",
+    "File 2 description": "I compared two versions: one visualizes the process, while the other directly presents three optimal routes. Which looks more intelligent?",
+    "File 3": "/project-media/lzhang76_pratt_edu/new_world/file_3.bin",
+    "File 3 description": "A new world! Old Wise struggles to move, but gets every step right. Young Blood is very fast, yet seems to keep running into walls.",
+    "Credit (List out collaborators, tutorials, libraries, references, AI agents used)": "Gpt5.6 sol",
+    "I certify that this submission is my own work and adheres to the course's academic integrity and open source policy.": "Yes",
+    "Anyone's work inspired you at the open classroom?": "."
   }
 ]
