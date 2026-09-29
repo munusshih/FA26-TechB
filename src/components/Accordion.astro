@@ -17,11 +17,12 @@ const sectionNumbers = {
   "Pratt MFA Communications Design Departmental Resources": "08",
 };
 const isModule = title.startsWith("Module ");
+const isProject = title.startsWith("Project ");
 const moduleNumber = title.match(/^Module\s+(\d+)/)?.[1];
 const displayTitle = isModule ? title.replace(/^Module\s+\d+:\s*/, "") : title;
 const sectionNumber = moduleNumber?.padStart(2, "0") ?? sectionNumbers[title];
 const buttonClasses =
-  `accordion-button ${isModule ? "texture-field" : ""}`.trim();
+  `accordion-button ${isModule || isProject ? "texture-field" : ""}`.trim();
 ---
 
 <section id={`${titleId}`} class={classes} data-open={isOpen}>

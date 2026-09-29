@@ -1,25 +1,168 @@
 ---
 import CourseNav from "./CourseNav.astro";
 import AntColonyHero from "./AntColonyHero.astro";
+import StudentWorkHero from "./StudentWorkHero.astro";
 
 const {
   programUrl = "https://www.pratt.edu/design/graduate-communications-design/",
   programLabel = "Pratt Grad ComD",
   courseCode = "DES 720B",
+  hero = "sketch",
+  title,
+  contextLabel = "Fall 2026",
+  returnHref,
+  returnLabel = "All Projects",
 } = Astro.props;
+const titleLetterCount = typeof title === "string" ? title.trim().length : 0;
+const titleScale = Math.max(
+  0.48,
+  1 - Math.max(0, titleLetterCount - 22) * 0.012,
+);
+const titleLines = (() => {
+  if (typeof title !== "string") return [];
+  const lines = [];
+  let currentLine = "";
+
+  for (const word of title.trim().split(/\s+/)) {
+    const candidate = currentLine ? `${currentLine} ${word}` : word;
+    if (currentLine && candidate.length > 9) {
+      lines.push(currentLine);
+      currentLine = word;
+    } else {
+      currentLine = candidate;
+    }
+  }
+
+  if (currentLine) lines.push(currentLine);
+  return lines;
+})();
 ---
 
-<header id="top" class="course-hero">
+<header id="top" class="course-hero" data-header-root>
+  {
+    returnHref && (
+      <nav
+        class="mobile-project-return cutoff"
+        aria-label="Return navigation"
+      >
+        <a href={returnHref}>← {returnLabel}</a>
+      </nav>
+    )
+  }
   <div class="course-masthead cutoff">
-    <h1 class="heading-1 site-title">Graduate Studio:<br />Technology B</h1>
-    <div class="course-identity">
+    <h1
+      class:list={["heading-1", "site-title", { "project-title": title }]}
+      style={title ? `--title-scale: ${titleScale}` : undefined}
+      data-header-scale
+    >
+      {
+        title ? (
+          titleLines.map((line, index) => (
+            <>
+              <span class="project-title-line">{line}</span>
+              {index < titleLines.length - 1 ? " " : null}
+            </>
+          ))
+        ) : (
+          <>
+            Graduate Studio:<br />Technology B
+          </>
+        )
+      }
+    </h1>
+    <div class="course-identity" data-header-scale>
       <a href={programUrl}>↳ {programLabel}</a>
       <span>↳ {courseCode}</span>
-      <span>Fall 2026</span>
+      <span class:list={{ "author-context": Boolean(title) }}>
+        {contextLabel}
+      </span>
     </div>
   </div>
   <div class="course-nav-row cutoff">
-    <CourseNav />
+    {
+      returnHref ? (
+        <nav
+          class="project-return desktop-project-return"
+          aria-label="Return navigation"
+        >
+          <a href={returnHref}>← {returnLabel}</a>
+        </nav>
+      ) : (
+        <CourseNav />
+      )
+    }
   </div>
-  <AntColonyHero />
+  {hero === "students" ? <StudentWorkHero /> : hero === "sketch" ? <AntColonyHero /> : null}
 </header>
+
+<style>
+  .course-identity span.author-context {
+    margin-top: var(--space-1);
+    font-weight: 700;
+    font-size: clamp(1.35rem, 2.8vw, 3.25rem);
+    line-height: 0.95;
+    font-family: var(--font-display);
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  .site-title.project-title {
+    font-size: clamp(4rem, calc(12vw * var(--title-scale)), 13rem);
+  }
+
+  .mobile-project-return {
+    display: none;
+  }
+
+  .project-return {
+    padding-block: var(--space-2);
+  }
+
+  @media (max-width: 800px) {
+    .mobile-project-return {
+      display: block;
+      box-sizing: border-box;
+      padding: var(--space-3) var(--margin) 0;
+      width: 100%;
+      max-width: none;
+    }
+
+    .mobile-project-return a {
+      font-weight: 700;
+      font-size: clamp(1.4rem, 6vw, 2rem);
+      line-height: 1;
+      font-family: var(--font-display);
+    }
+
+    .desktop-project-return {
+      display: none;
+    }
+
+    .course-masthead {
+      gap: var(--space-card);
+      padding-block: var(--space-card);
+    }
+
+    .course-masthead .site-title.project-title {
+      width: 100%;
+      max-width: none;
+      font-size: clamp(3.2rem, 14vw, 6rem);
+      line-height: 0.88;
+    }
+
+    .project-title-line {
+      display: block;
+      width: max-content;
+      max-width: 100%;
+      white-space: nowrap;
+    }
+
+    .course-identity {
+      display: none;
+    }
+
+    .course-nav-row {
+      display: none;
+    }
+  }
+</style>

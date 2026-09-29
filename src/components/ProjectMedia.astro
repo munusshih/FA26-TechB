@@ -1,0 +1,91 @@
+---
+import { getDriveThumbnailUrl } from "@/lib/projects.js";
+
+const { entry, featured = false } = Astro.props;
+const alt = entry.description || entry.label;
+---
+
+<figure class:list={["project-media-figure", { featured }]}>
+  {
+    entry.type === "video" ? (
+      <video
+        src={entry.value}
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="metadata"
+      />
+    ) : entry.type === "pdf" ? (
+      <div class="pdf-document">
+        <embed
+          src={`${entry.value}#view=FitH`}
+          type="application/pdf"
+          title={`Embedded PDF: ${alt}`}
+        />
+        <a href={entry.value} target="_blank" rel="noopener noreferrer">
+          Open PDF in a new tab ↗
+        </a>
+      </div>
+    ) : entry.type === "drive" ? (
+      <a href={entry.value} target="_blank" rel="noopener noreferrer">
+        <img src={getDriveThumbnailUrl(entry.value)} alt={alt} />
+      </a>
+    ) : entry.type === "image" || entry.type === "local" ? (
+      <img src={entry.value} alt={alt} />
+    ) : (
+      <a href={entry.value} target="_blank" rel="noopener noreferrer">
+        Open {entry.label} ↗
+      </a>
+    )
+  }
+  {entry.description && <figcaption>{entry.description}</figcaption>}
+</figure>
+
+<style>
+  .project-media-figure {
+    margin: 0;
+    width: 100%;
+  }
+
+  img,
+  video {
+    display: block;
+    background: var(--paper-raised);
+    width: 100%;
+    max-height: 85svh;
+    object-fit: contain;
+  }
+
+  figcaption {
+    margin-top: var(--space-2);
+    max-width: 70ch;
+    font-size: 1rem;
+  }
+
+  .pdf-document {
+    display: grid;
+    gap: var(--space-2);
+    width: 100%;
+  }
+
+  .pdf-document embed {
+    border: 0;
+    background: var(--paper-raised);
+    width: 100%;
+    height: min(78svh, 68rem);
+    min-height: 34rem;
+  }
+
+  .pdf-document a {
+    justify-self: end;
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 640px) {
+    .pdf-document embed {
+      height: 68svh;
+      min-height: 26rem;
+    }
+  }
+</style>

@@ -15,7 +15,7 @@ npm run sync
 
 ## Project submissions
 
-The project archive at `/work/` is sourced from the Google Form and response
+The project archive at `/archive/` is sourced from the Google Form and response
 sheet configured in `src/site.config.json`. `npm run sync` pulls the current
 sheet, downloads uploaded media into `public/project-media`, generates
 thumbnails, and writes the current year's records to `src/data/<year>.json`.

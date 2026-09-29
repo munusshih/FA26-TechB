@@ -2,7 +2,6 @@
 import Accordion from "@/components/Accordion.astro";
 import Footer from "@/components/Footer.astro";
 import Header from "@/components/Header.astro";
-import ProjectSearch from "@/components/ProjectSearch.astro";
 import SkipToMain from "@/components/SkipToMain.astro";
 import Layout from "@/layouts/Layout.astro";
 import {
@@ -10,6 +9,7 @@ import {
   getProjectTitle,
   getProjectAuthor,
   getPrimaryMediaEntry,
+  getDriveThumbnailUrl,
   getThumbnailPath,
 } from "@/lib/projects.js";
 
@@ -24,19 +24,13 @@ const totalProjects = projects.length;
   showChat={false}
 >
   <SkipToMain />
-  <Header />
+  <Header
+    hero="students"
+    returnHref="/"
+    returnLabel="Back to Syllabus"
+  />
   <main id="main-content" class="project-archive cutoff" tabindex="-1">
-    <section class="archive-intro texture-field">
-      <p class="eyebrow">{season} {year} · Student work</p>
-      <h2 class="heading-1">Project Archive</h2>
-      <div class="archive-actions">
-        <a href="/">Back to syllabus</a>
-        <a href="https://forms.gle/sdDc4o4MTqzJHg1m6">Submit a project</a>
-      </div>
-    </section>
-
-    <ProjectSearch totalProjects={totalProjects} />
-
+    <h2 class="heading-1 archive-title">Project Archive</h2>
     {
       totalProjects === 0 ? (
         <section class="empty-state card">
@@ -54,6 +48,10 @@ const totalProjects = projects.length;
                 const thumbnailPath = primaryMedia
                   ? getThumbnailPath(primaryMedia.value)
                   : null;
+                const driveThumbnail =
+                  primaryMedia?.type === "drive"
+                    ? getDriveThumbnailUrl(primaryMedia.value)
+                    : null;
                 const rawCredits =
                   project[
                     "Credit (List out collaborators, tutorials, libraries, references, AI agents used)"
@@ -67,7 +65,7 @@ const totalProjects = projects.length;
                     data-credits={credits}
                   >
                     <a
-                      href={`/work/${project.slug}`}
+                      href={`/archive/${project.slug}`}
                       class="project-media no-underline"
                     >
                       {primaryMedia ? (
@@ -87,21 +85,34 @@ const totalProjects = projects.length;
                               preload="metadata"
                             />
                           )
-                        ) : (
+                        ) : primaryMedia.type === "drive" && driveThumbnail ? (
+                          <img
+                            src={driveThumbnail}
+                            alt={primaryMedia.description || title}
+                            loading="lazy"
+                          />
+                        ) : primaryMedia.type === "image" ||
+                          primaryMedia.type === "local" ? (
                           <img
                             src={thumbnailPath || primaryMedia.value}
                             alt={primaryMedia.description || title}
                             loading="lazy"
                           />
+                        ) : (
+                          <span class="media-placeholder">
+                            Media link available
+                          </span>
                         )
                       ) : (
                         <span class="media-placeholder">No media provided</span>
                       )}
                     </a>
-                    <h3 class="heading-3">
-                      <a href={`/work/${project.slug}`}>{title}</a>
-                    </h3>
-                    <p>{author}</p>
+                    <div class="project-meta">
+                      <h3 class="heading-3">
+                        <a href={`/archive/${project.slug}`}>{title}</a>
+                      </h3>
+                      <p>{author}, {project.year}</p>
+                    </div>
                   </article>
                 );
               })}
@@ -116,41 +127,50 @@ const totalProjects = projects.length;
 
 <style>
   .project-archive {
-    padding-block: var(--space-section);
+    box-sizing: border-box;
+    padding-top: 0;
+    padding-inline: var(--margin);
+    padding-bottom: clamp(1.5rem, 3vw, 3rem);
+    width: 100%;
+    max-width: none;
   }
-  .archive-intro {
-    margin-bottom: var(--space-section);
-    border: var(--rule);
-    border-radius: 1rem;
-    padding: var(--space-card);
+  .archive-title {
+    margin: 0 auto var(--space-card);
+    width: 100%;
+    max-width: none;
+    font-size: clamp(4rem, 10vw, 10rem);
+    line-height: 0.82;
+    letter-spacing: -0.045em;
+    text-align: center;
   }
-  .eyebrow {
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-  .archive-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem 2rem;
-    margin-top: var(--space-3);
+  .project-archive :global(.accordion),
+  .project-archive :global(.accordion-content) {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: none;
   }
   .project-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: var(--space-card);
+    column-gap: var(--space-card);
+    row-gap: clamp(2.75rem, 5vw, 5rem);
     padding-block: var(--space-card);
+    width: 100%;
   }
   .project-card {
     display: flex;
     flex-direction: column;
     gap: var(--space-2);
+    border: 0 !important;
+    background: transparent !important;
+    padding: 0;
+    width: 100%;
+    overflow: visible;
   }
   .project-media {
     display: block;
-    border: var(--rule);
-    border-radius: 0.6rem;
     aspect-ratio: 16 / 10;
+    width: 100%;
     overflow: hidden;
   }
   .project-media img,
@@ -158,6 +178,15 @@ const totalProjects = projects.length;
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+  .project-meta {
+    display: grid;
+    gap: 0.15rem;
+    width: 100%;
+  }
+  .project-meta h3,
+  .project-meta p {
+    margin: 0;
   }
   .media-placeholder {
     display: grid;
@@ -179,3 +208,5 @@ const totalProjects = projects.length;
     }
   }
 </style>
+
+<script src="../scripts/entrance-animations.js"></script>

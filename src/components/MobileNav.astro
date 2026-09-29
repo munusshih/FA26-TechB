@@ -1,0 +1,291 @@
+---
+const pathname = Astro.url.pathname;
+const isHome = pathname === "/";
+const isProjects = pathname.startsWith("/archive");
+---
+
+<nav class="mobile-site-nav" aria-label="Mobile site navigation" data-mobile-nav>
+  <div class="mobile-nav-bar">
+    <a href="/" class="mobile-nav-brand">Fall 2026</a>
+    <button
+      type="button"
+      aria-expanded="false"
+      aria-controls="mobile-nav-panel"
+      data-mobile-nav-toggle
+    >
+      <span data-mobile-nav-label>Menu</span>
+      <span aria-hidden="true" data-mobile-nav-symbol>+</span>
+    </button>
+  </div>
+  <div
+    id="mobile-nav-panel"
+    class="mobile-nav-panel"
+    aria-hidden="true"
+    hidden
+    inert
+  >
+    <a href="/" aria-current={isHome ? "page" : undefined}>Syllabus</a>
+    <a href="/#module-1:-crack-inside-the-black-box">Module One</a>
+    <a href="/#module-2:-gazing-into-the-code">Module Two</a>
+    <a href="/#module-3:-disrupting-the-chain-of-thought">Module Three</a>
+    <a href="/archive/" aria-current={isProjects ? "page" : undefined}>
+      Project Archive
+    </a>
+  </div>
+</nav>
+
+<script>
+  import { gsap } from "gsap";
+
+  const setupMobileNav = (nav) => {
+    if (nav.dataset.ready === "true") return;
+    nav.dataset.ready = "true";
+
+    const toggle = nav.querySelector("[data-mobile-nav-toggle]");
+    const panel = nav.querySelector(".mobile-nav-panel");
+    const bar = nav.querySelector(".mobile-nav-bar");
+    const label = nav.querySelector("[data-mobile-nav-label]");
+    const symbol = nav.querySelector("[data-mobile-nav-symbol]");
+    if (!toggle || !panel) return;
+    const links = [...panel.querySelectorAll("a")];
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    const mobileQuery = window.matchMedia("(max-width: 800px)");
+    let lastScrollY = window.scrollY;
+    let scrollTicking = false;
+
+    const syncBarHeight = () => {
+      const height = mobileQuery.matches && bar ? bar.offsetHeight : 0;
+      document.documentElement.style.setProperty(
+        "--mobile-nav-height",
+        `${height}px`,
+      );
+    };
+
+    const setNavVisible = (visible) => {
+      if (!mobileQuery.matches) {
+        gsap.set(nav, { clearProps: "transform" });
+        return;
+      }
+      if (nav.dataset.visible === String(visible)) return;
+      nav.dataset.visible = String(visible);
+      gsap.to(nav, {
+        yPercent: visible ? 0 : -100,
+        duration: reducedMotion ? 0 : 0.32,
+        ease: "power2.out",
+        overwrite: "auto",
+      });
+    };
+
+    const setOpen = (open) => {
+      if (open) setNavVisible(true);
+      toggle.setAttribute("aria-expanded", String(open));
+      panel.setAttribute("aria-hidden", String(!open));
+      panel.toggleAttribute("inert", !open);
+      if (label) label.textContent = open ? "Close" : "Menu";
+      if (symbol) symbol.textContent = open ? "−" : "+";
+
+      gsap.killTweensOf([panel, ...links]);
+
+      if (reducedMotion) {
+        panel.hidden = !open;
+        return;
+      }
+
+      if (open) {
+        panel.hidden = false;
+        gsap.fromTo(
+          panel,
+          { height: 0, autoAlpha: 0, overflow: "hidden" },
+          {
+            height: "auto",
+            autoAlpha: 1,
+            duration: 0.42,
+            ease: "power3.out",
+            clearProps: "height,opacity,visibility,overflow",
+          },
+        );
+        gsap.fromTo(
+          links,
+          { y: -10, autoAlpha: 0 },
+          {
+            y: 0,
+            autoAlpha: 1,
+            duration: 0.32,
+            stagger: 0.035,
+            ease: "power2.out",
+            clearProps: "opacity,visibility,transform",
+          },
+        );
+      } else {
+        gsap.to(links, {
+          y: -6,
+          autoAlpha: 0,
+          duration: 0.18,
+          stagger: 0.018,
+          ease: "power1.in",
+        });
+        gsap.to(panel, {
+          height: 0,
+          autoAlpha: 0,
+          overflow: "hidden",
+          duration: 0.28,
+          ease: "power2.inOut",
+          onComplete: () => {
+            panel.hidden = true;
+            gsap.set([panel, ...links], {
+              clearProps: "height,opacity,visibility,overflow,transform",
+            });
+          },
+        });
+      }
+    };
+
+    toggle.addEventListener("click", () => {
+      setOpen(toggle.getAttribute("aria-expanded") !== "true");
+    });
+
+    links.forEach((link) => {
+      link.addEventListener("click", () => setOpen(false));
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key !== "Escape") return;
+      setOpen(false);
+      toggle.focus();
+    });
+
+    window.addEventListener(
+      "scroll",
+      () => {
+        if (scrollTicking) return;
+        scrollTicking = true;
+        window.requestAnimationFrame(() => {
+          const currentScrollY = Math.max(window.scrollY, 0);
+          const delta = currentScrollY - lastScrollY;
+          const menuOpen = toggle.getAttribute("aria-expanded") === "true";
+
+          if (menuOpen || currentScrollY < 16) {
+            setNavVisible(true);
+          } else if (Math.abs(delta) >= 4) {
+            setNavVisible(delta < 0);
+          }
+
+          lastScrollY = currentScrollY;
+          scrollTicking = false;
+        });
+      },
+      { passive: true },
+    );
+
+    const barObserver = new ResizeObserver(syncBarHeight);
+    if (bar) barObserver.observe(bar);
+    mobileQuery.addEventListener("change", () => {
+      syncBarHeight();
+      setNavVisible(true);
+    });
+    syncBarHeight();
+    setNavVisible(true);
+  };
+
+  document.querySelectorAll("[data-mobile-nav]").forEach(setupMobileNav);
+</script>
+
+<style>
+  .mobile-site-nav {
+    display: none;
+  }
+
+  @media (max-width: 800px) {
+    :global(body) {
+      padding-top: var(--mobile-nav-height, 3rem);
+    }
+
+    .mobile-site-nav {
+      display: block;
+      position: fixed;
+      top: 0;
+      right: 0;
+      left: 0;
+      z-index: 50;
+      border-bottom: var(--rule);
+      background: var(--paper);
+      width: 100%;
+      color: var(--ink);
+      will-change: transform;
+    }
+
+    .mobile-nav-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--space-3);
+      box-sizing: border-box;
+      padding: 0.7rem var(--margin);
+      width: 100%;
+    }
+
+    .mobile-nav-brand,
+    .mobile-nav-bar button {
+      font-weight: 700;
+      font-size: 1.05rem;
+      font-family: var(--font-display);
+      text-decoration: none;
+    }
+
+    .mobile-nav-bar button {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      cursor: pointer;
+      border: 0;
+      background: transparent;
+      padding: 0;
+      color: inherit;
+    }
+
+    [data-mobile-nav-symbol] {
+      min-width: 0.8em;
+      font-size: 1.35em;
+      line-height: 0.7;
+      text-align: center;
+    }
+
+    .mobile-nav-panel {
+      box-sizing: border-box;
+      border-top: var(--rule);
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .mobile-nav-panel[hidden] {
+      display: none;
+    }
+
+    .mobile-nav-panel a {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      box-sizing: border-box;
+      border-bottom: var(--rule);
+      padding: 0.62rem var(--margin);
+      width: 100%;
+      font-weight: 600;
+      font-size: clamp(1.75rem, 8vw, 2.5rem);
+      line-height: 0.92;
+      font-family: var(--font-display);
+      letter-spacing: -0.025em;
+      text-decoration: none;
+    }
+
+    .mobile-nav-panel a:last-child {
+      border-bottom: 0;
+    }
+
+    .mobile-nav-panel a[aria-current="page"]::after {
+      content: "●";
+      font-size: 0.45em;
+    }
+  }
+</style>

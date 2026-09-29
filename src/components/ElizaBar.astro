@@ -424,6 +424,7 @@
     grid-template-columns: auto auto;
     align-items: baseline;
     gap: var(--space-2);
+    min-width: 0;
   }
 
   .eliza-identity strong {
@@ -631,6 +632,31 @@
     .eliza-identity {
       grid-template-columns: 1fr;
       gap: 0.15rem;
+      width: 100%;
+      min-width: 0;
+      max-width: 100%;
+    }
+
+    .eliza-toggle {
+      align-items: center;
+      box-sizing: border-box;
+      padding-right: 8.5rem;
+      min-width: 0;
+    }
+
+    .eliza-identity strong,
+    .eliza-identity small {
+      display: block;
+      width: 100%;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .eliza-identity small {
+      font-size: 0.58rem;
+      line-height: 1.15;
     }
 
     .eliza-toggle > span:last-child {

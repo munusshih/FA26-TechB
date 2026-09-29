@@ -2,6 +2,7 @@
 import Analytics from "@vercel/analytics/astro";
 import ImageFilterDefs from "../components/ImageFilterDefs.astro";
 import ElizaBar from "../components/ElizaBar.astro";
+import MobileNav from "../components/MobileNav.astro";
 
 // Change this to "original" to restore the previous blue-on-beige palette.
 const palette = "sky-wine";
@@ -41,6 +42,7 @@ const ogImage = new URL("/og-image.png", Astro.site ?? Astro.url).toString();
   </head>
   <body>
     <ImageFilterDefs />
+    <MobileNav />
     <slot />
     {showChat && <ElizaBar />}
   </body><Analytics />

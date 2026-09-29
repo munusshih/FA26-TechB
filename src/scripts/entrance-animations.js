@@ -10,7 +10,9 @@ const initializeEntranceAnimations = () => {
     document.querySelector(".course-masthead .site-title"),
     document.querySelector(".course-identity"),
     document.querySelector(".course-nav-row"),
+    document.querySelector(".mobile-project-return"),
     document.querySelector(".ant-colony-well"),
+    document.querySelector(".student-work-well"),
   ].filter(Boolean);
 
   gsap.fromTo(
@@ -31,10 +33,16 @@ const initializeEntranceAnimations = () => {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
 
-        const targets = [
-          entry.target.querySelector(".accordion-button"),
-          ...entry.target.querySelectorAll(":scope > .accordion-content > *"),
-        ].filter(Boolean);
+        const isAccordion = entry.target.matches(".accordion");
+        const targets = isAccordion
+          ? [
+              entry.target.querySelector(".accordion-button"),
+              ...entry.target.querySelectorAll(".project-card"),
+              ...entry.target.querySelectorAll(
+                ":scope > .accordion-content > :not(.project-grid)",
+              ),
+            ].filter(Boolean)
+          : [entry.target];
 
         gsap.fromTo(
           targets,
@@ -58,7 +66,7 @@ const initializeEntranceAnimations = () => {
   );
 
   document
-    .querySelectorAll(".accordion")
+    .querySelectorAll(".accordion, [data-gsap-reveal]")
     .forEach((section) => sectionObserver.observe(section));
 };
 

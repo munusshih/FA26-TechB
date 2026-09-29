@@ -1,0 +1,261 @@
+---
+import {
+  currentYearProjects,
+  fileEntriesForProject,
+  getProjectAuthor,
+  getProjectTitle,
+  getThumbnailPath,
+} from "@/lib/projects.js";
+
+const slides = currentYearProjects
+  .flatMap((project) =>
+    fileEntriesForProject(project)
+      .filter((entry) => entry.type === "image" || entry.type === "video")
+      .map((entry) => {
+        const isGif = /\.gif(?:[?#].*)?$/i.test(entry.value);
+        const isMotion = entry.type === "video" || isGif;
+        return {
+          src: isGif ? entry.value : getThumbnailPath(entry.value) || entry.value,
+          alt:
+            entry.description ||
+            `${getProjectTitle(project)} by ${getProjectAuthor(project)}`,
+          title: getProjectTitle(project),
+          author: getProjectAuthor(project),
+          href: `/archive/${project.slug}`,
+          isMotion,
+        };
+      }),
+  )
+  .sort((a, b) => Number(b.isMotion) - Number(a.isMotion));
+---
+
+{
+  slides.length > 0 && (
+    <figure class="student-work-hero cutoff" data-student-work-hero>
+      <a
+        class="student-work-well"
+        href={slides[0].href}
+        data-student-work-link
+      >
+        {slides.map((slide, index) => (
+          <span
+            class:list={["student-work-slide", { "is-active": index === 0 }]}
+            data-title={slide.title}
+            data-author={slide.author}
+            data-href={slide.href}
+            data-motion={slide.isMotion ? "true" : "false"}
+          >
+            <img
+              src={slide.src}
+              alt={slide.alt}
+              loading={index === 0 ? "eager" : "lazy"}
+              decoding="async"
+              class="student-work-image student-work-image-filtered"
+            />
+            <img
+              src={slide.src}
+              alt=""
+              aria-hidden="true"
+              loading={index === 0 ? "eager" : "lazy"}
+              decoding="async"
+              class="student-work-image student-work-image-reveal"
+            />
+          </span>
+        ))}
+      </a>
+      <figcaption>
+        <a href={slides[0].href} data-student-work-caption>
+          <em>{slides[0].title}</em> · {slides[0].author}
+        </a>
+      </figcaption>
+    </figure>
+  )
+}
+
+<script>
+  const initializeStudentWorkHero = (root) => {
+    if (root.dataset.initialized === "true") return;
+    root.dataset.initialized = "true";
+
+    const link = root.querySelector("[data-student-work-link]");
+    const caption = root.querySelector("[data-student-work-caption]");
+    const allSlides = Array.from(root.querySelectorAll(".student-work-slide"));
+    if (!link || !caption || allSlides.length === 0) return;
+
+    const shuffle = (items) => {
+      const randomized = [...items];
+      for (let index = randomized.length - 1; index > 0; index -= 1) {
+        const randomIndex = Math.floor(Math.random() * (index + 1));
+        [randomized[index], randomized[randomIndex]] = [
+          randomized[randomIndex],
+          randomized[index],
+        ];
+      }
+      return randomized;
+    };
+
+    const slides = [
+      ...shuffle(allSlides.filter((slide) => slide.dataset.motion === "true")),
+      ...shuffle(allSlides.filter((slide) => slide.dataset.motion !== "true")),
+    ];
+
+    const updateRevealPosition = (event) => {
+      const bounds = link.getBoundingClientRect();
+      const x = event.clientX - bounds.left;
+      const y = event.clientY - bounds.top;
+      link.style.setProperty("--reveal-x", `${x}px`);
+      link.style.setProperty("--reveal-y", `${y}px`);
+    };
+
+    link.addEventListener("pointermove", updateRevealPosition);
+
+    let activeIndex = 0;
+
+    const showSlide = (index) => {
+      slides.forEach((slide, slideIndex) => {
+        slide.classList.toggle("is-active", slideIndex === index);
+      });
+
+      const activeSlide = slides[index];
+      const href = activeSlide.dataset.href;
+      const title = activeSlide.dataset.title || "Student project";
+      const author = activeSlide.dataset.author || "Technology B student";
+      if (href) {
+        link.href = href;
+        caption.href = href;
+      }
+      caption.replaceChildren();
+      const titleElement = document.createElement("em");
+      titleElement.textContent = title;
+      caption.append(titleElement, ` · ${author}`);
+    };
+
+    showSlide(activeIndex);
+
+    if (slides.length > 1) {
+      window.setInterval(() => {
+        activeIndex = (activeIndex + 1) % slides.length;
+        showSlide(activeIndex);
+      }, 9000);
+    }
+  };
+
+  document
+    .querySelectorAll("[data-student-work-hero]")
+    .forEach(initializeStudentWorkHero);
+</script>
+
+<style>
+  .student-work-hero {
+    position: relative;
+    z-index: 3;
+    margin-top: clamp(-13rem, -12vw, -7rem);
+    margin-bottom: var(--space-3);
+  }
+
+  .student-work-well {
+    --reveal-x: 50%;
+    --reveal-y: 50%;
+    --reveal-radius: clamp(4.5rem, 8vw, 8rem);
+    display: block;
+    position: relative;
+    border: var(--rule);
+    border-radius: 50% !important;
+    background: var(--paper-raised);
+    height: clamp(24rem, 48vw, 44rem);
+    overflow: hidden;
+  }
+
+  .student-work-slide::after {
+    position: absolute;
+    z-index: 2;
+    mix-blend-mode: multiply;
+    inset: 0;
+    background-image: radial-gradient(
+      circle,
+      color-mix(in srgb, var(--ink) 78%, transparent) 0 1.35px,
+      transparent 1.55px
+    );
+    background-size: 5px 5px;
+    pointer-events: none;
+    content: "";
+  }
+
+  .student-work-slide {
+    position: absolute;
+    opacity: 0;
+    z-index: 1;
+    inset: 0;
+    transition: opacity 1.4s ease-in-out;
+    width: 100%;
+    height: 100%;
+  }
+
+  .student-work-slide.is-active {
+    opacity: 1;
+  }
+
+  .student-work-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .student-work-image-filtered {
+    z-index: 1;
+    filter: url("#single-color-dither") contrast(1.5) saturate(0.72);
+    image-rendering: pixelated;
+  }
+
+  .student-work-image-reveal {
+    opacity: 0;
+    z-index: 3;
+    transition: opacity 220ms ease;
+    filter: none;
+    -webkit-mask-image: radial-gradient(
+      circle var(--reveal-radius) at var(--reveal-x) var(--reveal-y),
+      #000 0 72%,
+      transparent 100%
+    );
+    mask-image: radial-gradient(
+      circle var(--reveal-radius) at var(--reveal-x) var(--reveal-y),
+      #000 0 72%,
+      transparent 100%
+    );
+  }
+
+  .student-work-well:hover .student-work-slide.is-active .student-work-image-reveal,
+  .student-work-well:focus-visible .student-work-slide.is-active .student-work-image-reveal {
+    opacity: 1;
+  }
+
+  figcaption {
+    border-bottom: var(--rule);
+    padding: var(--space-2) 0;
+    font-size: 0.76rem;
+    line-height: 1.25;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .student-work-slide {
+      transition: none;
+    }
+
+    .student-work-image-reveal {
+      transition: none;
+    }
+
+  }
+
+  @media (max-width: 640px) {
+    .student-work-hero {
+      margin-top: -5rem;
+    }
+
+    .student-work-well {
+      height: 24rem;
+    }
+  }
+</style>

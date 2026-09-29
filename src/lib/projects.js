@@ -88,6 +88,7 @@ export const IMAGE_EXTENSIONS = new Set([
 ]);
 
 export const VIDEO_EXTENSIONS = new Set([".mp4", ".mov", ".m4v", ".webm"]);
+export const PDF_EXTENSIONS = new Set([".pdf"]);
 
 /**
  * Get the thumbnail path for a media file
@@ -218,7 +219,7 @@ export const projectBySlug = new Map(
 export const projectsForYear = (year) =>
   processedProjects.filter((project) => project.year === year);
 
-// The live site (homepage + /work) shows only the current year.
+// The live site (homepage + /archive) shows only the current year.
 export const currentYearProjects = projectsForYear(CURRENT_YEAR);
 
 export const groupProjectsByModule = (projects = projectsWithMeta) => {
@@ -282,6 +283,21 @@ const extractExtension = (value) => {
   return match ? `.${match[1]}` : "";
 };
 
+export const getDriveFileId = (value) => {
+  if (typeof value !== "string") return null;
+  const queryMatch = value.match(/[?&]id=([^&]+)/);
+  if (queryMatch) return queryMatch[1];
+  const pathMatch = value.match(/\/file\/d\/([^/]+)/);
+  return pathMatch ? pathMatch[1] : null;
+};
+
+export const getDriveThumbnailUrl = (value, size = "w1600") => {
+  const fileId = getDriveFileId(value);
+  return fileId
+    ? `https://drive.google.com/thumbnail?id=${encodeURIComponent(fileId)}&sz=${encodeURIComponent(size)}`
+    : null;
+};
+
 export const getAssetType = (value) => {
   if (typeof value !== "string") return "external";
   const trimmed = value.trim();
@@ -289,7 +305,9 @@ export const getAssetType = (value) => {
   const extension = extractExtension(trimmed);
   if (IMAGE_EXTENSIONS.has(extension)) return "image";
   if (VIDEO_EXTENSIONS.has(extension)) return "video";
+  if (PDF_EXTENSIONS.has(extension)) return "pdf";
   if (trimmed.startsWith("/project-media/")) return "local";
+  if (getDriveFileId(trimmed)) return "drive";
   return "external";
 };
 
