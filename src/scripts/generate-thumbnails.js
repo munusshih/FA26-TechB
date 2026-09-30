@@ -13,6 +13,7 @@ const JPEG_QUALITY = 80; // JPEG quality (1-100)
 
 const IMAGE_EXTENSIONS = new Set([".jpg", ".jpeg", ".png", ".webp", ".gif"]);
 const VIDEO_EXTENSIONS = new Set([".mp4", ".mov", ".m4v", ".webm"]);
+const PDF_EXTENSIONS = new Set([".pdf"]);
 
 /**
  * Generate a thumbnail for an image using sips (macOS) or ImageMagick
@@ -85,6 +86,36 @@ async function generateVideoThumbnail(inputPath, outputPath) {
 }
 
 /**
+ * Generate a JPEG thumbnail from the first page of a PDF using Poppler
+ */
+async function generatePdfThumbnail(inputPath, outputPath) {
+  try {
+    const outputBase = outputPath.replace(/\.jpg$/i, "");
+    await execFileAsync("pdftoppm", [
+      "-f",
+      "1",
+      "-l",
+      "1",
+      "-singlefile",
+      "-jpeg",
+      "-jpegopt",
+      `quality=${JPEG_QUALITY}`,
+      "-scale-to",
+      THUMBNAIL_WIDTH.toString(),
+      inputPath,
+      outputBase,
+    ]);
+    return true;
+  } catch (err) {
+    console.warn(
+      `  ⚠️  Failed to generate PDF thumbnail for ${inputPath}:`,
+      err.message,
+    );
+    return false;
+  }
+}
+
+/**
  * Walk through all project directories and generate thumbnails
  */
 async function processDirectory(dirPath, stats = null) {
@@ -135,6 +166,20 @@ async function processDirectory(dirPath, stats = null) {
         } else if (!success && stats) {
           stats.failed++;
         }
+      } else if (PDF_EXTENSIONS.has(ext)) {
+        const thumbnailPath = path.join(dirName, `${baseName}_thumb.jpg`);
+
+        if (fs.existsSync(thumbnailPath)) {
+          if (stats) stats.skipped++;
+          continue;
+        }
+
+        const success = await generatePdfThumbnail(fullPath, thumbnailPath);
+        if (success && stats) {
+          stats.created++;
+        } else if (!success && stats) {
+          stats.failed++;
+        }
       }
     }
 
@@ -168,10 +213,12 @@ function countFilesToProcess(dirPath) {
       const ext = path.extname(entry.name).toLowerCase();
       const baseName = path.basename(entry.name, ext);
 
-      // Count if it's an image or video and not already a thumbnail
+      // Count if it's previewable media and not already a thumbnail
       if (
         !baseName.endsWith("_thumb") &&
-        (IMAGE_EXTENSIONS.has(ext) || VIDEO_EXTENSIONS.has(ext))
+        (IMAGE_EXTENSIONS.has(ext) ||
+          VIDEO_EXTENSIONS.has(ext) ||
+          PDF_EXTENSIONS.has(ext))
       ) {
         count++;
       }

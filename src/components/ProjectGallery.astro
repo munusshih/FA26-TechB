@@ -24,11 +24,7 @@ const totalProjects = projects.length;
   showChat={false}
 >
   <SkipToMain />
-  <Header
-    hero="students"
-    returnHref="/"
-    returnLabel="Back to Syllabus"
-  />
+  <Header hero="students" returnHref="/" returnLabel="Back to Syllabus" />
   <main id="main-content" class="project-archive cutoff" tabindex="-1">
     <h2 class="heading-1 archive-title">Project Archive</h2>
     {
@@ -91,6 +87,12 @@ const totalProjects = projects.length;
                             alt={primaryMedia.description || title}
                             loading="lazy"
                           />
+                        ) : primaryMedia.type === "pdf" && thumbnailPath ? (
+                          <img
+                            src={thumbnailPath}
+                            alt={primaryMedia.description || title}
+                            loading="lazy"
+                          />
                         ) : primaryMedia.type === "image" ||
                           primaryMedia.type === "local" ? (
                           <img
@@ -111,7 +113,9 @@ const totalProjects = projects.length;
                       <h3 class="heading-3">
                         <a href={`/archive/${project.slug}`}>{title}</a>
                       </h3>
-                      <p>{author}, {project.year}</p>
+                      <p>
+                        {author}, {project.year}
+                      </p>
                     </div>
                   </article>
                 );
@@ -129,8 +133,8 @@ const totalProjects = projects.length;
   .project-archive {
     box-sizing: border-box;
     padding-top: 0;
-    padding-inline: var(--margin);
     padding-bottom: clamp(1.5rem, 3vw, 3rem);
+    padding-inline: var(--margin);
     width: 100%;
     max-width: none;
   }

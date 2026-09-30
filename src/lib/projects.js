@@ -94,6 +94,7 @@ export const PDF_EXTENSIONS = new Set([".pdf"]);
  * Get the thumbnail path for a media file
  * Images: filename_thumb.jpg
  * Videos: filename_thumb.gif
+ * PDFs: filename_thumb.jpg (first page)
  */
 export const getThumbnailPath = (mediaPath) => {
   if (!mediaPath || typeof mediaPath !== "string") return null;
@@ -107,6 +108,8 @@ export const getThumbnailPath = (mediaPath) => {
     return `${basePath}_thumb.jpg`;
   } else if (VIDEO_EXTENSIONS.has(ext)) {
     return `${basePath}_thumb.gif`;
+  } else if (PDF_EXTENSIONS.has(ext)) {
+    return `${basePath}_thumb.jpg`;
   }
 
   return null;
