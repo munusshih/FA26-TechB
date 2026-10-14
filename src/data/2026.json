@@ -308,5 +308,31 @@
     "I certify that this submission is my own work and adheres to the course's academic integrity and open source policy.": "Yes",
     "Anyone's work inspired you at the open classroom?": "-",
     "What did you learn from making this? (max 2000 characters)": "Through making “Learning Bee”, I learned that interaction can help me explore ideas more deeply than a static image. I became interested in how memory, hesitation, mistakes, and adaptation can make a simple system appear intelligent. The process also helped me understand that the way I design rules and interactions can shape how people interpret the work.\n"
+  },
+  {
+    "Timestamp": "10/13/2026 19:39:45",
+    "Email Address": "ledrich@pratt.edu",
+    "Your Name (First + Last Name)": "Lior Edrich",
+    "What is your section?": "Alex Liebergesell",
+    "Which Module is this?": "Project 1: Epistemological Research of Technology",
+    "Your Project Name": "Draw A House",
+    "Your Project Description (max 2000 characters)": "Inspired by Douglas Engelbart, I wanted to create something where you test yourself using different tools to create something. I really liked the idea of how there are many ways of utilizing different tools to make the same end product with technology. \n\nDraw A House is a game where you need to draw your interpretation of a house using 4 different tools. First is a regular pencil, then a paintbrush, a twig, and I added the disruption of inversion. ",
+    "Is there a web or code component to your project?": "Yes",
+    "Link 1 Title": "Draw A House",
+    "Link 1 URL": "https://editor.p5js.org/ledrich31/full/W9u_vqWpM",
+    "Link 2 Title": "",
+    "Link 2 URL": "",
+    "Link 3 Title": "",
+    "Link 3 URL": "",
+    "File 1": "/project-media/ledrich_pratt_edu/draw_a_house/file_1.png",
+    "File 1 description": "A house drawn with a pencil. ",
+    "File 2": "/project-media/ledrich_pratt_edu/draw_a_house/file_2.png",
+    "File 2 description": "A house drawn by a twig.",
+    "File 3": "/project-media/ledrich_pratt_edu/draw_a_house/file_3.mp4",
+    "File 3 description": "Screen recording of gameplay",
+    "Credit (List out collaborators, tutorials, libraries, references, AI agents used)": "Claude",
+    "I certify that this submission is my own work and adheres to the course's academic integrity and open source policy.": "Yes",
+    "Anyone's work inspired you at the open classroom?": "No.",
+    "What did you learn from making this? (max 2000 characters)": "I learned about intelligence and how it's not just our brain that increases intelligence but how we use tools as well. "
   }
 ]
