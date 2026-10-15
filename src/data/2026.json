@@ -334,5 +334,31 @@
     "I certify that this submission is my own work and adheres to the course's academic integrity and open source policy.": "Yes",
     "Anyone's work inspired you at the open classroom?": "No.",
     "What did you learn from making this? (max 2000 characters)": "I learned about intelligence and how it's not just our brain that increases intelligence but how we use tools as well. "
+  },
+  {
+    "Timestamp": "10/14/2026 14:12:58",
+    "Email Address": "czhang34@pratt.edu",
+    "Your Name (First + Last Name)": "Chenwan Zhang",
+    "What is your section?": "Alex Liebergesell",
+    "Which Module is this?": "Project 1: Epistemological Research of Technology",
+    "Your Project Name": "Recursive Light Chamber",
+    "Your Project Description (max 2000 characters)": "Recursive Light Chamber explores what happens to information when the output of one process becomes the input of the next.\nThe project grew out of connections I found across readings: Vannevar Bush’s preserved paths of thought, Brandon Bauer’s reuse of cultural materials, and Shih-Kung Lai’s rule-based transformations. These led me to focus on how information is inherited and changed across successive generations. Conway’s Game of Life and Alvin Lucier’s I Am Sitting in a Room further shaped my investigation into the roles of fixed rules and physical environments.\nI developed a small installation combining two facing mirrors, a laser, and transparent acrylic panels engraved with progressively simplified face images. The mirrors create successive reflections, while the panels affect the passage and scattering of light. The face connects information loss to identity: what allows us to recognize a face, and what allows us to recognize a particular person?\nThe outcome brings together two processes. The images record stages of simplification prepared during production, while light travels through the physical arrangement during display. Different viewing angles allow the images to separate or overlap. “Reading” functions as a metaphor rather than real-time facial recognition.\nThrough this material model of recursive relationships, I ask what remains when a system continues working with earlier results, and whether changing outputs necessarily indicate learning or understanding.\n",
+    "Is there a web or code component to your project?": "No",
+    "Link 1 Title": "",
+    "Link 1 URL": "",
+    "Link 2 Title": "",
+    "Link 2 URL": "",
+    "Link 3 Title": "",
+    "Link 3 URL": "",
+    "File 1": "/project-media/czhang34_pratt_edu/recursive_light_chamber/file_1.jpg",
+    "File 1 description": "The laser returns between mirrors, passing through these transparent faces. The work thus demonstrates how machines retain identifiable features while gradually erasing specific identities when repeatedly reading information.",
+    "File 2": "/project-media/czhang34_pratt_edu/recursive_light_chamber/file_2.jpg",
+    "File 2 description": "When a system repeatedly uses its own results, how much of the original information can be preserved? \nWhen outputs continuously become new inputs, what is retained, amplified, transformed, or eliminated? At what point can these changes be considered learning or intelligence?",
+    "File 3": "/project-media/czhang34_pratt_edu/recursive_light_chamber/file_3.png",
+    "File 3 description": "I chose a face because it connects abstract information loss to the way we recognize a person.What information tells us that something is a face? And what information tells us whose face it is?",
+    "Credit (List out collaborators, tutorials, libraries, references, AI agents used)": " ",
+    "I certify that this submission is my own work and adheres to the course's academic integrity and open source policy.": "Yes",
+    "Anyone's work inspired you at the open classroom?": "yes",
+    "What did you learn from making this? (max 2000 characters)": "Making Recursive Light Chamber helped me distinguish between representing recursion visually and constructing a process in which one result actually affects what follows. Repeated forms can suggest recursion, but the relationship between stages needs to be explained through the way the work operates.\nWorking with mirrors, light, and acrylic also made me consider the medium as an active part of the process. Transparency, engraved marks, alignment, and viewing position all influence what can be transmitted or seen. An abstract diagram can imply a clear, continuous sequence; a physical model requires attention to material limits and spatial conditions.\nChoosing a face made information loss more specific. Recognizing a general facial structure is different from recognizing someone’s identity. This shifted my attention toward which details remain available to the viewer and how simplification changes their interpretation.\nI also learned to distinguish the installation’s physical behavior from its metaphor. The images record transformations made beforehand, while the light moves through them during display. Calling this “machine reading” does not mean that the installation recognizes or understands a face.\nThe project therefore helped me refine my original question about intelligence. A system can produce changing results without learning or understanding. My next step is to compare stages of image simplification more systematically and refine the panel arrangement so that viewers can more clearly follow the relationships between generations."
   }
 ]
