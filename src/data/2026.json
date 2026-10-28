@@ -386,5 +386,31 @@
     "I certify that this submission is my own work and adheres to the course's academic integrity and open source policy.": "Yes",
     "Anyone's work inspired you at the open classroom?": "No open classroom attended yet. ",
     "What did you learn from making this? (max 2000 characters)": "One of the most important lessons I took away from this project was that knowledge preservation does not always equate to experience preservation. certain representations of the same information might convey certain features while omitting others.\n\nAt first, I was more interested in contrasting representations like as waveforms, sound, notation, and visualizations. However, when I began developing the interactive system, my curiosity about what transpires between the input and the output and where intelligence is truly present within that process grew.\n\nWorking with MIDI helped me understand how a relatively small amount of information can generate multiple experiences depending on the rules used to interpret it. It also made me question whether a system that responds to an action is demonstrating intelligence or simply following instructions.\n\nThe biggest shift happened when I introduced memory. I started thinking about the difference between storing information and remembering it. A system can preserve the original data, but its reconstruction of that data can be incomplete, altered, or distorted. Experimenting with broken memory helped me understand how changing individual properties of an event can affect whether it remains recognizable.\n\nI also learned that randomness doesn't necessarily mean a lack of intention. By defining the rules and curating the visual material, I could create a system that produces unpredictable compositions while still operating within a designed structure."
+  },
+  {
+    "Timestamp": "10/27/2026 16:54:30",
+    "Email Address": "nscanl13@pratt.edu",
+    "Your Name (First + Last Name)": "Nancy Scanlon",
+    "What is your section?": "Alex Liebergesell",
+    "Which Module is this?": "Project 1: Epistemological Research of Technology",
+    "Your Project Name": "Fluid Intelligence ",
+    "Your Project Description (max 2000 characters)": "We live in a city where we have to rapid problem solve all the time. There are many moving components and how do we respond to them? I wanted to investigate the behavior of this type of intelligence by asking an agent to analyze real time data. Is there any way to ask agents to display predictability? Not yet. Here is the thing, everyone has different comfortabilities, and people can be unpredictable/ have unexpected behaviors in public space. However, when researching, I found animal movement patterns and human movement patterns similar. So I decided to juxtapose our behavior of fluid intelligence to animal intelligence. I asked a agent to create a movement visual to represent the categories of herding, school, flocking. ",
+    "Is there a web or code component to your project?": "No",
+    "Link 1 Title": "",
+    "Link 1 URL": "",
+    "Link 2 Title": "",
+    "Link 2 URL": "",
+    "Link 3 Title": "",
+    "Link 3 URL": "",
+    "File 1": "/project-media/nscanl13_pratt_edu/fluid_intelligence_/file_1.pdf",
+    "File 1 description": "PDF slides to preface my thinking ",
+    "File 2": "/project-media/nscanl13_pratt_edu/fluid_intelligence_/file_2.mp4",
+    "File 2 description": "This is my final video, compressed file. ",
+    "File 3": "/project-media/nscanl13_pratt_edu/fluid_intelligence_/file_3.pdf",
+    "File 3 description": "This is my final video, YouTube Link ",
+    "Credit (List out collaborators, tutorials, libraries, references, AI agents used)": "Agent ChatGPT, Adobe After effects, NYC live Traffic footage, PBS YouTube video made by username BeSmart. URL : https://youtu.be/iT2n41ZFDc0?si=3RUWWvjBy5xcz6zL ",
+    "I certify that this submission is my own work and adheres to the course's academic integrity and open source policy.": "Yes",
+    "Anyone's work inspired you at the open classroom?": "Everyones!",
+    "What did you learn from making this? (max 2000 characters)": "Animal and human intelligence around crowd situations /navigation purposes are more similar than different. "
   }
 ]
