@@ -438,5 +438,31 @@
     "I certify that this submission is my own work and adheres to the course's academic integrity and open source policy.": "Yes",
     "Anyone's work inspired you at the open classroom?": "n/a",
     "What did you learn from making this? (max 2000 characters)": "How manipulation changes the perspective of an image."
+  },
+  {
+    "Timestamp": "11/3/2026 21:32:48",
+    "Email Address": "myang37@pratt.edu",
+    "Your Name (First + Last Name)": "Mingfu Yang",
+    "What is your section?": "Munus Shih",
+    "Which Module is this?": "Project 2: Uncertain Archive",
+    "Your Project Name": "In a Sea of Stars",
+    "Your Project Description (max 2000 characters)": "My project began with an Uncertain Archive exploring the different meanings and associations of “Star.” I first organized the collection into five categories and trained a Teachable Machine model to classify the images. However, unexpected predictions revealed the limitations of both my categories and machine recognition, especially when dealing with cultural references and human identities.\n\nI later introduced CLIP and MobileNet to compare different ways of interpreting the same images. These experiments gradually evolved into In a Sea of Stars, an interactive ocean where each image becomes a floating paper star. Its brightness reflects machine interpretations, while visitors can sail through the archive and retrieve any star, regardless of its score.\n\nRather than seeking the correct classification, I want to explore how different ways of seeing influence what becomes visible, recognized, or overlooked.",
+    "Is there a web or code component to your project?": "Yes",
+    "Link 1 Title": "Final Outcome - In a sea of stars",
+    "Link 1 URL": "https://ymf514.github.io/in-a-sea-of-stars/",
+    "Link 2 Title": "Process Archive",
+    "Link 2 URL": "https://app.milanote.com/1XdLSt1ElWrx5n?p=tgSfhDnkYYS",
+    "Link 3 Title": "",
+    "Link 3 URL": "",
+    "File 1": "/project-media/myang37_pratt_edu/in_a_sea_of_stars/file_1.jpg",
+    "File 1 description": "Final Outcome",
+    "File 2": "/project-media/myang37_pratt_edu/in_a_sea_of_stars/file_2.jpg",
+    "File 2 description": "Screenshots",
+    "File 3": "/project-media/myang37_pratt_edu/in_a_sea_of_stars/file_3.mp4",
+    "File 3 description": "Demo Video",
+    "Credit (List out collaborators, tutorials, libraries, references, AI agents used)": "ChatGPT, Claude, Walt Whitman-“When I Heard the Learn’d Astronomer” (1865)",
+    "I certify that this submission is my own work and adheres to the course's academic integrity and open source policy.": "Yes",
+    "Anyone's work inspired you at the open classroom?": "I’ve seen different methods of collecting and displaying items—quite unlike our own approach. It’s very interesting.",
+    "What did you learn from making this? (max 2000 characters)": "Through this project, I became more familiar with working with pretrained machine learning models and gained a better understanding of how different classification systems work. Comparing Teachable Machine, CLIP, and MobileNet helped me realize that classification depends not only on visual features, but also on training data, predefined categories, and the relationships between language and images. I began to question how a word like “star” can carry so many different meanings, and why some of these connections are obvious to humans but difficult for machines to recognize.\n\nMore importantly, my approach to the project gradually changed. At first, I focused on improving classification accuracy and finding the most effective way to identify a star. However, as I encountered unexpected results, I became more interested in the uncertainty itself. Instead of trying to make the machine understand everything correctly, I started to interpret the assignment more poetically, turning classification results into an ocean of stars with different levels of brightness. I learned that technical limitations do not always need to be solved; sometimes, they can become the starting point for a more meaningful design exploration."
   }
 ]
