@@ -464,5 +464,31 @@
     "I certify that this submission is my own work and adheres to the course's academic integrity and open source policy.": "Yes",
     "Anyone's work inspired you at the open classroom?": "I’ve seen different methods of collecting and displaying items—quite unlike our own approach. It’s very interesting.",
     "What did you learn from making this? (max 2000 characters)": "Through this project, I became more familiar with working with pretrained machine learning models and gained a better understanding of how different classification systems work. Comparing Teachable Machine, CLIP, and MobileNet helped me realize that classification depends not only on visual features, but also on training data, predefined categories, and the relationships between language and images. I began to question how a word like “star” can carry so many different meanings, and why some of these connections are obvious to humans but difficult for machines to recognize.\n\nMore importantly, my approach to the project gradually changed. At first, I focused on improving classification accuracy and finding the most effective way to identify a star. However, as I encountered unexpected results, I became more interested in the uncertainty itself. Instead of trying to make the machine understand everything correctly, I started to interpret the assignment more poetically, turning classification results into an ocean of stars with different levels of brightness. I learned that technical limitations do not always need to be solved; sometimes, they can become the starting point for a more meaningful design exploration."
+  },
+  {
+    "Timestamp": "11/5/2026 17:40:20",
+    "Email Address": "rdavi176@pratt.edu",
+    "Your Name (First + Last Name)": "Rebecca Davidson",
+    "What is your section?": "Munus Shih",
+    "Which Module is this?": "Project 2: Uncertain Archive",
+    "Your Project Name": "New York State of Trash",
+    "Your Project Description (max 2000 characters)": "I developed an archive of found trash around New York City. I photographed 280 pieces of trash over the course of a few months while walking around the city. My archive takes the form of an interactive digital map of the city, tracking each photo to the exact location it was found. \n\nMy interface includes a quiz which allows users to compete with the ‘machine’ to guess which neighborhood each piece of trash belongs to. The ‘machine’ averages the results of a machine learning model, trained on ten neighborhoods and an object placement model, that interprets the subject matter of each image. \n\nWe can learn a lot about a neighborhood by what and how much trash they produce. The project challenges the capabilities of algorithmic pattern recognition to comprehend the nuances of neighborhood infrastructure, culture, and demographics.",
+    "Is there a web or code component to your project?": "Yes",
+    "Link 1 Title": "Map Interface",
+    "Link 1 URL": "https://rdavi176.github.io/New-York-State-of-Trash/",
+    "Link 2 Title": "",
+    "Link 2 URL": "",
+    "Link 3 Title": "",
+    "Link 3 URL": "",
+    "File 1": "/project-media/rdavi176_pratt_edu/new_york_state_of_trash/file_1.png",
+    "File 1 description": "Screenshot of interface",
+    "File 2": "/project-media/rdavi176_pratt_edu/new_york_state_of_trash/file_2.mp4",
+    "File 2 description": "demo",
+    "File 3": "/project-media/rdavi176_pratt_edu/new_york_state_of_trash/file_3.mp4",
+    "File 3 description": "demo",
+    "Credit (List out collaborators, tutorials, libraries, references, AI agents used)": "Claude, Teachable Machine, MobileNet (Image Recognition)",
+    "I certify that this submission is my own work and adheres to the course's academic integrity and open source policy.": "Yes",
+    "Anyone's work inspired you at the open classroom?": "Seulgi!",
+    "What did you learn from making this? (max 2000 characters)": "Machine learning can be used to detect patterns but meaningful insights must be curated."
   }
 ]
