@@ -490,5 +490,31 @@
     "I certify that this submission is my own work and adheres to the course's academic integrity and open source policy.": "Yes",
     "Anyone's work inspired you at the open classroom?": "Seulgi!",
     "What did you learn from making this? (max 2000 characters)": "Machine learning can be used to detect patterns but meaningful insights must be curated."
+  },
+  {
+    "Timestamp": "11/6/2026 15:01:39",
+    "Email Address": "xwang112@pratt.edu",
+    "Your Name (First + Last Name)": "Xiran Wang",
+    "What is your section?": "Munus Shih",
+    "Which Module is this?": "Project 2: Uncertain Archive",
+    "Your Project Name": "A Container of Memories and Emotions",
+    "Your Project Description (max 2000 characters)": "My project explores how physical spaces, especially abandoned and dead places, and visual tendencies, like liminal spaces, can be associated with people's emotions and memories. They used to be popular, but now most of them have been discontinued or abandoned. They can hold memories and emotions that exist only in people's minds, a nostalgic pull that many Gen Zs feel for that time period, even though they haven't experienced it themselves. While digital convenience brings us efficiency, it can also introduce digital clutter and psychological anxiety. Online services and advanced technology are gradually replacing physical spaces and real-world experiences. Are we losing the irreplaceable human experience in the physical environment?",
+    "Is there a web or code component to your project?": "Yes",
+    "Link 1 Title": "A Container of Emotions and Memories (Github Interactive Programme)",
+    "Link 1 URL": "https://xiranwaang08-cloud.github.io/a_container_of_emotions_and_memories/",
+    "Link 2 Title": "Figma Workspace, the image archive",
+    "Link 2 URL": "https://www.figma.com/design/zpIesX8QBRJYaDD7Fren95/Technology-B?node-id=0-1&t=jttqLRElZ5onsp8g-1",
+    "Link 3 Title": "",
+    "Link 3 URL": "",
+    "File 1": "/project-media/xwang112_pratt_edu/a_container_of_memories_and_emotions/file_1.png",
+    "File 1 description": "A screenshot of my final programme that is open to public on Github",
+    "File 2": "/project-media/xwang112_pratt_edu/a_container_of_memories_and_emotions/file_2.png",
+    "File 2 description": "This is a screenshot of my Figma board, about the image archive with brief description",
+    "File 3": "/project-media/xwang112_pratt_edu/a_container_of_memories_and_emotions/file_3.pdf",
+    "File 3 description": "This is a poster for the final presentation. ",
+    "Credit (List out collaborators, tutorials, libraries, references, AI agents used)": "Digital archives, web references, and visual references (including Vaporama Vision's artefacts), Pinterest and Google for image searching, p5.js, VS Code, GitHub Copilot.",
+    "I certify that this submission is my own work and adheres to the course's academic integrity and open source policy.": "Yes",
+    "Anyone's work inspired you at the open classroom?": "Works from another section appear to be an archive of bag charms and other soft objects with memories and emotions",
+    "What did you learn from making this? (max 2000 characters)": "I learnt that the difference of classification between human beings and machines is that machines can only recognise visual patterns and match their database. It can post challenges for machines to recognise anything emotional or related to memories while people can categorise objects and images by their personal connections, such as memories and emotions. "
   }
 ]
