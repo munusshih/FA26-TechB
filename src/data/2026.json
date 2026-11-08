@@ -516,5 +516,31 @@
     "I certify that this submission is my own work and adheres to the course's academic integrity and open source policy.": "Yes",
     "Anyone's work inspired you at the open classroom?": "Works from another section appear to be an archive of bag charms and other soft objects with memories and emotions",
     "What did you learn from making this? (max 2000 characters)": "I learnt that the difference of classification between human beings and machines is that machines can only recognise visual patterns and match their database. It can post challenges for machines to recognise anything emotional or related to memories while people can categorise objects and images by their personal connections, such as memories and emotions. "
+  },
+  {
+    "Timestamp": "11/7/2026 13:16:36",
+    "Email Address": "lzhang76@pratt.edu",
+    "Your Name (First + Last Name)": "Li Zhang",
+    "What is your section?": "Munus Shih",
+    "Which Module is this?": "Project 2: Uncertain Archive",
+    "Your Project Name": "Still AN Eagle?",
+    "Your Project Description (max 2000 characters)": "Use machine learning to classify different birds while testing the boundaries of recognition. When will an image be recognized as an eagle? How can eagle-like images—such as vultures, hawks, and falcons—be distinguished? Can they be differentiated directly from the image? What factors might interfere with the results when the image is an artistic depiction of an eagle?\nThe demo uses three different variables: cropping, color, and resolution. It tests a dataset of approximately 500 eagle images.",
+    "Is there a web or code component to your project?": "Yes",
+    "Link 1 Title": "Still AN Eagle?",
+    "Link 1 URL": "https://still-an-eagle.liliprincess216.chatgpt.site/",
+    "Link 2 Title": "",
+    "Link 2 URL": "",
+    "Link 3 Title": "",
+    "Link 3 URL": "",
+    "File 1": "/project-media/lzhang76_pratt_edu/still_an_eagle_/file_1.png",
+    "File 1 description": "Poster",
+    "File 2": "/project-media/lzhang76_pratt_edu/still_an_eagle_/file_2.png",
+    "File 2 description": "Demo Screen shot1",
+    "File 3": "/project-media/lzhang76_pratt_edu/still_an_eagle_/file_3.png",
+    "File 3 description": "Demo Screen shot2",
+    "Credit (List out collaborators, tutorials, libraries, references, AI agents used)": "ChatGPT6",
+    "I certify that this submission is my own work and adheres to the course's academic integrity and open source policy.": "Yes",
+    "Anyone's work inspired you at the open classroom?": "Rebecca‘s website created a sense of book shelf witch I really like.",
+    "What did you learn from making this? (max 2000 characters)": "For human viewers who are not biologists, as well as for machines, it is actually difficult to provide a more specific answer. Some images are inherently impossible to identify precisely: a person might give the broad answer “eagle,” while a machine will choose the most likely option from several subspecies. Thus, the machine may arrive at a more precise answer, while the human will make a correct but less precise judgment."
   }
 ]
