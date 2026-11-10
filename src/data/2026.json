@@ -542,5 +542,31 @@
     "I certify that this submission is my own work and adheres to the course's academic integrity and open source policy.": "Yes",
     "Anyone's work inspired you at the open classroom?": "Rebecca‘s website created a sense of book shelf witch I really like.",
     "What did you learn from making this? (max 2000 characters)": "For human viewers who are not biologists, as well as for machines, it is actually difficult to provide a more specific answer. Some images are inherently impossible to identify precisely: a person might give the broad answer “eagle,” while a machine will choose the most likely option from several subspecies. Thus, the machine may arrive at a more precise answer, while the human will make a correct but less precise judgment."
+  },
+  {
+    "Timestamp": "11/9/2026 23:43:17",
+    "Email Address": "jlix92@pratt.edu",
+    "Your Name (First + Last Name)": "Jiayi Li",
+    "What is your section?": "Munus Shih",
+    "Which Module is this?": "Project 2: Uncertain Archive",
+    "Your Project Name": "Saved for Later",
+    "Your Project Description (max 2000 characters)": "I often save things I want to do in the future, but lose interest when I finally have free time. I organized these plans into three categories: Reward Future, Rest Future, and Ideal-Self Future, and used Teachable Machine to train an image classifier. To get the results I wanted, I kept adjusting the training images. While teaching the machine my categories, I was also learning how to influence its answers.\nThis experience inspired Future Sorting Office, an interactive website based on government service counters, where experienced clerks sometimes quietly help people meet fixed requirements by suggesting how to fill out their forms. Visitors choose a saved plan, select its category, and submit five ratings to a sorting machine. If the machine gives a different classification, their application is rejected. The rules remain unchanged, so visitors must adjust their ratings, sometimes with hints from a clerk, to get the result they want.\nThrough this experience, the project asks: Are you teaching the machine to understand your desires, or learning how to give it the answers it expects?",
+    "Is there a web or code component to your project?": "Yes",
+    "Link 1 Title": "Saved for Later — Image Classification Model",
+    "Link 1 URL": "https://teachablemachine.withgoogle.com/models/8pO-Y9kt6/",
+    "Link 2 Title": "Saved for Later — First Draft",
+    "Link 2 URL": "https://jiayi-rrrrrr.github.io/pratt-comd-technology_b-project_2_saved_for_later_v1/",
+    "Link 3 Title": "Saved for Later — Final Version",
+    "Link 3 URL": "https://jiayi-rrrrrr.github.io/pratt-comd-technology_b-project_2_saved_for_later_final/",
+    "File 1": "/project-media/jlix92_pratt_edu/saved_for_later/file_1.png",
+    "File 1 description": "An overview of the entire project process, from the initial research and image classification model training to the development and iteration of two interactive prototypes.",
+    "File 2": "/project-media/jlix92_pratt_edu/saved_for_later/file_2.png",
+    "File 2 description": "Future Sorting Office — Website Screenshot",
+    "File 3": "/project-media/jlix92_pratt_edu/saved_for_later/file_3.png",
+    "File 3 description": "Teachable Machine — Image Classification Model",
+    "Credit (List out collaborators, tutorials, libraries, references, AI agents used)": "Google Teachable Machine, GitHub Pages, ChatGPT, Claude",
+    "I certify that this submission is my own work and adheres to the course's academic integrity and open source policy.": "Yes",
+    "Anyone's work inspired you at the open classroom?": "Yes!",
+    "What did you learn from making this? (max 2000 characters)": "Through this project, I learned that training a machine is not just about teaching it to recognize what I want. It also involves learning how the machine responds and adjusting my inputs to influence its predictions. Even when the classification matches my intentions, it does not necessarily mean the machine truly understands the meaning behind my categories.\nDuring user testing, I noticed that some participants started guessing which ratings they needed to change to get their preferred results. Some even moved the sliders randomly instead of carefully considering their actual preferences. This observation led me to introduce a human clerk in my second prototype. By offering subtle hints, the clerk helps participants get the results they want without necessarily understanding the machine's classification rules. This makes the process of adapting to the system more visible.\nI realized that interaction is not simply a one-way process where users provide information and machines respond. A system's rules can also influence how people express their own judgments. This project made me more interested in how interactive systems not only produce results but also shape users' behavior throughout the process."
   }
 ]
