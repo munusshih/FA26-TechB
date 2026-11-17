@@ -620,5 +620,31 @@
     "I certify that this submission is my own work and adheres to the course's academic integrity and open source policy.": "Yes",
     "Anyone's work inspired you at the open classroom?": "-",
     "What did you learn from making this? (max 2000 characters)": "This week, I learned that machine learning depends heavily on the examples and labels we provide. A machine can recognize visual patterns and make predictions, but that does not mean it understands the context or meaning of an object. Through my “Not Full” project, I realized that even a confident prediction can be wrong, and sometimes human classifications are also subjective.\n\nOne question I still have is: If a machine learns from the categories humans create, can it ever see or understand something in a completely different way?"
+  },
+  {
+    "Timestamp": "11/16/2026 13:44:03",
+    "Email Address": "yliu124@pratt.edu",
+    "Your Name (First + Last Name)": "Yingwei Liu",
+    "What is your section?": "Munus Shih",
+    "Which Module is this?": "Project 2: Uncertain Archive",
+    "Your Project Name": "What would you send?",
+    "Your Project Description (max 2000 characters)": "An interactive experiment on memes, hesitation, and the people we answer\n\nIn Chinese chat apps a meme often does the work a sentence would be too heavy for. A cat with two question marks can mean confusion, hurt, teasing, or a quiet please keep talking, and the person who sent it gets to decide later which one they meant. What Would You Send? started from that small, slippery habit. I collected 958 memes and first tried to read them from the outside. I trained a machine learning model on them, which could recognise a crying face or an angry one well enough but fell apart the moment a meme depended on who sent it and why. Then I built a quiz that showed one meme at a time and asked people what emotion it carried. The quiz worked, and it asked the wrong question. With nobody on the other end, people decoded pictures like vocabulary cards, and the thing I cared about, what they would actually do with one, never appeared.\n\nSo the project turned from reading to sending. It now opens as a phone chat list: twelve to sixteen conversations with red unread badges, a mother asking if you’ve eaten, a crush who finally tried the café you mentioned, an ex who walked past your old noodle place and found it closed, a boss who only writes are you there. Hidden among them are a few characters from games and novels you could only have befriended inside a story. There are no instructions. You choose who to answer and who to leave on read, open a panel of 894 memes reshuffled for every chat, and send one. Sometimes the other person replies with a question mark, and you get one more try to fix it.",
+    "Is there a web or code component to your project?": "Yes",
+    "Link 1 Title": "meme link",
+    "Link 1 URL": "https://psynone.github.io/meme/",
+    "Link 2 Title": "",
+    "Link 2 URL": "",
+    "Link 3 Title": "",
+    "Link 3 URL": "",
+    "File 1": "/project-media/yliu124_pratt_edu/what_would_you_send_/file_1.png",
+    "File 1 description": "1",
+    "File 2": "/project-media/yliu124_pratt_edu/what_would_you_send_/file_2.png",
+    "File 2 description": "2",
+    "File 3": "/project-media/yliu124_pratt_edu/what_would_you_send_/file_3.png",
+    "File 3 description": "3",
+    "Credit (List out collaborators, tutorials, libraries, references, AI agents used)": "claude",
+    "I certify that this submission is my own work and adheres to the course's academic integrity and open source policy.": "Yes",
+    "Anyone's work inspired you at the open classroom?": "I really liked one classmate’s poster, which was a small long scroll, I think this format is really interesting",
+    "What did you learn from making this? (max 2000 characters)": "A meme means very little on its own; its meaning lives in who sent it, to whom, and after what, which led me back to the relationships my thesis is about. I also learned that every instruction makes people perform. Removing all prompts and borrowing a familiar chat interface let their real habits show, so the chats they skipped and the seconds they hesitated became the most telling data."
   }
 ]
